@@ -1,0 +1,88 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.0.6'
+	id 'io.spring.dependency-management' version '1.1.0'
+
+	//Querydsl 추가
+	//1.plugin 추가
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+}
+
+
+
+group = 'ywluv'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	//Querydsl 추가
+	//2.라이브러리 추가  추가
+	//2)QueryDsl 라이브러리 추가
+
+	// -- QueryDSL ---
+	implementation "com.querydsl:querydsl-jpa:5.0.0:jakarta"
+	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+	// -- QueryDSL ---
+}
+
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+
+
+//3)QueryDsl  추가 --------
+// Querydsl 설정부
+def generated = 'src/main/generated'
+
+querydsl {
+	jpa = true
+	querydslSourcesDir = generated
+}
+sourceSets {
+	main.java.srcDir generated
+}
+
+compileQuerydsl{
+	options.annotationProcessorPath = configurations.querydsl
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	querydsl.extendsFrom compileClasspath
+}
+
+//3)QueryDsl  추가 끝--------
+
+//4) QueryDsl 추가
+// complieQuerydsl Task에 clean 동작 추가
+tasks.compileQuerydsl.dependsOn(clean);
+
+compileQuerydsl{
+	options.annotationProcessorPath = configurations.querydsl
+}
+//4) QueryDsl 추가 끝

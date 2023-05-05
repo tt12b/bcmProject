@@ -11,20 +11,16 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QMember is a Querydsl query type for Member
+ * QClub is a Querydsl query type for Club
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QMember extends EntityPathBase<Member> {
+public class QClub extends EntityPathBase<Club> {
 
-    private static final long serialVersionUID = -1020967677L;
+    private static final long serialVersionUID = -560011937L;
 
-    public static final QMember member = new QMember("member1");
+    public static final QClub club = new QClub("club");
 
     public final ywluv.bcmProject.entity.baseEntity.QBaseEntity _super = new ywluv.bcmProject.entity.baseEntity.QBaseEntity(this);
-
-    public final EnumPath<ywluv.bcmProject.entity.enumEntity.AddressType> addressType = createEnum("addressType", ywluv.bcmProject.entity.enumEntity.AddressType.class);
-
-    public final NumberPath<Integer> age = createNumber("age", Integer.class);
 
     //inherited
     public final StringPath createdBy = _super.createdBy;
@@ -39,23 +35,21 @@ public class QMember extends EntityPathBase<Member> {
 
     public final ListPath<MemberClub, QMemberClub> memberClubs = this.<MemberClub, QMemberClub>createList("memberClubs", MemberClub.class, QMemberClub.class, PathInits.DIRECT2);
 
-    public final EnumPath<ywluv.bcmProject.entity.enumEntity.MemberType> memberType = createEnum("memberType", ywluv.bcmProject.entity.enumEntity.MemberType.class);
-
     //inherited
     public final StringPath modifiedBy = _super.modifiedBy;
 
-    public final StringPath userName = createString("userName");
+    public final StringPath teamName = createString("teamName");
 
-    public QMember(String variable) {
-        super(Member.class, forVariable(variable));
+    public QClub(String variable) {
+        super(Club.class, forVariable(variable));
     }
 
-    public QMember(Path<? extends Member> path) {
+    public QClub(Path<? extends Club> path) {
         super(path.getType(), path.getMetadata());
     }
 
-    public QMember(PathMetadata metadata) {
-        super(Member.class, metadata);
+    public QClub(PathMetadata metadata) {
+        super(Club.class, metadata);
     }
 
 }

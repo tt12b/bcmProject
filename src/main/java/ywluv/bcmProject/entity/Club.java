@@ -13,15 +13,17 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(of = {"id","name"})
+@ToString(of = {"id","teamName"})
 public class Club extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name="club_id")
     private Long id;
-    private String teamname;
+    private String teamName;
 
-    private List<Member> members = new ArrayList<>();
+    @OneToMany(mappedBy = "club")
+    private List<MemberClub> memberClubs = new ArrayList<>();
+
 //    public Team(String name) {
 //        this.name = name;
 //    }

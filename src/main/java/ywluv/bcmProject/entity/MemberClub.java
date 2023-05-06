@@ -1,9 +1,11 @@
 package ywluv.bcmProject.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 //연결 테이블용 엔티티
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberClub {
 
     @Id @GeneratedValue
@@ -18,6 +20,22 @@ public class MemberClub {
     @JoinColumn(name="club_id")
     private Club club;
 
-    private Long MemberCount;
+    public void setMember(Member member) {
+        this.member = member;
+        if (member != null) {
+            member.getMemberClubs().add(this);
+        }
+    }
 
+    public void setClub(Club club) {
+        this.club = club;
+        if (club != null) {
+            club.getMemberClubs().add(this);
+        }
+    }
+
+    public MemberClub(Member member, Club club){
+        this.member = member;
+        this.club = club;
+    }
 }

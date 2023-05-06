@@ -28,8 +28,6 @@ public class QMemberClub extends EntityPathBase<MemberClub> {
 
     public final QMember member;
 
-    public final NumberPath<Long> MemberCount = createNumber("MemberCount", Long.class);
-
     public QMemberClub(String variable) {
         this(MemberClub.class, forVariable(variable), INITS);
     }

@@ -35,14 +35,12 @@ public class QMember extends EntityPathBase<Member> {
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     //inherited
+    public final StringPath lastModifiedBy = _super.lastModifiedBy;
+
+    //inherited
     public final DateTimePath<java.time.LocalDateTime> lastModifiedDate = _super.lastModifiedDate;
 
     public final ListPath<MemberClub, QMemberClub> memberClubs = this.<MemberClub, QMemberClub>createList("memberClubs", MemberClub.class, QMemberClub.class, PathInits.DIRECT2);
-
-    public final EnumPath<ywluv.bcmProject.entity.enumEntity.MemberType> memberType = createEnum("memberType", ywluv.bcmProject.entity.enumEntity.MemberType.class);
-
-    //inherited
-    public final StringPath modifiedBy = _super.modifiedBy;
 
     public final StringPath userName = createString("userName");
 

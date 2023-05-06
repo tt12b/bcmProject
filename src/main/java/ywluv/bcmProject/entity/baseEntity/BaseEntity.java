@@ -13,7 +13,6 @@ import static lombok.AccessLevel.PROTECTED;
 
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
-@NoArgsConstructor(access = PROTECTED)
 @Getter
 public abstract class BaseEntity extends BaseTimeEntity{
 
@@ -22,7 +21,7 @@ public abstract class BaseEntity extends BaseTimeEntity{
     private String createdBy;
 
     @LastModifiedBy
-    @Column(updatable = false)
-    private String modifiedBy;
+    @Column(nullable = true, updatable = false)
+    private String lastModifiedBy;
 
 }

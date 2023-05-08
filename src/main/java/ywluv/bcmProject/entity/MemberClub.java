@@ -8,17 +8,18 @@ import ywluv.bcmProject.entity.baseEntity.BaseEntity;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@ToString(of = {"member","club"})
 public class MemberClub extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name ="memberClub_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id")
     private Member member;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="club_id")
     private Club club;
 

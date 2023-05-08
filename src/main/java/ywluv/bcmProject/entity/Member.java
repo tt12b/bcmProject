@@ -61,6 +61,10 @@ public class Member extends BaseEntity {
         this.getMemberClubs().clear();
     }
 
+    public void changeAddressType(AddressType addressType){
+        this.addressType=addressType;
+    }
+
 
 
 }

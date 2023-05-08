@@ -6,14 +6,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import ywluv.bcmProject.entity.Member;
 import ywluv.bcmProject.entity.baseEntity.BaseEntity;
+import ywluv.bcmProject.service.MemberClubService;
 import ywluv.bcmProject.service.MemberService;
+import ywluv.dto.MemberDto;
 
 import java.util.List;
 
 @Controller
 public class MainController {
 
-    @Autowired MemberService memberService;
+    @Autowired MemberClubService memberClubService;
+
 
     @GetMapping("/")
     public String main(Model model){
@@ -23,12 +26,9 @@ public class MainController {
 
     @GetMapping("/memberList")
     public String home(Model model){
-        List<Member> members = memberService.findMembers();
+        List<MemberDto> memberInfo = memberClubService.findMemberClubs();
 
-        model.addAttribute("members",members);
-        for (Member member : members) {
-            System.out.println("members = " + members);
-        }
+        model.addAttribute("memberInfo",memberInfo);
 
         return "member/memberList";
 

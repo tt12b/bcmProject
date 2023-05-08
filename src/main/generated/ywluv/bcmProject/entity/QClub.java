@@ -22,6 +22,8 @@ public class QClub extends EntityPathBase<Club> {
 
     public final ywluv.bcmProject.entity.baseEntity.QBaseEntity _super = new ywluv.bcmProject.entity.baseEntity.QBaseEntity(this);
 
+    public final StringPath clubName = createString("clubName");
+
     //inherited
     public final StringPath createdBy = _super.createdBy;
 
@@ -37,8 +39,6 @@ public class QClub extends EntityPathBase<Club> {
     public final DateTimePath<java.time.LocalDateTime> lastModifiedDate = _super.lastModifiedDate;
 
     public final ListPath<MemberClub, QMemberClub> memberClubs = this.<MemberClub, QMemberClub>createList("memberClubs", MemberClub.class, QMemberClub.class, PathInits.DIRECT2);
-
-    public final StringPath teamName = createString("teamName");
 
     public QClub(String variable) {
         super(Club.class, forVariable(variable));

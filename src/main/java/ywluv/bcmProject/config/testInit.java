@@ -14,6 +14,7 @@ import ywluv.bcmProject.entity.Club;
 import ywluv.bcmProject.entity.Member;
 import ywluv.bcmProject.entity.MemberClub;
 import ywluv.bcmProject.entity.baseEntity.BaseTimeEntity;
+import ywluv.bcmProject.entity.enumEntity.AddressType;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -52,9 +53,19 @@ public class testInit {
 
             for (int i = 1; i <= 100; i++) {
                 Member member = new Member("닉네임 " + i, "이름"+i);
+                AddressType addressType;
 
-                Club selectedClub = (i % 2 == 0) ? clubB : clubA;
+                Club selectedClub;
+                if (i % 2 == 0) {
+                    selectedClub = clubB;
+                    addressType = AddressType.OBS;
+                } else {
+                    selectedClub = clubA;
+                    addressType = AddressType.OTHER;
+                }
+
                 MemberClub memberClub = new MemberClub(member, selectedClub);
+                member.changeAddressType(addressType);
                 member.getMemberClubs().add(memberClub);
                 selectedClub.getMemberClubs().add(memberClub);
 

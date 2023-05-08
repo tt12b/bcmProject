@@ -19,13 +19,13 @@ public class Club extends BaseEntity {
     @Id @GeneratedValue
     @Column(name="club_id")
     private Long id;
-    private String teamName;
+    private String clubName;
 
     @OneToMany(mappedBy = "club")
     private List<MemberClub> memberClubs = new ArrayList<>();
 
     public Club(String clubName) {
-        this.teamName = clubName;
+        this.clubName = clubName;
     }
 
     public void addMemberClub(MemberClub memberClub) {

@@ -24,8 +24,8 @@ public class Club extends BaseEntity {
     @OneToMany(mappedBy = "club")
     private List<MemberClub> memberClubs = new ArrayList<>();
 
-    public Club(String teamName) {
-        this.teamName = teamName;
+    public Club(String clubName) {
+        this.teamName = clubName;
     }
 
     public void addMemberClub(MemberClub memberClub) {

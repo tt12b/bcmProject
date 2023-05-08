@@ -2,11 +2,13 @@ package ywluv.bcmProject.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import ywluv.bcmProject.entity.baseEntity.BaseEntity;
 
 //연결 테이블용 엔티티
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberClub {
+@Getter
+public class MemberClub extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name ="memberClub_id")

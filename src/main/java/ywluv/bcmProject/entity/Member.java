@@ -20,8 +20,9 @@ public class Member extends BaseEntity {
     @Id @GeneratedValue
     @Column(name ="member_id")
     private Long id;
+
+    private String userNickName;
     private String userName;
-    private int age;
 
     @Enumerated(EnumType.STRING)
     private AddressType addressType;
@@ -29,18 +30,20 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<MemberClub> memberClubs = new ArrayList<>();
 
-    public Member (String userName){
-        this.userName=userName;
+    public Member(String userNickName, String userName) {
+        this.userNickName = userNickName;
+        this.userName = userName;
     }
 
-    public Member (String userName, int age){
-        this.userName=userName;
-        this.age=age;
+    public Member(String userNickName, String userName, AddressType addressType) {
+        this.userNickName = userNickName;
+        this.userName = userName;
+        this.addressType = addressType;
     }
-
-    public Member (String userName, int age, MemberClub memberClub){
-        this.userName=userName;
-        this.age = age;
+    public Member(String userNickName, String userName, AddressType addressType, MemberClub memberClub) {
+        this.userNickName = userNickName;
+        this.userName = userName;
+        this.addressType = addressType;
         addMemberClub(memberClub);
     }
 

@@ -24,8 +24,6 @@ public class QMember extends EntityPathBase<Member> {
 
     public final EnumPath<ywluv.bcmProject.entity.enumEntity.AddressType> addressType = createEnum("addressType", ywluv.bcmProject.entity.enumEntity.AddressType.class);
 
-    public final NumberPath<Integer> age = createNumber("age", Integer.class);
-
     //inherited
     public final StringPath createdBy = _super.createdBy;
 
@@ -43,6 +41,8 @@ public class QMember extends EntityPathBase<Member> {
     public final ListPath<MemberClub, QMemberClub> memberClubs = this.<MemberClub, QMemberClub>createList("memberClubs", MemberClub.class, QMemberClub.class, PathInits.DIRECT2);
 
     public final StringPath userName = createString("userName");
+
+    public final StringPath userNickName = createString("userNickName");
 
     public QMember(String variable) {
         super(Member.class, forVariable(variable));

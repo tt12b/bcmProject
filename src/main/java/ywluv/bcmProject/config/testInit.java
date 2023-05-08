@@ -51,7 +51,7 @@ public class testInit {
             String createdBy = "테스트";
 
             for (int i = 1; i <= 100; i++) {
-                Member member = new Member("Member " + i, i);
+                Member member = new Member("닉네임 " + i, "이름"+i);
 
                 Club selectedClub = (i % 2 == 0) ? clubB : clubA;
                 MemberClub memberClub = new MemberClub(member, selectedClub);

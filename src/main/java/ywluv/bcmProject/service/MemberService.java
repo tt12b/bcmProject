@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ywluv.bcmProject.entity.Member;
-import ywluv.bcmProject.repository.MemberRepository;
+import ywluv.bcmProject.repository.member.MemberRepository;
 
 import java.util.List;
 

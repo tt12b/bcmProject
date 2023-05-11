@@ -7,6 +7,8 @@ import ywluv.bcmProject.entity.Member;
 import ywluv.bcmProject.repository.member.MemberRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +46,14 @@ public class MemberService {
     }
 
 
+    /**
+     * 회원 PK로 조회
+     * @return
+     */
+    public Member findById(Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다." + id));
+    }
 }
 
 

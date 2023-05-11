@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 class MemberServiceTest {
 
-    @Autowired EntityManager entityManager;
+    @Autowired EntityManager em;
     @Autowired MemberService memberService;
 
     @Test
@@ -29,6 +29,32 @@ class MemberServiceTest {
 
         }
         System.out.println("=========테스트 종료==============");
+
+    }
+
+    @Test
+    public void basicTest2(){
+
+        System.out.println("===베이직 테스트 2 시작 ====");
+        Member findMember = memberService.findById(100L);
+//        System.out.println("===11111111111111111111==========");
+//        System.out.println(findMember.getMemberClubs());
+//        System.out.println("===22222222222222222==========");
+//        System.out.println("deposit = " + findMember.getDeposit());
+//        System.out.println("===베이직 테스트 2 종료 ====");
+
+    }
+
+    @Test
+    public void basicTest3(){
+
+//        System.out.println("===베이직 테스트 3 시작 ====");
+//        Member findMember = em.find(Member.class,100L);
+//        System.out.println("===11111111111111111111==========");
+//        System.out.println(findMember.getMemberClubs());
+//        System.out.println("===22222222222222222==========");
+//        System.out.println("deposit = " + findMember.getDeposit());
+//        System.out.println("===베이직 테스트 3 종료 ====");
 
     }
 }

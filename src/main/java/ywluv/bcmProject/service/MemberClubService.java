@@ -10,8 +10,7 @@ import ywluv.dto.MemberDto;
 import java.util.List;
 
 @Service
-@Transactional
-
+@Transactional(readOnly = true)
 public class MemberClubService {
 
     @Autowired MemberClubRepository memberClubRepository;

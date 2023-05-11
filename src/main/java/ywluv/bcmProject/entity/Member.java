@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
 import ywluv.bcmProject.entity.baseEntity.BaseEntity;
 import ywluv.bcmProject.entity.enumEntity.AddressType;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(of = {"id","userName","age","addressType","memberType"})
+//@ToString(of = {"id","userName","age","addressType","memberType","deposit"})
 public class Member extends BaseEntity {
 
     @Id @GeneratedValue
@@ -34,6 +35,11 @@ public class Member extends BaseEntity {
         this.userNickName = userNickName;
         this.userName = userName;
     }
+
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="deposit_id")
+    private Deposit deposit;
 
     public Member(String userNickName, String userName, AddressType addressType) {
         this.userNickName = userNickName;

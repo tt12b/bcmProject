@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Member Registration</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="register.js"></script>
+</head>
+<body>
+<div class="container">
+    <h1>Member Registration</h1>
+    <form>
+        <div class="form-group">
+            <label for="nickname">Nickname:</label>
+            <input type="text" class="form-control" id="nickname" name="nickname" required>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="addresstype">Address Type:</label>
+            <select class="form-control" id="addresstype" name="addresstype" required>
+                <option value="HOME">Home</option>
+                <option value="WORK">Work</option>
+                <option value="OTHER">Other</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="club">Club:</label>
+            <select class="form-control" id="club" name="club" multiple>
+                <option value="club1">Club 1</option>
+                <option value="club2">Club 2</option>
+                <option value="club3">Club 3</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary" onclick="submitForm()">Register</button>
+    </form>
+</div>
+</body>
+</html>

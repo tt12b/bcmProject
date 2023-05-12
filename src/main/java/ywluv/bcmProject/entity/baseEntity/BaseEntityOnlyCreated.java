@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
 @Getter
-public abstract class BaseEntityOnlyCreated extends BaseTimeEntity{
+public abstract class BaseEntityOnlyCreated{
 
     @CreatedBy
     @Column(updatable = false)

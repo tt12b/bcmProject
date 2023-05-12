@@ -51,22 +51,25 @@ public class testInit {
 
             String createdBy = "테스트";
 
+            int deposit = 0;
+            AddressType addressType;
+            Club selectedClub;
             for (int i = 1; i <= 100; i++) {
                 Member member = new Member("닉네임 " + i, "이름"+i);
-                AddressType addressType;
-
-                Club selectedClub;
                 if (i % 2 == 0) {
                     selectedClub = clubB;
                     addressType = AddressType.OBS;
+                    deposit = 30;
                 } else {
                     selectedClub = clubA;
                     addressType = AddressType.OTHER;
+                    deposit = 20;
                 }
-
+                deposit = i*100;
                 MemberClub memberClub = new MemberClub(member, selectedClub);
                 member.changeAddressType(addressType);
                 member.getMemberClubs().add(memberClub);
+                member.updateDeposit(deposit);
                 selectedClub.getMemberClubs().add(memberClub);
 
                 em.persist(member);

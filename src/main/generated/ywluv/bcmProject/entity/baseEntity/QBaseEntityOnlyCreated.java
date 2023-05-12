@@ -19,14 +19,9 @@ public class QBaseEntityOnlyCreated extends EntityPathBase<BaseEntityOnlyCreated
 
     public static final QBaseEntityOnlyCreated baseEntityOnlyCreated = new QBaseEntityOnlyCreated("baseEntityOnlyCreated");
 
-    public final QBaseTimeEntity _super = new QBaseTimeEntity(this);
-
     public final StringPath createdBy = createString("createdBy");
 
     public final DateTimePath<java.time.LocalDateTime> createdDate = createDateTime("createdDate", java.time.LocalDateTime.class);
-
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> lastModifiedDate = _super.lastModifiedDate;
 
     public QBaseEntityOnlyCreated(String variable) {
         super(BaseEntityOnlyCreated.class, forVariable(variable));

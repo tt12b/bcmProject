@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-//@ToString(of = {"id","userName","age","addressType","memberType","deposit"})
+@ToString(exclude = {"depositHistories","memberClubs"})
 public class Member extends BaseEntity {
 
     @Id @GeneratedValue
@@ -28,28 +28,38 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private AddressType addressType;
 
+    private int deposit = 0;
+    @OneToMany(mappedBy = "member")
+    private List<DepositHistory> depositHistories = new ArrayList<>();
+
     @OneToMany(mappedBy = "member")
     private List<MemberClub> memberClubs = new ArrayList<>();
+
+
+
 
     public Member(String userNickName, String userName) {
         this.userNickName = userNickName;
         this.userName = userName;
     }
 
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="deposit_id")
-    private Deposit deposit;
-
     public Member(String userNickName, String userName, AddressType addressType) {
         this.userNickName = userNickName;
         this.userName = userName;
         this.addressType = addressType;
     }
-    public Member(String userNickName, String userName, AddressType addressType, MemberClub memberClub) {
+    public Member(String userNickName, String userName, AddressType addressType, int deposit) {
         this.userNickName = userNickName;
         this.userName = userName;
         this.addressType = addressType;
+        this.deposit = deposit;
+    }
+
+    public Member(String userNickName, String userName, AddressType addressType, int deposit, MemberClub memberClub) {
+        this.userNickName = userNickName;
+        this.userName = userName;
+        this.addressType = addressType;
+        this.deposit = deposit;
         addMemberClub(memberClub);
     }
 
@@ -69,6 +79,10 @@ public class Member extends BaseEntity {
 
     public void changeAddressType(AddressType addressType){
         this.addressType=addressType;
+    }
+
+    public void updateDeposit(int deposit){
+        this.deposit=deposit;
     }
 
 

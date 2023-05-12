@@ -10,4 +10,6 @@ import java.util.List;
 public interface MemberRepository extends JpaRepository<Member,Long> {
 
     List<Member> findByUserName(String userName);
+
+    int findDepositById(Long id);
 }

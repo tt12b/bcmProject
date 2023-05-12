@@ -19,21 +19,29 @@ import ywluv.bcmProject.entity.baseEntity.BaseEntityOnlyCreated;
 public class DepositHistory extends BaseEntityOnlyCreated {
 
     @Id
+    @Column(name ="member_id",nullable = false)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Column(updatable = false)
     private int amount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "deposit_id")
-    private Deposit deposit;
 
     private String reason;
 
-    public DepositHistory(Deposit deposit, int amount, String reason){
-        this.deposit = deposit;
+    private DepositHistory(Member member, int amount, String reason) {
+        this.member = member;
         this.amount = amount;
         this.reason = reason;
     }
 
+    public static DepositHistory createDepositHistory(Member member, int amount, String reason) {
+        DepositHistory depositHistory = new DepositHistory(member, amount, reason);
+        member.getDepositHistories().add(depositHistory);
+        return depositHistory;
+    }
 }

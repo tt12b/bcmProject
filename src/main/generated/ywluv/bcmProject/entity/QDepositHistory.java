@@ -32,12 +32,9 @@ public class QDepositHistory extends EntityPathBase<DepositHistory> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
-    public final QDeposit deposit;
-
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    //inherited
-    public final DateTimePath<java.time.LocalDateTime> lastModifiedDate = _super.lastModifiedDate;
+    public final QMember member;
 
     public final StringPath reason = createString("reason");
 
@@ -59,7 +56,7 @@ public class QDepositHistory extends EntityPathBase<DepositHistory> {
 
     public QDepositHistory(Class<? extends DepositHistory> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.deposit = inits.isInitialized("deposit") ? new QDeposit(forProperty("deposit"), inits.get("deposit")) : null;
+        this.member = inits.isInitialized("member") ? new QMember(forProperty("member")) : null;
     }
 
 }

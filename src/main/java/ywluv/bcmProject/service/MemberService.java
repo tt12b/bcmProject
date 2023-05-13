@@ -1,17 +1,14 @@
 package ywluv.bcmProject.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ywluv.bcmProject.entity.DepositHistory;
 import ywluv.bcmProject.entity.Member;
-import ywluv.bcmProject.repository.Balance.DepositHistoryRepository;
+import ywluv.bcmProject.repository.Deposit.DepositHistoryRepository;
 import ywluv.bcmProject.repository.member.MemberRepository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -81,6 +78,12 @@ public class MemberService {
                 throw new IllegalArgumentException("예치금이 마이너스 3000원 이하가 될 수 없습니다.");
             }
         depositHistoryRepository.save(DepositHistory.createDepositHistory(findMember,amount,reason));
+
+            //JPQL로 조회했을 경우... 영속성 컨텍스트안 값이라 다르니 잘 비교해서..
+//        Long totalDepositOfMember = depositHistoryRepository.getTotalDepositOfMember(1L);
+//        Long totalDeposit = depositHistoryRepository.getTotalDeposit();
+
+
         findMember.updateDeposit(newDeposit);
         //기록과 비교하기
         return newDeposit;

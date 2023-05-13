@@ -18,12 +18,10 @@ import ywluv.bcmProject.entity.baseEntity.BaseEntityOnlyCreated;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DepositHistory extends BaseEntityOnlyCreated {
 
-    @Id
-    @Column(name ="member_id",nullable = false)
+    @Id @GeneratedValue
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId
     @JoinColumn(name = "member_id")
     private Member member;
 

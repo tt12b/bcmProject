@@ -1,17 +1,17 @@
 package ywluv.bcmProject.service;
 
 import jakarta.persistence.EntityManager;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
+import ywluv.bcmProject.config.미사용CustomYml2;
+import ywluv.bcmProject.config.미사용CustomYml;
+import ywluv.bcmProject.config.CustomYml;
 import ywluv.bcmProject.entity.Member;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -20,6 +20,8 @@ class MemberServiceTest {
 
     @Autowired EntityManager em;
     @Autowired MemberService memberService;
+    @Autowired 미사용CustomYml2 미사용CustomYml2;
+
 
     @Test
     public void basicTest(){
@@ -55,9 +57,15 @@ class MemberServiceTest {
         Member findMember = memberService.findById(1L);
         System.out.println(findMember.toString());
         System.out.println("변경 전  : "+ findMember.getDeposit());
-        memberService.depositMoney(1L,1500,"콕비");
+        memberService.depositMoney(1L,-4000,"콕비");
         memberService.depositMoney(1L,1500,"콕비");
         memberService.depositMoney(1L,15000,"예치금");
+
+
+//        System.out.println("================== : "+CustomYml.getNegativeDepositLimit());
+//        System.out.println("================== : "+ 미사용CustomYml2.getNegativeDepositLimit());
+//        System.out.println("================== : "+ 미사용CustomYml.getNegativeDepositLimit());
+//        System.out.println("================== : "+ CustomYml.getNegativeDepositLimit());
 
 
 //        Assertions.assertThrows(IllegalArgumentException.class, () -> {

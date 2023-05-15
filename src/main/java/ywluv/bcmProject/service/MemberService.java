@@ -3,12 +3,15 @@ package ywluv.bcmProject.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ywluv.bcmProject.config.CustomYml;
 import ywluv.bcmProject.entity.DepositHistory;
 import ywluv.bcmProject.entity.Member;
 import ywluv.bcmProject.repository.Deposit.DepositHistoryRepository;
 import ywluv.bcmProject.repository.member.MemberRepository;
 
 import java.util.List;
+
+import static ywluv.bcmProject.config.CustomYml.*;
 
 @Service
 @RequiredArgsConstructor
@@ -74,8 +77,8 @@ public class MemberService {
     public int depositMoney(Long memberId,int amount, String reason){
         Member findMember = findById(memberId);
         int newDeposit = findMember.getDeposit() + amount;
-            if (newDeposit <= -3000) {
-                throw new IllegalArgumentException("예치금이 마이너스 3000원 이하가 될 수 없습니다.");
+            if (newDeposit <= -getNegativeDepositLimit()) {
+                throw new IllegalArgumentException("예치금이 마이너스 "+-getNegativeDepositLimit()+"원 이하가 될 수 없습니다.");
             }
         depositHistoryRepository.save(DepositHistory.createDepositHistory(findMember,amount,reason));
 

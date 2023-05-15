@@ -20,3 +20,8 @@ logging:
   level:
     org.hibernate.SQL: debug
 #    org.hibernate.type: trace
+
+
+#커스텀
+custom:
+  negativeDepositLimit: 3000

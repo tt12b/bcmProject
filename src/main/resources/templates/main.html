@@ -1,38 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>동아리 관리 서비스</title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-<header>
-    <nav>
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="memberList">회원 목록</a></li>
-            <li><a href="memberRegister">회원 등록</a></li>
-        </ul>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/default_layout">
+<th:block layout:fragment="content">
+    <head>
+        <link rel="stylesheet" href="css/style.css">
+    </head>
+
+    <body>
+    <!-- 상단 메뉴 -->
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">동아리 관리</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">홈</a></li>
+                    <li><a href="#">멤버</a></li>
+                    <li><a href="#">프로젝트</a></li>
+                    <li><a href="#">일정</a></li>
+                </ul>
+            </div>
+        </div>
     </nav>
-</header>
-<main>
-    <section>
-        <h1>Welcome to our Club Management Service</h1>
-        <p>Here you can manage all your club activities and communicate with your club members.</p>
-    </section>
-    <section>
-        <h2>Latest News</h2>
-        <ul>
-            <li><a href="#">New feature added to the service</a></li>
-            <li><a href="#">Club management seminar announced</a></li>
-            <li><a href="#">Club spotlight: Art Club</a></li>
-        </ul>
-    </section>
-</main>
-<footer>
-    <p>&copy; 2023 Club Management Service</p>
-</footer>
-</body>
+
+    <!-- 본문 내용 -->
+    <div class="container">
+        <h1>동아리 관리 메인 페이지</h1>
+        <p>본문 내용을 추가해주세요.</p>
+    </div>
+    </body>
+</th:block>
 </html>

@@ -23,5 +23,11 @@ public class MainController {
 
     }
 
+    @GetMapping("/defaultPage")
+    public String defaultPager(Model model){
+        return "defaultPage";
+
+    }
+
 
 }

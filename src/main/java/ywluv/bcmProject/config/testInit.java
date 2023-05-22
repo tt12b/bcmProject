@@ -1,5 +1,6 @@
 package ywluv.bcmProject.config;
 
+import com.p6spy.engine.spy.P6SpyOptions;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,8 @@ public class testInit {
     //bean 초기화 시점에 실행
     @PostConstruct
     public void init() {
+        //p6sy 커스텀
+        P6SpyOptions.getActiveInstance().setLogMessageFormat(CustomP6spySqlFormat.class.getName());
 
         System.out.println("===PostContruct===");
         initData.init();
@@ -55,7 +58,7 @@ public class testInit {
             AddressType addressType;
             Club selectedClub;
             for (int i = 1; i <= 100; i++) {
-                Member member = new Member("닉네임 " + i, "이름"+i);
+                Member member = new Member("닉네임 " +i, "이름"+i);
                 if (i % 2 == 0) {
                     selectedClub = clubB;
                     addressType = AddressType.OBS;

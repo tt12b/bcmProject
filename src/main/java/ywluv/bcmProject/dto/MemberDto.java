@@ -1,4 +1,4 @@
-package ywluv.dto;
+package ywluv.bcmProject.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;

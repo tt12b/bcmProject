@@ -6,9 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
-import ywluv.bcmProject.config.미사용CustomYml2;
-import ywluv.bcmProject.config.미사용CustomYml;
-import ywluv.bcmProject.config.CustomYml;
 import ywluv.bcmProject.entity.Member;
 
 import java.util.List;
@@ -20,7 +17,6 @@ class MemberServiceTest {
 
     @Autowired EntityManager em;
     @Autowired MemberService memberService;
-    @Autowired 미사용CustomYml2 미사용CustomYml2;
 
 
     @Test

@@ -23,6 +23,28 @@
             </tbody>
         </table>
     </div>
+    <div class="container text-center">
+        <nav>
+            <ul class="pagination pagination-lg">
+                <li>
+                    <a th:if="${currentPage > 1}" th:href="@{${'/memberList?page=' + (currentPage - 1)}}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li th:each="page, status : ${#numbers.sequence(1, memberInfoTotalPage)}" th:class="${currentPage == page} ? 'active'">
+                    <a th:href="@{${'/memberList?page=' + page}}" th:text="${page}"></a>
+                </li>
+                <li th:if="${totalPages > 5}">
+                    <a href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+
+
 <!--  본문작성 종료-->
 </th:block>
 </html>

@@ -1,5 +1,6 @@
 package ywluv.bcmProject.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,30 +15,32 @@ import ywluv.bcmProject.dto.MemberDto;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class MemberController {
 
-    @Autowired MemberClubService memberClubService;
+    private final MemberClubService memberClubService;
 
-//    @GetMapping("/memberList")
-//    public String home(Model model){
-//        List<MemberDto> memberInfo = memberClubService.findMemberClubs();
-//
-//        model.addAttribute("memberInfo",memberInfo);
-//
-//        return "member/memberList";
-//
-//    }
     @GetMapping("/memberRegister")
-    public String memberRegister(Model model){
+    public String memberRegister(){
+
         return "member/memberRegister";
 
     }
-
     @GetMapping("/memberList")
-    public Page<MemberDto> search(@ModelAttribute MemberSearchCondition condition, Pageable pageable){
+    public String memberList(Model model, @ModelAttribute MemberSearchCondition memberSearchCondition, Pageable pageable){
 
-        return (Page<MemberDto>) memberClubService.search(condition,pageable);
+        System.out.println("오프셋");
+        System.out.println(pageable.getOffset());
+        System.out.println("리미트");
+        Page<MemberDto> result = memberClubService.search(memberSearchCondition, pageable);
+
+        model.addAttribute("memberInfo",result.getContent());
+        model.addAttribute("memberInfoTotalPage",result.getTotalPages());
+        model.addAttribute("currentPage", pageable.getPageNumber());
+        return "member/memberList";
+
     }
+
 
 
 }

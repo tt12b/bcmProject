@@ -21,6 +21,20 @@ public class MemberApiController {
     @GetMapping("/memberListAPI")
     public Page<MemberDto> memberListAPI(@ModelAttribute MemberSearchCondition condition, Pageable pageable){
 
+        System.out.println(pageable.getPageSize());
+        System.out.println(pageable.getOffset());
+        System.out.println(pageable.getPageNumber());
         return memberClubService.search(condition, pageable);
+    }
+
+    @GetMapping("/test")
+    public Page<MemberDto> test(@ModelAttribute MemberSearchCondition condition, Pageable pageable){
+
+        System.out.println("====================");
+        System.out.println(pageable.getOffset());
+        System.out.println("====================");
+        System.out.println(pageable.getPageSize());
+        return null;
+//        return memberClubService.search(condition, pageable);
     }
 }

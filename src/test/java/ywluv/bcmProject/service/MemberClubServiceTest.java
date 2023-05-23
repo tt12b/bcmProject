@@ -34,7 +34,9 @@ class MemberClubServiceTest {
 //        condition.setDepositLoe(200);
 //        condition.setAddressType(AddressType.OTHER);
 
-        PageRequest pageable = PageRequest.of(0, 10);
+        PageRequest pageable = PageRequest.of(1,20);
+        System.out.println(pageable.getOffset());
+        System.out.println(pageable.getPageSize());
 
         Page<MemberDto> result = memberClubService.search(condition, pageable);
 

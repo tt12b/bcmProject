@@ -15,6 +15,7 @@ import ywluv.bcmProject.dto.MemberSearchCondition;
 import ywluv.bcmProject.service.MemberClubService;
 import ywluv.bcmProject.dto.MemberDto;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -32,9 +33,12 @@ public class MemberController {
     @GetMapping("/memberList")
     public String memberList(Model model, MemberSearchCondition memberSearchCondition, Pageable pageable){
 
-        if(pageable.getPageNumber()!=0){
-            pageable = PageRequest.of(pageable.getPageNumber()-1, pageable.getPageSize(),pageable.getSort());
-        }
+        //Datatables를 이용, 클라이언트 단에서 알아서 페이징 시키다.
+//        if(pageable.getPageNumber()!=0){
+//            pageable = PageRequest.of(pageable.getPageNumber()-1, pageable.getPageSize(),pageable.getSort());
+//        }
+
+            pageable = PageRequest.of(0,1000,Sort.by(Sort.Order.asc("userNickName").ignoreCase()));
 
             Page<MemberDto> result = memberClubService.search(memberSearchCondition, pageable);
             model.addAttribute("memberInfo",result.getContent());

@@ -38,6 +38,7 @@ public class MemberClubRepositoryImpl implements MemberClubRepositoryCustom {
                                 , member.userName
                                 , member.addressType.stringValue()
                                 , club.clubName.concat("/").as("clubNames")
+                                , member.deposit
                         )
                 )
                 .from(memberClub)

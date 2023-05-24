@@ -17,12 +17,14 @@ public class MemberDto {
     private String userName;
     private String addressType;
     private String clubList;
+    private int deposit;
 
     @QueryProjection
-    public MemberDto(String userNickName, String userName, String addressType,String clubList) {
+    public MemberDto(String userNickName, String userName, String addressType,String clubList,int deposit) {
         this.userNickName = userNickName;
         this.userName = userName;
         this.addressType =addressType;
         this.clubList = clubList;
+        this.deposit = deposit;
     }
 }

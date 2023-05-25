@@ -9,7 +9,8 @@
         <h1 class="h3 mb-2 text-gray-800">Tables</h1>
         <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
             For more information about DataTables, please visit the <a target="_blank"
-                                                                       href="https://datatables.net">official DataTables documentation</a>.</p>
+                                                                       href="https://datatables.net">official DataTables
+                documentation</a>.</p>
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
@@ -26,6 +27,7 @@
                             <th>회원구분</th>
                             <th>소속클럽</th>
                             <th>예치금</th>
+                            <th style="display:none">id</th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -35,6 +37,7 @@
                             <th>회원구분</th>
                             <th>소속클럽</th>
                             <th>예치금</th>
+                            <th style="display:none">id</th>
                         </tr>
                         </tfoot>
                         <tbody>
@@ -43,7 +46,27 @@
                             <td th:text="${member.userName}"></td>
                             <td th:text="${member.addressType}"></td>
                             <td th:text="${member.clubList}"></td>
-                            <td th:text="${member.deposit}"></td>
+                            <td>
+                                <span style="display: inline-block; width:3em;"
+                                      th:text="${member.deposit}"></span>
+                                <div style="display: inline;">
+                                    <a href="#" class="btn btn-primary btn-sm">
+                                        <span class="text" style="padding:.185rem .325rem; font-size:10ox">출석</span>
+                                    </a>
+                                    <a href="#" class="btn btn-success btn-sm">
+                                        <span class="text" style="padding:.185rem .325rem; font-size:10ox">-1500</span>
+                                    </a>
+                                    <a href="#" class="btn btn-danger btn-sm">
+                                        <span class="text" style="padding:.185rem .325rem; font-size:10ox">직접변경</span>
+                                    </a>
+                                    <a href="#" class="btn btn-secondary btn-sm">
+                                        <span class="text">
+                                            <i class="fas fa-redo-alt"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </td>
+                            <td style="display:none"th:text="${member.memberId}"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -51,17 +74,29 @@
             </div>
         </div>
     </div>
+</th:block>
 <script th:inline="javascript">
-
+<!--alert("zzz");-->
 $(document).ready(function() {
-    var memberInfo = /*[[${memberInfo}]]*/ [];
-    var memberInfoTotalPage = /*[[${memberInfoTotalPage}]]*/ 0;
-    var currentPage = /*[[${currentPage}]]*/ 0;
-    console.log(memberInfo);
-
-    $('#memberTable').DataTable();
+alert("ddd");
+<!--    var memberInfo = /*[[${memberInfo}]]*/ [];-->
+<!--    var memberInfoTotalPage = /*[[${memberInfoTotalPage}]]*/ 0;-->
+<!--    var currentPage = /*[[${currentPage}]]*/ 0;-->
+<!--    console.log(memberInfo);-->
 
 });
 </script>
-</th:block>
 </html>
+
+<!--// 데이터테이블 초기화-->
+<!--var table = $('#memberTable').DataTable();-->
+
+<!--// 타임리프로 동적으로 생성된 행에 이벤트 추가-->
+<!--$('#memberTable tbody tr').hover(-->
+<!--function() {-->
+<!--$(this).addClass('highlight');-->
+<!--},-->
+<!--function() {-->
+<!--$(this).removeClass('highlight');-->
+<!--}-->
+<!--);-->

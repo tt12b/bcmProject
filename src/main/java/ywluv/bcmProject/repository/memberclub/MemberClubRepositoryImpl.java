@@ -34,7 +34,8 @@ public class MemberClubRepositoryImpl implements MemberClubRepositoryCustom {
 
         List<MemberDto> result = queryFactory
                 .select(new QMemberDto(
-                                member.userNickName
+                                  member.id
+                                , member.userNickName
                                 , member.userName
                                 , member.addressType.stringValue()
                                 , club.clubName.concat("/").as("clubNames")

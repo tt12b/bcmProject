@@ -13,6 +13,7 @@ import java.util.List;
 @ToString
 public class MemberDto {
 
+    private Long memberId;
     private String userNickName;
     private String userName;
     private String addressType;
@@ -20,7 +21,8 @@ public class MemberDto {
     private int deposit;
 
     @QueryProjection
-    public MemberDto(String userNickName, String userName, String addressType,String clubList,int deposit) {
+    public MemberDto(Long memberId,String userNickName, String userName, String addressType,String clubList,int deposit) {
+        this.memberId = memberId;
         this.userNickName = userNickName;
         this.userName = userName;
         this.addressType =addressType;

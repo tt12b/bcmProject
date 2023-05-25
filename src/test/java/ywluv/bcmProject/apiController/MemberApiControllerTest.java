@@ -23,9 +23,6 @@ class MemberApiControllerTest {
 
         memberApiController.memberListAPI(memberSearchCondition,pageable);
 
-        System.out.println("        pageable.getOffset() = " +         pageable.getOffset());
-        System.out.println("pageable.getPageSize() = " + pageable.getPageSize());
-//여기 테스트 하던 중
 
     }
 }

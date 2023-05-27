@@ -10,8 +10,8 @@
         <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below.
             For more information about DataTables, please visit the <a target="_blank"
                                                                        href="https://datatables.net">official DataTables
-                documentation</a>.</p>
-
+                documentation</a>.
+        </p>
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
@@ -19,7 +19,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="memberTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
                         <thead>
                         <tr>
                             <th>닉네임</th>
@@ -51,7 +51,7 @@
                                       th:text="${member.deposit}"></span>
                                 <div style="display: inline;">
                                     <a href="#" class="btn btn-primary btn-sm">
-                                        <span class="text" style="padding:.185rem .325rem; font-size:10ox">출석</span>
+                                        <span class="text chulcheck" style="padding:.185rem .325rem; font-size:10ox">출석</span>
                                     </a>
                                     <a href="#" class="btn btn-success btn-sm">
                                         <span class="text" style="padding:.185rem .325rem; font-size:10ox">-1500</span>
@@ -66,7 +66,7 @@
                                     </a>
                                 </div>
                             </td>
-                            <td style="display:none"th:text="${member.memberId}"></td>
+                            <td style="display:none" th:text="${member.memberId}"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -74,29 +74,57 @@
             </div>
         </div>
     </div>
-</th:block>
 <script th:inline="javascript">
-<!--alert("zzz");-->
 $(document).ready(function() {
-alert("ddd");
-<!--    var memberInfo = /*[[${memberInfo}]]*/ [];-->
-<!--    var memberInfoTotalPage = /*[[${memberInfoTotalPage}]]*/ 0;-->
-<!--    var currentPage = /*[[${currentPage}]]*/ 0;-->
-<!--    console.log(memberInfo);-->
+    <!--데이터테이블 START-->
+    var lastRowIdx = null;
+    var lastColIdx = null;
+    var table = $('#myTable').DataTable({
+          initComplete: function(settings, json) {
+          var filterRow = $(this).closest('.dataTables_wrapper').find('.dataTables_filter');
+          var customObject = $('<input id="calandar" name="calandar" type="text" class="form-control" style="margin: 1em">'); // 원하는 객체를 생성합니다.
+          filterRow.prepend(customObject); // 필터 영역에 객체를 추가합니다.
+        }
+    });
+
+    $('#myTable tbody')
+        .on('mouseover', 'td', function () {
+            var rowIdx = table.cell(this).index().row;
+            var colIdx = table.cell(this).index().column;
+
+            $(table.cells().nodes()).removeClass('highlight');
+
+            $(table.column(colIdx).nodes()).addClass('highlight');
+            $(table.row(rowIdx).nodes()).addClass('highlight');
+
+            if (lastRowIdx !== null && lastRowIdx !== rowIdx) {
+                $(table.row(lastRowIdx).nodes()).removeClass('highlight');
+            }
+
+            lastRowIdx = rowIdx;
+            lastColIdx = colIdx;
+        })
+        .on('mouseleave', function () {
+            $( table.cells().nodes() ).removeClass( 'highlight' );
+            lastRowIdx = null;
+            lastColIdx = null;
+        });
+    <!--데이터테이블 END-->
+
+    <!--부트스트랩 데이트 피커  START-->
+   $('#calandar').dateDropper();
+    <!--부트스트랩 데이트 피커  END-->
+
+
+    <!-- 동적객체에 대한 이벤트    -->
+     $(document).on("click",".chulcheck",function(event){
+            alert($(this).text());
+      });
+   <!-- 동적객체에 대한 이벤트    -->
 
 });
+
 </script>
+</th:block>
 </html>
 
-<!--// 데이터테이블 초기화-->
-<!--var table = $('#memberTable').DataTable();-->
-
-<!--// 타임리프로 동적으로 생성된 행에 이벤트 추가-->
-<!--$('#memberTable tbody tr').hover(-->
-<!--function() {-->
-<!--$(this).addClass('highlight');-->
-<!--},-->
-<!--function() {-->
-<!--$(this).removeClass('highlight');-->
-<!--}-->
-<!--);-->

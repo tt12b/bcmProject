@@ -34,6 +34,8 @@ public class QMember extends EntityPathBase<Member> {
 
     public final ListPath<DepositHistory, QDepositHistory> depositHistories = this.<DepositHistory, QDepositHistory>createList("depositHistories", DepositHistory.class, QDepositHistory.class, PathInits.DIRECT2);
 
+    public final ListPath<Meetup, QMeetup> hostedMeetups = this.<Meetup, QMeetup>createList("hostedMeetups", Meetup.class, QMeetup.class, PathInits.DIRECT2);
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     //inherited
@@ -41,6 +43,8 @@ public class QMember extends EntityPathBase<Member> {
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> lastModifiedDate = _super.lastModifiedDate;
+
+    public final ListPath<MeetupMember, QMeetupMember> MeetupMembers = this.<MeetupMember, QMeetupMember>createList("MeetupMembers", MeetupMember.class, QMeetupMember.class, PathInits.DIRECT2);
 
     public final ListPath<MemberClub, QMemberClub> memberClubs = this.<MemberClub, QMemberClub>createList("memberClubs", MemberClub.class, QMemberClub.class, PathInits.DIRECT2);
 

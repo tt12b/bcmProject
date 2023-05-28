@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(exclude = {"depositHistories","memberClubs"})
+@ToString(exclude = {"depositHistories","memberClubs","MeetupMembers"})
 public class Member extends BaseEntity {
 
     @Id @GeneratedValue
@@ -34,6 +34,14 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member")
     private List<MemberClub> memberClubs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "meetingHost")
+    private List<Meetup> hostedMeetups = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<MeetupMember> MeetupMembers = new ArrayList<>();
+
+
 
 
 

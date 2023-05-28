@@ -1,12 +1,3 @@
-.mainColor-background {
-  background-color: #c9ac79;
-}
-
-.highlight {
-    background-color: whitesmoke !important;
-}
-
-
 /*달력*/
 /* cyrillic-ext */
 @font-face {
@@ -67,11 +58,11 @@ html, body {
   height: 100%;
 }
 
-body {
+/*body {
   display: grid;
   background: #F44336;
   font-family: 'Manrope', sans-serif;
-}
+}*/
 
 .mt-100 {
   margin-top: 100px;

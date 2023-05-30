@@ -1,0 +1,18 @@
+@font-face {
+  font-family: 'HANNA';
+  src: url('../../font/BMHANNAAir_otf.otf') format('opentype');
+}
+
+@import url('fontcss.css') all;
+
+body {
+  font-family: 'HANNA', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'HANNA', sans-serif;
+}
+
+p, span, div {
+  font-family: 'HANNA', sans-serif;
+}

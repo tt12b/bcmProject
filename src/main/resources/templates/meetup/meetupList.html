@@ -49,6 +49,7 @@ $(document).ready(function() {
         },
         select: function(arg) { // 캘린더에서 드래그로 이벤트를 생성할 수 있다.
 <!--            arg.allDay=false;-->
+<!--            arg.endStr=arg.startStr;-->
             showModal(arg);
 <!--          var title = prompt('Event Title test:');-->
 <!--          if (title) {-->
@@ -63,13 +64,12 @@ $(document).ready(function() {
         },
           // 이벤트
         events: [
-<!--          {-->
-<!--            title: '새로운 이벤트',-->
-<!--            start: '2023-05-30T10:00:00',-->
-<!--            end: '2023-05-30T12:00:00',-->
-<!--            allDay: false,-->
-<!--            color: 'red'-->
-<!--          }-->
+          {
+<!--    title: '시간 범위 이벤트',-->
+<!--  start: '2023-05-30T10:00:00',-->
+<!--  end: '2023-05-30T14:00:00',-->
+<!--            color: 'blue'-->
+          }
 <!--          ,-->
 <!--          {-->
 <!--            title: 'Long Event',-->
@@ -129,11 +129,20 @@ $(document).ready(function() {
 });
 
 function showModal(arg){
-test = arg;
+    console.log("변겅전");
     console.log(arg);
+    if(arg.view.type=="dayGridMonth" && arg.id==null){
+      arg.endStr = arg.startStr;
+      arg.allDay = false;
+    }
+
+    console.log("변겅후");
+    console.log(arg);
+
+
     $("#startDate").val(arg.startStr)
     $("#endDate").val(arg.endStr)
-   $('#myModal').modal('show');
+    $('#myModal').modal('show');
 }
 
 function initModal(){
@@ -153,18 +162,54 @@ function saveSchedule(){
     var endDate = $('#endDate').val(); // 종료일 변수
     var eventTitle = $('#eventTitle').val(); // 일정명 변수
     var memo = $('#eventMemo').val(); // 메모 변수
+    var allDayYN = $("input[name='allDay']:checked").val(); //종일여부
 
-    console.log(startDate);
-    console.log(endDate);
-    console.log(eventTitle);
+    if(allDayYN == 'N'){
+        startDate = startDate+'T'+$("#startHours").val()+":"+$("#startMinutes").val()+":00";
+        endDate = endDate+'T'+$("#endHours").val()+":"+$("#endMinutes").val()+":00";
+    }
 
+
+    $.ajax({
+    url: "/meetup",
+    type: 'POST',
+    dataType: 'String',
+       contentType: 'application/json',
+    data: JSON.stringify({
+        eventTitle: eventTitle,
+        startDate: startDate,
+        endDate: endDate,
+        memo: memo,
+        allDayYN: allDayYN
+    }),
+
+    success: function(response) {
+      console.log('Event saved successfully!');
+    },
+    error: function(xhr, status, error) {
+      console.error('Error saving event:', error);
+    }
+  });
+
+    //수정 중
+    console.log("저장 전");
+    console.log("startDate : "+startDate);
+    console.log("endDate : "+endDate);
     calendar.addEvent({
         title: eventTitle
     ,   start: startDate
     ,   end: endDate
+    ,   allDay : allDayYN
     });
 
-    alert("저장완료");
+    console.log("저장 후");
+    console.log("startDate : "+startDate);
+    console.log("endDate : "+endDate);
+    alert("저장 완");
+}
+
+function save(){
+
 }
 
 function eventTitleCheck(){

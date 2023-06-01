@@ -15,6 +15,7 @@ import java.util.Optional;
 public class BcmProjectApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(BcmProjectApplication.class, args);
 	}
 

@@ -14,7 +14,6 @@ import ywluv.bcmProject.entity.baseEntity.BaseEntity;
 @ToString(of = {"member", "meetup"})
 public class MeetupMember extends BaseEntity {
 
-
     @Id @GeneratedValue
     @Column(name = "meetupMember_id")
     private Long id;

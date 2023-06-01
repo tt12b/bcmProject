@@ -35,16 +35,11 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member")
     private List<MemberClub> memberClubs = new ArrayList<>();
 
-    @OneToMany(mappedBy = "meetingHost")
-    private List<Meetup> hostedMeetups = new ArrayList<>();
+    @OneToMany(mappedBy = "meetupHost")
+    private List<Meetup> meetupHosts = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     private List<MeetupMember> MeetupMembers = new ArrayList<>();
-
-
-
-
-
 
     public Member(String userNickName, String userName) {
         this.userNickName = userNickName;

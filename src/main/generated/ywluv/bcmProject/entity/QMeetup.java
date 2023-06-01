@@ -38,15 +38,17 @@ public class QMeetup extends EntityPathBase<Meetup> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> lastModifiedDate = _super.lastModifiedDate;
 
-    public final QMember meetingHost;
+    public final DateTimePath<java.time.LocalDateTime> meetupEndDate = createDateTime("meetupEndDate", java.time.LocalDateTime.class);
 
-    public final DateTimePath<java.time.LocalDateTime> meetupDateTime = createDateTime("meetupDateTime", java.time.LocalDateTime.class);
+    public final QMember meetupHost;
 
     public final ListPath<MeetupMember, QMeetupMember> meetupMembers = this.<MeetupMember, QMeetupMember>createList("meetupMembers", MeetupMember.class, QMeetupMember.class, PathInits.DIRECT2);
 
-    public final StringPath meetupName = createString("meetupName");
+    public final StringPath meetupMemo = createString("meetupMemo");
 
-    public final StringPath meetupNotes = createString("meetupNotes");
+    public final DateTimePath<java.time.LocalDateTime> meetupStartDate = createDateTime("meetupStartDate", java.time.LocalDateTime.class);
+
+    public final StringPath meetupTitle = createString("meetupTitle");
 
     public final EnumPath<ywluv.bcmProject.entity.enumEntity.MeetupType> meetupType = createEnum("meetupType", ywluv.bcmProject.entity.enumEntity.MeetupType.class);
 
@@ -68,7 +70,7 @@ public class QMeetup extends EntityPathBase<Meetup> {
 
     public QMeetup(Class<? extends Meetup> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.meetingHost = inits.isInitialized("meetingHost") ? new QMember(forProperty("meetingHost")) : null;
+        this.meetupHost = inits.isInitialized("meetupHost") ? new QMember(forProperty("meetupHost")) : null;
     }
 
 }

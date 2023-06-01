@@ -21,6 +21,15 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final DepositHistoryRepository depositHistoryRepository;
 
+
+    /**
+     * test멤버 생성
+     */
+    @Transactional
+    public Member createTestMember(){
+        Member saveMember = memberRepository.save(new Member("테스트계정", "테스트계정"));
+        return saveMember;
+    }
     /**
      * 멤버 추가(회원 가입)
      * @Param Member
@@ -55,6 +64,7 @@ public class MemberService {
      * @return Member
      */
     public Member findById(Long memberId) {
+        System.out.println("==여기오니?==");
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다. :" + memberId));
     }

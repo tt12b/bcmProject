@@ -155,48 +155,52 @@ function initModal(){
 function saveSchedule(){
 
     if(!checkTime()) return;
-    if(!eventTitleCheck()) return;
+    if(!meetupTitleCheck()) return;
 
 
+    var meetupId = $('#meetupId').val();
     var startDate = $('#startDate').val(); // 시작일 변수
     var endDate = $('#endDate').val(); // 종료일 변수
-    var eventTitle = $('#eventTitle').val(); // 일정명 변수
+    var meetupTitle = $('#meetupTitle').val(); // 일정명 변수
     var memo = $('#eventMemo').val(); // 메모 변수
     var allDayYN = $("input[name='allDay']:checked").val(); //종일여부
+    var meetupType = $("input[name='meetupType']:checked").val();
 
     if(allDayYN == 'N'){
-        startDate = startDate+'T'+$("#startHours").val()+":"+$("#startMinutes").val()+":00";
-        endDate = endDate+'T'+$("#endHours").val()+":"+$("#endMinutes").val()+":00";
+        startDate = startDate+'T'+$("#startHour").val()+":"+$("#startMinutes").val()+":00";
+        endDate = endDate+'T'+$("#endHour").val()+":"+$("#endMinutes").val()+":00";
     }
 
+ $.ajax({
+  type: "POST",
+  url: "/meetup",
+  data: JSON.stringify({
+        "meetupId"  :   meetupId
+    ,   "meetupTitle":   meetupTitle
+    ,   "startDate" :   startDate
+    ,   "endDate"   :   endDate
+    ,   "memo"      :   memo
+    ,   "allDayYN"  :   allDayYN
+    ,   "meetupType":   meetupType
 
-    $.ajax({
-    url: "/meetup",
-    type: 'POST',
-    dataType: 'String',
-       contentType: 'application/json',
-    data: JSON.stringify({
-        eventTitle: eventTitle,
-        startDate: startDate,
-        endDate: endDate,
-        memo: memo,
-        allDayYN: allDayYN
-    }),
-
-    success: function(response) {
-      console.log('Event saved successfully!');
-    },
-    error: function(xhr, status, error) {
-      console.error('Error saving event:', error);
-    }
-  });
+  }),
+  contentType: "application/json",
+  success: function(response) {
+    // 성공적으로 요청이 처리되었을 때 실행되는 코드
+    console.log(response);
+  },
+  error: function(xhr, status, error) {
+    // 요청이 실패했을 때 실행되는 코드
+    console.log(xhr.responseText);
+  }
+});
 
     //수정 중
     console.log("저장 전");
     console.log("startDate : "+startDate);
     console.log("endDate : "+endDate);
     calendar.addEvent({
-        title: eventTitle
+        title: meetupTitle
     ,   start: startDate
     ,   end: endDate
     ,   allDay : allDayYN
@@ -208,22 +212,19 @@ function saveSchedule(){
     alert("저장 완");
 }
 
-function save(){
 
-}
+function meetupTitleCheck(){
+  const meetupTitle = $('#meetupTitle');
+  const errorText = $('#meetupTitleError');
+  const meetupTitleInput = $('#meetupTitle');
 
-function eventTitleCheck(){
-  const eventTitle = $('#eventTitle');
-  const errorText = $('#eventTitleError');
-  const eventTitleInput = $('#eventTitle');
-
-     if (eventTitle.val().trim() === '') {
+     if (meetupTitle.val().trim() === '') {
         errorText.css('display', 'block');
-        eventTitleInput.addClass('input-error');
+        meetupTitleInput.addClass('input-error');
         return false;
       }
        errorText.css('display', 'none');
-       eventTitleInput.removeClass('input-error');
+       meetupTitleInput.removeClass('input-error');
        return true;
 }
 
@@ -231,11 +232,11 @@ function checkTime() {
     var allDay = $("input[name='allDay']:checked").val();
     if(allDay=='Y') return true
 
-    var startHours = parseInt($('#startHours').val());
+    var startHour = parseInt($('#startHour').val());
     var startMinutes = parseInt($('#startMinutes').val());
     var endHour = parseInt($('#endHour').val());
     var endMinutes = parseInt($('#endMinutes').val());
-    var startTime = startHours * 60 + startMinutes;
+    var startTime = startHour * 60 + startMinutes;
     var endTime = endHour * 60 + endMinutes;
 
     if (endTime >= startTime) {
@@ -261,13 +262,6 @@ function changeAllDayCheck(obj){
 }
 
 
-function toggleTimeFields() {
-<!--  var allDayCheckbox = document.getElementByName('allDay');-->
-
-<!--    console.log(allDayCheckbox);-->
-
-
-}
 
 </script>
     <!-- 모달 -->
@@ -282,8 +276,8 @@ function toggleTimeFields() {
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="startHours">시작시간:</label>
-                        <select class="form-control time" id="startHours" style="margin-bottom:0.5rem">
+                        <label for="startHour">시작시간:</label>
+                        <select class="form-control time" id="startHour" style="margin-bottom:0.5rem">
                             <option value="09">09시</option>
                             <option value="10">10시</option>
                             <option value="11">11시</option>
@@ -363,11 +357,33 @@ function toggleTimeFields() {
                             </label>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <input type="radio" name="meetupType" value="Badminton" checked="checked">
+                        <label>배드민턴</label><br>
+
+                        <input type="radio" name="meetupType" value="Board Game">
+                        <label>보드게임</label><br>
+
+                        <input type="radio" name="meetupType" value="Overall Gathering">
+                        <label>전체 회식</label><br>
+
+                        <input type="radio" name="meetupType" value="Partial Gathering">
+                        <label>부분 회식</label><br>
+
+                        <input type="radio" name="meetupType" value="Walk">
+                        <label>산책</label><br>
+
+                        <input type="radio" name="meetupType" value="Shopping">
+                        <label>쇼핑</label><br>
+
+                        <input type="radio" name="meetupType" value="Etc">
+                        <label>기타</label><br>
+                    </div>
 
                     <div class="form-group">
-                        <label for="eventTitle">일정명 <span class="required-field">*</span></label>
-                        <input type="text" class="form-control" id="eventTitle" onblur="eventTitleCheck()">
-                        <p id="eventTitleError" class="error-message" style="display:none"> 일정명을 입력하세요 </p>
+                        <label for="meetupTitle">일정명 <span class="required-field">*</span></label>
+                        <input type="text" class="form-control" id="meetupTitle" onblur="meetupTitleCheck()">
+                        <p id="meetupTitleError" class="error-message" style="display:none"> 일정명을 입력하세요 </p>
                     </div>
                     <div class="form-group">
                         <label for="eventMemo">메모</label>

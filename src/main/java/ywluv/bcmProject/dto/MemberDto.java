@@ -1,7 +1,9 @@
 package ywluv.bcmProject.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import ywluv.bcmProject.entity.Club;
 
@@ -10,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Data
-@ToString
+@NoArgsConstructor
 public class MemberDto {
 
     private Long memberId;

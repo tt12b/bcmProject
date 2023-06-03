@@ -7,6 +7,7 @@
         <div id='calendar'></div>
     </div>
 
+    <!-- 모달 -->
     <script th:inline="javascript">
 var calendar;
 var today;
@@ -129,27 +130,40 @@ $(document).ready(function() {
 });
 
 function showModal(arg){
-    console.log("변겅전");
-    console.log(arg);
+
+
+    var startDate =  arg.startStr;
+    var endDate = arg.endStr;
+    var allDayToggle = true;
+    //월 스케쥴 최초 등록
     if(arg.view.type=="dayGridMonth" && arg.id==null){
-      arg.endStr = arg.startStr;
-      arg.allDay = false;
+         endDate = subtractOneDay(arg.endStr)
     }
 
-    console.log("변겅후");
-    console.log(arg);
+    if(startDate != endDate){
+        allDayToggle = false;
+    }
 
-
-    $("#startDate").val(arg.startStr)
-    $("#endDate").val(arg.endStr)
+    toggleAllDayRadioButton(allDayToggle);
+    $("#startDate").val(startDate)
+    $("#endDate").val(endDate)
     $('#myModal').modal('show');
+}
+
+function toggleAllDayRadioButton(isVisible) {
+  var allDayRadioButtons = $("#allDayRadioDiv");
+
+  if (isVisible) {
+    allDayRadioButtons.show();
+  } else {
+    allDayRadioButtons.hide();
+  }
 }
 
 function initModal(){
   $('#myModal').find('input, select, textarea').each( function ( idx, element ) {
 			$(element).val("");
     });
-
 }
 
 function saveSchedule(){
@@ -169,12 +183,12 @@ function saveSchedule(){
     if(allDayYN == 'N'){
         startDate = startDate+'T'+$("#startHour").val()+":"+$("#startMinutes").val()+":00";
         endDate = endDate+'T'+$("#endHour").val()+":"+$("#endMinutes").val()+":00";
+    } else {
+        startDate = startDate+'T'+"00:00:00";
+        endDate = endDate+'T'+"00:00:00";
     }
 
- $.ajax({
-  type: "POST",
-  url: "/meetup",
-  data: JSON.stringify({
+var data = {
         "meetupId"  :   meetupId
     ,   "meetupTitle":   meetupTitle
     ,   "startDate" :   startDate
@@ -183,19 +197,26 @@ function saveSchedule(){
     ,   "allDayYN"  :   allDayYN
     ,   "meetupType":   meetupType
 
-  }),
-  contentType: "application/json",
-  success: function(response) {
+  }
+
+ $.ajax({
+    type: "POST"
+  , url: "/meetup"
+  , data: JSON.stringify(data)
+  , contentType: "application/json"
+  , success: function(response) {
     // 성공적으로 요청이 처리되었을 때 실행되는 코드
+    console.log("응답");
     console.log(response);
-  },
-  error: function(xhr, status, error) {
+  }
+  , error: function(xhr, status, error) {
     // 요청이 실패했을 때 실행되는 코드
+    console.log("실패했네");
     console.log(xhr.responseText);
   }
 });
 
-    //수정 중
+    //수정 중 별도 함수로 분리
     console.log("저장 전");
     console.log("startDate : "+startDate);
     console.log("endDate : "+endDate);
@@ -212,6 +233,27 @@ function saveSchedule(){
     alert("저장 완");
 }
 
+function setCalendarDate(
+    meetupId
+,   meetupTitle
+,   startDate
+,   endDate
+,   allDayYN
+,   hostId
+,   hostName
+,   meetupType
+,   memo
+){
+    calendar.addEvent({
+        title: meetupTitle
+    ,   start: startDate
+    ,   end: endDate
+    ,   allDay : allDayYN
+    });
+
+    //중  커스텀 속성 추가하고, 이후 클릭 할 때 커스텀 기본 속성+커스텀 속성을 모달에 반영
+
+}
 
 function meetupTitleCheck(){
   const meetupTitle = $('#meetupTitle');
@@ -264,7 +306,6 @@ function changeAllDayCheck(obj){
 
 
 </script>
-    <!-- 모달 -->
     <div class="modal" id="myModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -341,8 +382,8 @@ function changeAllDayCheck(obj){
                             <option value="55">55분</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="allDay">종일여부:</label>
+                    <div class="form-group" id="allDayRadioDiv">
+                        <label for="allDay">종일 여부:</label>
                         <div class="form-check">
                             <label class="form-check-label">
                                 <input type="radio" class="form-check-input" value="Y" id="allDay" name="allDay"
@@ -358,26 +399,35 @@ function changeAllDayCheck(obj){
                         </div>
                     </div>
                     <div class="form-group">
-                        <input type="radio" name="meetupType" value="Badminton" checked="checked">
-                        <label>배드민턴</label><br>
+                        <label for="meetupType">모임 종류:</label>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" name="meetupType" id ="meetupType" value="badminton" checked="checked"> 배드민턴
+                            </label>
 
-                        <input type="radio" name="meetupType" value="Board Game">
-                        <label>보드게임</label><br>
+                            <label class="form-check-label">
+                                <input type="radio"  name="meetupType" value="boardGame"> 보드게임
+                            </label>
 
-                        <input type="radio" name="meetupType" value="Overall Gathering">
-                        <label>전체 회식</label><br>
+                            <label class="form-check-label">
+                                <input type="radio" name="meetupType" value="overallGathering"> 전체 회식
+                            </label>
 
-                        <input type="radio" name="meetupType" value="Partial Gathering">
-                        <label>부분 회식</label><br>
+                            <label class="form-check-label">
+                                <input type="radio"  name="meetupType" value="partialGathering"> 부분 회식
+                            </label>
 
-                        <input type="radio" name="meetupType" value="Walk">
-                        <label>산책</label><br>
+                            <label class="form-check-label">
+                                <input type="radio"  name="meetupType" value="walk"> 산책
+                            </label>
 
-                        <input type="radio" name="meetupType" value="Shopping">
-                        <label>쇼핑</label><br>
+                            <label class="form-check-label">
+                                <input type="radio"  name="meetupType" value="shopping"> 쇼핑
+                            </label>
 
-                        <input type="radio" name="meetupType" value="Etc">
-                        <label>기타</label><br>
+                            <label class="form-check-label">
+                                <input type="radio" name="meetupType" value="etc"> 기타
+                            </label>
                     </div>
 
                     <div class="form-group">
@@ -394,8 +444,9 @@ function changeAllDayCheck(obj){
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
                     <button type="button" class="btn btn-primary" onclick="saveSchedule()">일정 저장하기</button>
                 </div>
-                <input type="text" id ="startDate">
-                <input type="text" id ="endDate">
+                <input type="hidden" id ="startDate">
+                <input type="hidden" id ="endDate">
+                <input type="hidden" id ="meetupId">
             </div>
         </div>
     </div>

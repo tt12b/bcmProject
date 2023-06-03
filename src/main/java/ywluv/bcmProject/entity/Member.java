@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(exclude = {"depositHistories","memberClubs","MeetupMembers"})
+@ToString(exclude = {"depositHistories","memberClubs","MeetupMembers","meetupHosts"})
 public class Member extends BaseEntity {
 
     @Id @GeneratedValue

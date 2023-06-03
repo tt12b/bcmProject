@@ -24,6 +24,8 @@ public class QMeetup extends EntityPathBase<Meetup> {
 
     public final ywluv.bcmProject.entity.baseEntity.QBaseEntity _super = new ywluv.bcmProject.entity.baseEntity.QBaseEntity(this);
 
+    public final StringPath allDayYN = createString("allDayYN");
+
     //inherited
     public final StringPath createdBy = _super.createdBy;
 

@@ -28,16 +28,15 @@ public class MeetupController {
 
     @PostMapping("/meetup")
     @ResponseBody
-    public Meetup meetupMake(@RequestBody MeetupDto meetupDto){
-        System.out.println(meetupDto.toString());
+    public MeetupDto meetupMake(@RequestBody MeetupDto meetupDto){
+
+        System.out.println("=======================");
+        System.out.println(meetupDto);
 
         System.out.println("========");
         Long meetupId = meetupService.makeMeetup(meetupDto);
-        System.out.println("========");
-        Meetup meetup = meetupService.findById(meetupId);
+        MeetupDto result = meetupService.findById(meetupId);
 
-        System.out.println("저장 완료");
-        System.out.println(meetupId.toString());
-        return meetup;
+        return result;
     }
 }

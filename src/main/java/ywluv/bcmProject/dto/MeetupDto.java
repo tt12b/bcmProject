@@ -26,23 +26,28 @@ public class MeetupDto {
     private String meetupTitle;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private String memo;
     private String allDayYN;
-    private String meetupType;
     private Long hostId;
-    private Long hostName;
+    private String hostName;
+    private String meetupType;
+    private String memo;
+
 
     @QueryProjection
-
-    public MeetupDto(Long meetupId, String meetupTitle, LocalDateTime startDate, LocalDateTime endDate, String memo, String allDayYN, String meetupType, Long hostId, Long hostName) {
+    public MeetupDto(Long meetupId, String meetupTitle, LocalDateTime startDate, LocalDateTime endDate
+            , String allDayY
+            , Long hostId, String hostName
+            ,  String meetupType
+            ,  String memo)
+    {
         this.MeetupId = meetupId;
         this.meetupTitle = meetupTitle;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.memo = memo;
         this.allDayYN = allDayYN;
-        this.meetupType = meetupType;
         this.hostId = hostId;
         this.hostName = hostName;
+        this.meetupType = meetupType;
+        this.memo = memo;
     }
 }

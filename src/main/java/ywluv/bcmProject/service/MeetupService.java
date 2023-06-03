@@ -20,6 +20,7 @@ public class MeetupService {
 
     @Transactional(readOnly = false)
     public Long makeMeetup(Meetup meetup){
+
         return meetupRepository.save(meetup).getId();
     }
 
@@ -30,22 +31,24 @@ public class MeetupService {
     }
 
 
-    public Meetup findById(Long id){
+    public MeetupDto findById(Long id){
         return meetupRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("모임을 찾을 수 없습니다. :" + id));
-
+                .orElseThrow(() -> new IllegalArgumentException("모임을 찾을 수 없습니다. :" + id))
+                .toDto();
     }
 
     private Meetup dtoToEntity(MeetupDto meetupDto){
 
         Meetup meetup = new Meetup(
-            meetupDto.getMeetupTitle()
+            meetupDto.getMeetupId()
+        ,   meetupDto.getMeetupTitle()
         ,   meetupDto.getStartDate()
         ,   meetupDto.getEndDate()
-        ,   meetupDto.getHostId() == null ? null : memberService.findById(meetupDto.getHostId())
-        ,   new ArrayList<>()
+        ,   meetupDto.getAllDayYN()
+        ,   meetupDto.getHostId() == null ? memberService.findById(1L) : memberService.findById(meetupDto.getHostId())
         ,   MeetupType.valueOf(meetupDto.getMeetupType())
         ,   meetupDto.getMemo()
+        ,   new ArrayList<>()
         );
 
         return meetup;

@@ -13,8 +13,8 @@ public class QMeetupDto extends ConstructorExpression<MeetupDto> {
 
     private static final long serialVersionUID = -1169603124L;
 
-    public QMeetupDto(com.querydsl.core.types.Expression<Long> meetupId, com.querydsl.core.types.Expression<String> meetupTitle, com.querydsl.core.types.Expression<java.time.LocalDateTime> startDate, com.querydsl.core.types.Expression<java.time.LocalDateTime> endDate, com.querydsl.core.types.Expression<String> memo, com.querydsl.core.types.Expression<String> allDayYN, com.querydsl.core.types.Expression<String> meetupType, com.querydsl.core.types.Expression<Long> hostId, com.querydsl.core.types.Expression<Long> hostName) {
-        super(MeetupDto.class, new Class<?>[]{long.class, String.class, java.time.LocalDateTime.class, java.time.LocalDateTime.class, String.class, String.class, String.class, long.class, long.class}, meetupId, meetupTitle, startDate, endDate, memo, allDayYN, meetupType, hostId, hostName);
+    public QMeetupDto(com.querydsl.core.types.Expression<Long> meetupId, com.querydsl.core.types.Expression<String> meetupTitle, com.querydsl.core.types.Expression<java.time.LocalDateTime> startDate, com.querydsl.core.types.Expression<java.time.LocalDateTime> endDate, com.querydsl.core.types.Expression<String> allDayY, com.querydsl.core.types.Expression<Long> hostId, com.querydsl.core.types.Expression<String> hostName, com.querydsl.core.types.Expression<String> meetupType, com.querydsl.core.types.Expression<String> memo) {
+        super(MeetupDto.class, new Class<?>[]{long.class, String.class, java.time.LocalDateTime.class, java.time.LocalDateTime.class, String.class, long.class, String.class, String.class, String.class}, meetupId, meetupTitle, startDate, endDate, allDayY, hostId, hostName, meetupType, memo);
     }
 
 }

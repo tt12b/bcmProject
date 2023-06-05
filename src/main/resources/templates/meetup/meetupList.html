@@ -148,7 +148,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" onclick="closeModal()">취소</button>
+                        <button type="button" class="btn btn-secondary"  data-dismiss="modal" >취소</button>
                         <button type="button" class="btn btn-primary" onclick="saveSchedule()">일정 저장하기</button>
                     </div>
                     <input type="hidden" id="groupId">
@@ -156,7 +156,7 @@
             </div>
         </div>
     </div>
-    <script th:inline="javascript">
+<script th:inline="javascript">
 var calendar;
 var datepicker;
 var today;
@@ -273,28 +273,36 @@ datepicker = $('.customPicker').datepicker({
   format: 'yyyy-mm-dd',
   autoclose: true,
   language: 'ko',
-  startDate: today,
+  startDate: '-3d',
   endDate: '+2m',
   templates: {
     rightArrow: '<i class="fas fa-chevron-right"></i>',
     leftArrow: '<i class="fas fa-chevron-left"></i>'
   }
 }).on("hide", function(e) {
-  console.log("닫힌다");
-  console.log(e);
+    console.log("닫힌다");
+
 }).on("show", function(e) {
   console.log("열린다");
-  console.log(e);
+                            //캘린더에서 받은 날짜 집어넣기
+  $("#startDate").datepicker('setDate', '2023-06-19');
+  $("#endDate").datepicker('setDate', '2023-06-23');
 })
+
+$('#myModal').on('hidden.bs.modal', function () {
+  initModal();
+});
+
 });
 
 function initDatePicker(){
-//아 초기화가 안되네..
 
-<!--datepicker[0][Object.keys(datepicker[0])[0]].datepicker.dates=[]-->
-<!--datepicker[0][Object.keys(datepicker[0])[0]].datepicker.pickers=[]-->
+    $('.customPicker').each(function() {
+      $(this).datepicker('clearDates');
+    });
 
-    $('.customPicker td.selected, .customPicker td.active, .customPicker td.range-start, .customPicker td.range, .customPicker td.range-end').removeClass('selected active range-start range range-end');
+      $("#startDate").val('');
+    $("#endDate").val('');
 }
 
 function showModal(data){
@@ -413,11 +421,6 @@ function saveSchedule(){
     });
 }
 
-function closeModal(){
- initModal();
-$('#myModal').modal('hide');
-}
-
 function setCalendarDate(result){
     var event = {
         title: result.meetupTitle
@@ -483,7 +486,6 @@ function changeAllDayCheck(obj){
         checkTime();
     }
 }
-
     </script>
 </th:block>
 </html>

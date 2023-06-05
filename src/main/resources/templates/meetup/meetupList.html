@@ -8,8 +8,157 @@
     </div>
 
     <!-- 모달 -->
+    <div class="modal" id="myModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">일정을 입력하세요</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group customPicker">
+                        <label for="startDate">날짜:</label>
+                        <input type="text" class="form-control"  id="startDate" style="display:inline; width:45%" placeholder="시작일" readonly>
+                        <input type="text" class="form-control"  id="endDate" style="display:inline; width:45%" placeholder="종료일" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="startHour">시작시간:</label>
+                        <select class="form-control time" id="startHour" style="margin-bottom:0.5rem">
+                            <option value="09">09시</option>
+                            <option value="10">10시</option>
+                            <option value="11">11시</option>
+                            <option value="12">12시</option>
+                            <option value="13">13시</option>
+                            <option value="14">14시</option>
+                            <option value="15">15시</option>
+                            <option value="16">16시</option>
+                            <option value="17">17시</option>
+                            <option value="18">18시</option>
+                            <option value="19" selected>19시</option>
+                            <option value="20">20시</option>
+                            <option value="21">21시</option>
+                            <option value="22">22시</option>
+                        </select>
+                        <select class="form-control time" id="startMinutes">
+                            <option value="00">00분</option>
+                            <option value="05">05분</option>
+                            <option value="10">10분</option>
+                            <option value="15">15분</option>
+                            <option value="20">20분</option>
+                            <option value="25">25분</option>
+                            <option value="30" selected>30분</option>
+                            <option value="35">35분</option>
+                            <option value="40">40분</option>
+                            <option value="45">45분</option>
+                            <option value="50">50분</option>
+                            <option value="55">55분</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="endHour">종료시간:</label>
+                        <p id="eventEndHourError" class="error-message" style="display: none;"> 종료시간은 시작시간보다 늦어야합니다.</p>
+                        <select class="form-control time" id="endHour" style="margin-bottom:0.5rem"
+                                onchange="checkTime()">
+                            <option value="09">09시</option>
+                            <option value="10">10시</option>
+                            <option value="11">11시</option>
+                            <option value="12">12시</option>
+                            <option value="13">13시</option>
+                            <option value="14">14시</option>
+                            <option value="15">15시</option>
+                            <option value="16">16시</option>
+                            <option value="17">17시</option>
+                            <option value="18">18시</option>
+                            <option value="19">19시</option>
+                            <option value="20">20시</option>
+                            <option value="21">21시</option>
+                            <option value="22" selected>22시</option>
+                        </select>
+                        <select class="form-control time" id="endMinutes" onchange="checkTime()">
+                            <option value="00" selected>00분</option>
+                            <option value="05">05분</option>
+                            <option value="10">10분</option>
+                            <option value="15">15분</option>
+                            <option value="20">20분</option>
+                            <option value="25">25분</option>
+                            <option value="30">30분</option>
+                            <option value="35">35분</option>
+                            <option value="40">40분</option>
+                            <option value="45">45분</option>
+                            <option value="50">50분</option>
+                            <option value="55">55분</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="allDayRadioDiv">
+                        <label for="allDay">종일 여부:</label>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" value="Y" id="allDay" name="allDay"
+                                       onclick="changeAllDayCheck(this)"> 예
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" checked="checked" class="form-check-input" value="N" name="allDay"
+                                       onclick="changeAllDayCheck(this)"> 아니오
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="meetupType">모임 종류:</label>
+                        <div class="form-check" style="padding-left: 0;">
+                            <label class="form-check-label">
+                                <input type="radio" name="meetupType" id="meetupType" value="badminton"
+                                       checked="checked"> 배드민턴
+                            </label>
+
+                            <label class="form-check-label">
+                                <input type="radio" name="meetupType" value="boardGame"> 보드게임
+                            </label>
+
+                            <label class="form-check-label">
+                                <input type="radio" name="meetupType" value="overallGathering"> 전체 회식
+                            </label>
+
+                            <label class="form-check-label">
+                                <input type="radio" name="meetupType" value="partialGathering"> 부분 회식
+                            </label>
+
+                            <label class="form-check-label">
+                                <input type="radio" name="meetupType" value="walk"> 산책
+                            </label>
+
+                            <label class="form-check-label">
+                                <input type="radio" name="meetupType" value="shopping"> 쇼핑
+                            </label>
+
+                            <label class="form-check-label">
+                                <input type="radio" name="meetupType" value="etc"> 기타
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="meetupTitle">일정명 <span class="required-field">*</span></label>
+                            <input type="text" class="form-control" id="meetupTitle" onblur="meetupTitleCheck()">
+                            <p id="meetupTitleError" class="error-message" style="display:none"> 일정명을 입력하세요 </p>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventMemo">메모</label>
+                            <textarea class="form-control" id="eventMemo" rows="3" maxlength="300"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">취소</button>
+                        <button type="button" class="btn btn-primary" onclick="saveSchedule()">일정 저장하기</button>
+                    </div>
+                    <input type="hidden" id="groupId">
+                </div>
+            </div>
+        </div>
+    </div>
     <script th:inline="javascript">
 var calendar;
+var datepicker;
 var today;
 var test;
 
@@ -48,19 +197,11 @@ $(document).ready(function() {
         eventRemove: function(obj){ // 이벤트가 삭제되면 발생하는 이벤트
           console.log(obj);
         },
+        eventClick: function(info) {
+          showModal(info);
+        },
         select: function(arg) { // 캘린더에서 드래그로 이벤트를 생성할 수 있다.
-<!--            arg.allDay=false;-->
-<!--            arg.endStr=arg.startStr;-->
-            showModal(arg);
-<!--          var title = prompt('Event Title test:');-->
-<!--          if (title) {-->
-<!--            calendar.addEvent({-->
-<!--              title: title,-->
-<!--              start: arg.start,-->
-<!--              end: arg.end,-->
-<!--              allDay: arg.allDay-->
-<!--            })-->
-<!--          }-->
+          showModal(arg);
           calendar.unselect()
         },
           // 이벤트
@@ -127,27 +268,72 @@ $(document).ready(function() {
       });
 
        calendar.render();
+
+datepicker = $('.customPicker').datepicker({
+  format: 'yyyy-mm-dd',
+  autoclose: true,
+  language: 'ko',
+  startDate: today,
+  endDate: '+2m',
+  templates: {
+    rightArrow: '<i class="fas fa-chevron-right"></i>',
+    leftArrow: '<i class="fas fa-chevron-left"></i>'
+  }
+}).on("hide", function(e) {
+  console.log("닫힌다");
+  console.log(e);
+}).on("show", function(e) {
+  console.log("열린다");
+  console.log(e);
+})
 });
 
-function showModal(arg){
+function initDatePicker(){
+//아 초기화가 안되네..
 
+<!--datepicker[0][Object.keys(datepicker[0])[0]].datepicker.dates=[]-->
+<!--datepicker[0][Object.keys(datepicker[0])[0]].datepicker.pickers=[]-->
 
-    var startDate =  arg.startStr;
-    var endDate = arg.endStr;
-    var allDayToggle = true;
-    //월 스케쥴 최초 등록
-    if(arg.view.type=="dayGridMonth" && arg.id==null){
-         endDate = subtractOneDay(arg.endStr)
+    $('.customPicker td.selected, .customPicker td.active, .customPicker td.range-start, .customPicker td.range, .customPicker td.range-end').removeClass('selected active range-start range range-end');
+}
+
+function showModal(data){
+    test = data;
+    var eventFlag = false;  //이미 등록된 이벤트
+    if(data.event == null) {
+        eventFlag = true; //최초 이벤트
     }
 
-    if(startDate != endDate){
-        allDayToggle = false;
+    console.log("이벤트 플래그");
+    console.log(eventFlag);
+    modalSetting(eventFlag,data);
+    $("#myModal").show();
+}
+
+function modalSetting(eventFlag,data){
+    if(eventFlag){
+        var startDate =  data.startStr;
+        var endDate = data.endStr;
+        var allDayToggle = true;
+        //월 스케쥴 최초 등록
+        if(data.view.type=="dayGridMonth" && data.id==null){
+             endDate = subtractOneDay(data.endStr)
+        }
+
+        if(startDate != endDate){
+            allDayToggle = false;
+        }
+
+        toggleAllDayRadioButton(allDayToggle);
+        $("#startDate").val(startDate)
+        $("#endDate").val(endDate)
+        $('#myModal').modal('show');
+    } else {
+        console.log("이미 등록된 이벤트");
+        console.log(data);
+
     }
 
-    toggleAllDayRadioButton(allDayToggle);
-    $("#startDate").val(startDate)
-    $("#endDate").val(endDate)
-    $('#myModal').modal('show');
 }
 
 function toggleAllDayRadioButton(isVisible) {
@@ -161,9 +347,20 @@ function toggleAllDayRadioButton(isVisible) {
 }
 
 function initModal(){
-  $('#myModal').find('input, select, textarea').each( function ( idx, element ) {
-			$(element).val("");
-    });
+    initDatePicker();
+    $("#startHour").val("19");
+    $("#startMinutes").val("30");
+    $("#endHour").val("22");
+    $("#endMinutes").val("00");
+    $('input[name="allDay"][value="N"]').prop('checked', true);
+    $('input[name="meetupType"][value="badminton"]').prop('checked', true);
+    $("#meetupTitle").val('');
+    $("#eventMemo").val('');
+    $("#eventEndHourError").css('display','none');
+    $("#endHour,#endMinutes").removeClass('input-error');
+    $("#eventEndHourError").css('display','none');
+    $("#endHour,#endMinutes").removeClass('input-error');
+    changeAllDayCheck(false);
 }
 
 function saveSchedule(){
@@ -172,7 +369,7 @@ function saveSchedule(){
     if(!meetupTitleCheck()) return;
 
 
-    var meetupId = $('#meetupId').val();
+    var groupId = $('#groupId').val();
     var startDate = $('#startDate').val(); // 시작일 변수
     var endDate = $('#endDate').val(); // 종료일 변수
     var meetupTitle = $('#meetupTitle').val(); // 일정명 변수
@@ -188,71 +385,55 @@ function saveSchedule(){
         endDate = endDate+'T'+"00:00:00";
     }
 
-var data = {
-        "meetupId"  :   meetupId
-    ,   "meetupTitle":   meetupTitle
-    ,   "startDate" :   startDate
-    ,   "endDate"   :   endDate
-    ,   "memo"      :   memo
-    ,   "allDayYN"  :   allDayYN
-    ,   "meetupType":   meetupType
+    var data = {
+            "groupId"  :   groupId
+        ,   "meetupTitle":   meetupTitle
+        ,   "startDate" :   startDate
+        ,   "endDate"   :   endDate
+        ,   "memo"      :   memo
+        ,   "allDayYN"  :   allDayYN
+        ,   "meetupType":   meetupType
 
-  }
+      }
 
- $.ajax({
-    type: "POST"
-  , url: "/meetup"
-  , data: JSON.stringify(data)
-  , contentType: "application/json"
-  , success: function(response) {
-    // 성공적으로 요청이 처리되었을 때 실행되는 코드
-    console.log("응답");
-    console.log(response);
-  }
-  , error: function(xhr, status, error) {
-    // 요청이 실패했을 때 실행되는 코드
-    console.log("실패했네");
-    console.log(xhr.responseText);
-  }
-});
-
-    //수정 중 별도 함수로 분리
-    console.log("저장 전");
-    console.log("startDate : "+startDate);
-    console.log("endDate : "+endDate);
-    calendar.addEvent({
-        title: meetupTitle
-    ,   start: startDate
-    ,   end: endDate
-    ,   allDay : allDayYN
+    $.ajax({
+        type: "POST"
+        , url: "/meetup"
+        , data: JSON.stringify(data)
+        , contentType: "application/json"
+        , success: function(result) {
+            setCalendarDate(result);
+        }
+        , error: function(xhr, status, error) {
+            alert(xhr.responseText);
+        }
+        ,  complete: function() {
+            closeModal();
+        }
     });
-
-    console.log("저장 후");
-    console.log("startDate : "+startDate);
-    console.log("endDate : "+endDate);
-    alert("저장 완");
 }
 
-function setCalendarDate(
-    meetupId
-,   meetupTitle
-,   startDate
-,   endDate
-,   allDayYN
-,   hostId
-,   hostName
-,   meetupType
-,   memo
-){
-    calendar.addEvent({
-        title: meetupTitle
-    ,   start: startDate
-    ,   end: endDate
-    ,   allDay : allDayYN
-    });
+function closeModal(){
+ initModal();
+$('#myModal').modal('hide');
+}
 
-    //중  커스텀 속성 추가하고, 이후 클릭 할 때 커스텀 기본 속성+커스텀 속성을 모달에 반영
-
+function setCalendarDate(result){
+    var event = {
+        title: result.meetupTitle
+    ,   start: result.startDate
+    ,   end: result.endDate
+    ,   allDay : result.allDayYN
+    ,   groupId : result.groupId
+    ,   extendedProps: {
+            hostId : result.hostId
+        ,   hostNickName : result.hostNickName
+        ,   meetupType : result.meetupType
+        ,   memo : result.memo
+      }
+    }
+    console.log("추가된 이벤트");
+    calendar.addEvent(event);
 }
 
 function meetupTitleCheck(){
@@ -303,153 +484,6 @@ function changeAllDayCheck(obj){
     }
 }
 
-
-
-</script>
-    <div class="modal" id="myModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">일정을 입력하세요</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="startHour">시작시간:</label>
-                        <select class="form-control time" id="startHour" style="margin-bottom:0.5rem">
-                            <option value="09">09시</option>
-                            <option value="10">10시</option>
-                            <option value="11">11시</option>
-                            <option value="12">12시</option>
-                            <option value="13">13시</option>
-                            <option value="14">14시</option>
-                            <option value="15">15시</option>
-                            <option value="16">16시</option>
-                            <option value="17">17시</option>
-                            <option value="18">18시</option>
-                            <option value="19" selected>19시</option>
-                            <option value="20">20시</option>
-                            <option value="21">21시</option>
-                            <option value="22">22시</option>
-                        </select>
-                        <select class="form-control time" id="startMinutes">
-                            <option value="00">00분</option>
-                            <option value="05">05분</option>
-                            <option value="10">10분</option>
-                            <option value="15">15분</option>
-                            <option value="20">20분</option>
-                            <option value="25">25분</option>
-                            <option value="30" selected>30분</option>
-                            <option value="35">35분</option>
-                            <option value="40">40분</option>
-                            <option value="45">45분</option>
-                            <option value="50">50분</option>
-                            <option value="55">55분</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="endHour">종료시간:</label><p id="eventEndHourError" class="error-message" style="display: none;" > 종료시간은 시작시간보다 늦어야합니다.</p>
-                        <select class="form-control time" id="endHour" style="margin-bottom:0.5rem" onchange="checkTime()">
-                            <option value="09">09시</option>
-                            <option value="10">10시</option>
-                            <option value="11">11시</option>
-                            <option value="12">12시</option>
-                            <option value="13">13시</option>
-                            <option value="14">14시</option>
-                            <option value="15">15시</option>
-                            <option value="16">16시</option>
-                            <option value="17">17시</option>
-                            <option value="18">18시</option>
-                            <option value="19">19시</option>
-                            <option value="20">20시</option>
-                            <option value="21">21시</option>
-                            <option value="22" selected >22시</option>
-                        </select>
-                        <select class="form-control time" id="endMinutes" onchange="checkTime()">
-                            <option value="00" selected >00분</option>
-                            <option value="05">05분</option>
-                            <option value="10">10분</option>
-                            <option value="15">15분</option>
-                            <option value="20">20분</option>
-                            <option value="25">25분</option>
-                            <option value="30">30분</option>
-                            <option value="35">35분</option>
-                            <option value="40">40분</option>
-                            <option value="45">45분</option>
-                            <option value="50">50분</option>
-                            <option value="55">55분</option>
-                        </select>
-                    </div>
-                    <div class="form-group" id="allDayRadioDiv">
-                        <label for="allDay">종일 여부:</label>
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input type="radio" class="form-check-input" value="Y" id="allDay" name="allDay"
-                                       onclick="changeAllDayCheck(this)"> 예
-                            </label>
-                        </div>
-
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input type="radio" checked="checked" class="form-check-input" value="N" name="allDay"
-                                       onclick="changeAllDayCheck(this)"> 아니오
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="meetupType">모임 종류:</label>
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input type="radio" name="meetupType" id ="meetupType" value="badminton" checked="checked"> 배드민턴
-                            </label>
-
-                            <label class="form-check-label">
-                                <input type="radio"  name="meetupType" value="boardGame"> 보드게임
-                            </label>
-
-                            <label class="form-check-label">
-                                <input type="radio" name="meetupType" value="overallGathering"> 전체 회식
-                            </label>
-
-                            <label class="form-check-label">
-                                <input type="radio"  name="meetupType" value="partialGathering"> 부분 회식
-                            </label>
-
-                            <label class="form-check-label">
-                                <input type="radio"  name="meetupType" value="walk"> 산책
-                            </label>
-
-                            <label class="form-check-label">
-                                <input type="radio"  name="meetupType" value="shopping"> 쇼핑
-                            </label>
-
-                            <label class="form-check-label">
-                                <input type="radio" name="meetupType" value="etc"> 기타
-                            </label>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="meetupTitle">일정명 <span class="required-field">*</span></label>
-                        <input type="text" class="form-control" id="meetupTitle" onblur="meetupTitleCheck()">
-                        <p id="meetupTitleError" class="error-message" style="display:none"> 일정명을 입력하세요 </p>
-                    </div>
-                    <div class="form-group">
-                        <label for="eventMemo">메모</label>
-                        <textarea class="form-control" id="eventMemo" rows="3" maxlength="300"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-primary" onclick="saveSchedule()">일정 저장하기</button>
-                </div>
-                <input type="hidden" id ="startDate">
-                <input type="hidden" id ="endDate">
-                <input type="hidden" id ="meetupId">
-            </div>
-        </div>
-    </div>
+    </script>
 </th:block>
 </html>
-

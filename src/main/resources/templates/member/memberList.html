@@ -82,7 +82,7 @@ $(document).ready(function() {
     var table = $('#myTable').DataTable({
           initComplete: function(settings, json) {
           var filterRow = $(this).closest('.dataTables_wrapper').find('.dataTables_filter');
-          var customObject = $('<input id="calandar" name="calandar" type="text" class="form-control" style="margin: 1em; width:7em">'); // 원하는 객체를 생성합니다.
+          var customObject = $('<div class="customPickerDropdown" style="display: inline-block; margin: 1em; width:7em" ><input id="calandar" name="calandar" type="text" class="form-control" style="width: inherit;"></div>'); // 원하는 객체를 생성합니다.
           filterRow.prepend(customObject); // 필터 영역에 객체를 추가합니다.
         }
     });

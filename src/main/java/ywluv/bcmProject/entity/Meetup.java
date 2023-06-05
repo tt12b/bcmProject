@@ -58,7 +58,7 @@ public class Meetup extends BaseEntity {
 
     public MeetupDto toDto() {
         MeetupDto meetupDto = new MeetupDto();
-        meetupDto.setMeetupId(this.id);
+        meetupDto.setGroupId(this.id);
         meetupDto.setMeetupTitle(this.meetupTitle);
         meetupDto.setStartDate(this.meetupStartDate);
         meetupDto.setAllDayYN(this.allDayYN);
@@ -66,7 +66,7 @@ public class Meetup extends BaseEntity {
         meetupDto.setMemo(this.meetupMemo);
         meetupDto.setMeetupType(this.meetupType.toString());
         meetupDto.setHostId(this.meetupHost.getId());
-        meetupDto.setHostName(this.meetupHost.getUserName());
+        meetupDto.setHostNickName(this.meetupHost.getUserName());
         return meetupDto;
     }
 

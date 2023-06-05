@@ -81,12 +81,14 @@ html, body {
   box-shadow: 0px 0px 5px 0px rgba(212, 182, 212, 1);
 }
 
+/*
 .form-control[readonly] {
   background-color: #6a89e4;
   opacity: 1;
   color: #fff;
   border: 1px solid #6a89e4;
 }
+*/
 
 .pro-button {
   background-color: #f44336;
@@ -1056,3 +1058,151 @@ div.datedropper .null {
   -ms-transition: none;
   -o-transition: none;
 }
+
+/*일반달력*/
+
+.customPicker input:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border: 1px solid #512DA8;
+    outline-width: 0;
+}
+
+.customPicker ::placeholder {
+    color: #BDBDBD;
+    opacity: 1;
+}
+
+.customPicker :-ms-input-placeholder {
+    color: #BDBDBD;
+}
+
+.customPicker ::-ms-input-placeholder {
+    color: #BDBDBD;
+}
+
+.customPicker button:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    outline-width: 0;
+}
+
+.customPicker .datepicker {
+  background-color: #fff;
+  border-radius: 0 !important;
+  padding: 15px 20px !important;
+  align-content: center !important;
+}
+
+.customPicker-drown {
+  top: 0;
+  left: calc(50% - 125px) !important;
+}
+
+.customPicker-drown.datepicker-orient-left:before {
+  left: calc(50% - 6px) !important;
+}
+
+customPicker-drown.datepicker-orient-left:after {
+  left: calc(50% - 5px) !important;
+}
+
+.datepicker table tr td.today, .customPicker .datepicker span.focused {
+  border-radius: 50% !important;
+  background-image: linear-gradient(#FFF3E0, #FFE0B2);
+}
+
+.datepicker table tr td.today.range {
+  background-image: linear-gradient(#eeeeee, #eeeeee) !important;
+  border-radius: 0 !important;
+}
+
+/*Weekday title*/
+
+.customPicker thead tr:nth-child(3) th {
+  font-weight: bold !important;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.customPicker .disable, customPicker .old, .customPicker .day, .customPicker .new {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 0px !important;
+  border: 1px solid lightgrey !important;
+}
+
+.customPicker .day.old, .customPicker .day.new {
+  background-color: #F5F5F5 !important;
+  color: #E0E0E0 !important;
+}
+
+.customPicker .day.old:hover, .customPicker .day.new:hover {
+  border-radius: 0px !important;
+}
+
+.customPicker .old-day:hover,
+.customPicker .day:hover,
+.customPicker .new-day:hover,
+.customPicker .month:hover,
+.customPicker .year:hover,
+.customPicker .decade:hover,
+.customPicker .century:hover {
+  border-radius: 50% !important;
+  background-color: #eee;
+}
+
+.customPicker .active {
+  border-radius: 50% !important;
+  background-image: linear-gradient(#90CAF9, #64B5F6) !important;
+  color: #fff !important;
+}
+
+.customPicker .range-start,
+.customPicker .range-end {
+  border-radius: 50% !important;
+  background-image: linear-gradient(#6a89e4, #6a89e4) !important;
+}
+
+
+.customPicker .range {
+  color: #6a89e4 !important;
+}
+
+.customPicker .prev,
+.customPicker .next,
+.customPicker .datepicker-switch {
+  border-radius: 0 !important;
+  padding: 10px !important;
+  font-size: 18px;
+  opacity: 0.7;
+  color: #6a89e4;
+}
+
+.customPicker .prev:hover,
+.customPicker .next:hover,
+.customPicker .datepicker-switch:hover {
+  background-color: inherit !important;
+  opacity: 1;
+}
+
+@media screen and (max-width: 500px) {
+  .customPicker-drown.datepicker-orient-right:before {
+    right: calc(50% - 6px) !important;
+  }
+
+  .customPicker-drown.datepicker-orient-right:after {
+    right: calc(50% - 5px) !important;
+  }
+}
+
+.customPicker .day.disabled{
+        background-color: #F5F5F5 !important;
+        color: #E0E0E0 !important;
+        cursor: default;
+}
+
+
+

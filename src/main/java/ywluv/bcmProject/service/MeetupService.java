@@ -1,6 +1,7 @@
 package ywluv.bcmProject.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ywluv.bcmProject.dto.MeetupDto;
@@ -9,7 +10,10 @@ import ywluv.bcmProject.entity.Member;
 import ywluv.bcmProject.entity.enumEntity.MeetupType;
 import ywluv.bcmProject.repository.meetup.MeetupRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -30,12 +34,20 @@ public class MeetupService {
         return meetupRepository.save(meetup).getId();
     }
 
-
     public MeetupDto findById(Long id){
         return meetupRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("모임을 찾을 수 없습니다. :" + id))
                 .toDto();
     }
+
+    List<MeetupDto> findAllMeetupsInMonth(String yearMonth){
+        LocalDateTime dateTime = LocalDateTime.parse(yearMonth + "T00:00:00");
+
+        List<Meetup> meetups = meetupRepository.findMeetupsByDateBetween(dateTime);
+
+        return null;
+    }
+
 
     private Meetup dtoToEntity(MeetupDto meetupDto){
 

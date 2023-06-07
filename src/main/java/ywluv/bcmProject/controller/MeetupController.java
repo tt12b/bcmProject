@@ -21,6 +21,9 @@ public class MeetupController {
     @GetMapping("/meetup")
     public String meetupList(Model model){
         model.addAttribute("localDate", DateUtil.getCurrentDate());
+        System.out.println("=====================");
+        System.out.println(model.getAttribute("localDate"));
+        System.out.println("=====================");
 
         return "meetup/meetupList";
 
@@ -30,10 +33,6 @@ public class MeetupController {
     @ResponseBody
     public MeetupDto meetupMake(@RequestBody MeetupDto meetupDto){
 
-        System.out.println("=======================");
-        System.out.println(meetupDto);
-
-        System.out.println("========");
         Long meetupId = meetupService.makeMeetup(meetupDto);
         MeetupDto result = meetupService.findById(meetupId);
 

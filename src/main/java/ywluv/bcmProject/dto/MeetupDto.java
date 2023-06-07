@@ -32,10 +32,19 @@ public class MeetupDto {
     private String meetupType;
     private String memo;
 
+    public MeetupDto(Long groupId, String meetupTitle, LocalDateTime startDate, LocalDateTime endDate, String allDayYN,   Long hostId, String HostNickName) {
+        this.groupId = groupId;
+        this.meetupTitle = meetupTitle;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.allDayYN = allDayYN;
+        this.hostId = hostId;
+        this.HostNickName = HostNickName;
+    }
 
     @QueryProjection
     public MeetupDto(Long groupId, String meetupTitle, LocalDateTime startDate, LocalDateTime endDate
-            ,   String allDayY
+            ,   String allDayYN
             ,   Long hostId, String HostNickName
             ,   String meetupType
             ,   String memo)

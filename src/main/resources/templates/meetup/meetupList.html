@@ -8,7 +8,7 @@
     </div>
 
     <!-- 모달 -->
-    <div class="modal" id="myModal" tabindex="-1" role="dialog">
+    <div class="modal" id="meetupModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -17,8 +17,10 @@
                 <div class="modal-body">
                     <div class="form-group customPicker">
                         <label for="startDate">날짜:</label>
-                        <input type="text" class="form-control"  id="startDate" style="display:inline; width:45%" placeholder="시작일" readonly>
-                        <input type="text" class="form-control"  id="endDate" style="display:inline; width:45%" placeholder="종료일" readonly>
+                        <input type="text" class="form-control" id="startDate" style="display:inline; width:45%"
+                               placeholder="시작일" readonly>
+                        <input type="text" class="form-control" id="endDate" style="display:inline; width:45%"
+                               placeholder="종료일" readonly>
                     </div>
                     <div class="form-group">
                         <label for="startHour">시작시간:</label>
@@ -148,7 +150,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary"  data-dismiss="modal" >취소</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
                         <button type="button" class="btn btn-primary" onclick="saveSchedule()">일정 저장하기</button>
                     </div>
                     <input type="hidden" id="groupId">
@@ -156,16 +158,19 @@
             </div>
         </div>
     </div>
-<script th:inline="javascript">
+    <script th:inline="javascript">
 var calendar;
 var datepicker;
 var today;
 var test;
 
+
 $(document).ready(function() {
     <!--서버에서 가져온 설정값-->
    today = /*[[ ${localDate} ]]*/; //서버시간
+
     <!--동적객체 이벤트 START-->
+
     <!--동적객체 이벤트 END-->
    var calendarEl = $('#calendar')[0];
       // full-calendar 생성하기
@@ -258,64 +263,60 @@ $(document).ready(function() {
 <!--            title: 'Birthday Party',-->
 <!--            start: '2021-07-13T07:00:00'-->
 <!--          },-->
-<!--          {-->
-<!--            title: 'Click for Google',-->
-<!--            url: 'http://google.com/', // 클릭시 해당 url로 이동-->
-<!--            start: '2021-07-28'-->
-<!--          }-->
+          ,{
+            title: 'Click for Google',
+            url: 'http://google.com/', // 클릭시 해당 url로 이동
+            start: '2023-06-28'
+          }
         ]
 
       });
 
        calendar.render();
-
+<!--모달 데이트피커-->
 datepicker = $('.customPicker').datepicker({
   format: 'yyyy-mm-dd',
   autoclose: true,
   language: 'ko',
-  startDate: '-3d',
+  startDate: '-10d',
   endDate: '+2m',
   templates: {
     rightArrow: '<i class="fas fa-chevron-right"></i>',
     leftArrow: '<i class="fas fa-chevron-left"></i>'
   }
 }).on("hide", function(e) {
-    console.log("닫힌다");
 
 }).on("show", function(e) {
-  console.log("열린다");
-                            //캘린더에서 받은 날짜 집어넣기
-  $("#startDate").datepicker('setDate', '2023-06-19');
-  $("#endDate").datepicker('setDate', '2023-06-23');
+
 })
 
-$('#myModal').on('hidden.bs.modal', function () {
-  initModal();
-});
-
-});
-
-function initDatePicker(){
-
-    $('.customPicker').each(function() {
-      $(this).datepicker('clearDates');
+    $('#meetupModal').on('hidden.bs.modal', function () {
+      initModal();
     });
 
-      $("#startDate").val('');
-    $("#endDate").val('');
-}
+    <!--show리스너에 이벤트를 넣으면 기본 동작이 멈추는 오류가 있어 클릭이벤트로 대신한다-->
+     $("#startDate, #endDate").on("click", function() {
+        if($(".customPicker-drown").length==1){
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+            $("#startDate").datepicker('setDate',startDate);
+            $("#endDate").datepicker('setDate',endDate);
+        }
+    });
+
+});
+
+
+
 
 function showModal(data){
-    test = data;
     var eventFlag = false;  //이미 등록된 이벤트
     if(data.event == null) {
         eventFlag = true; //최초 이벤트
     }
 
-    console.log("이벤트 플래그");
-    console.log(eventFlag);
     modalSetting(eventFlag,data);
-    $("#myModal").show();
+    $("#meetupModal").show();
 }
 
 function modalSetting(eventFlag,data){
@@ -335,7 +336,7 @@ function modalSetting(eventFlag,data){
         toggleAllDayRadioButton(allDayToggle);
         $("#startDate").val(startDate)
         $("#endDate").val(endDate)
-        $('#myModal').modal('show');
+        $('#meetupModal').modal('show');
     } else {
         console.log("이미 등록된 이벤트");
         console.log(data);
@@ -344,18 +345,20 @@ function modalSetting(eventFlag,data){
 
 }
 
-function toggleAllDayRadioButton(isVisible) {
+function toggleAllDayRadioButton(flag) {
   var allDayRadioButtons = $("#allDayRadioDiv");
 
-  if (isVisible) {
+ //플래그에 따라 보이고 안보이고 변경
+  if(flag) {
     allDayRadioButtons.show();
   } else {
     allDayRadioButtons.hide();
+     $('.time').prop('disabled', false);
   }
 }
 
+
 function initModal(){
-    initDatePicker();
     $("#startHour").val("19");
     $("#startMinutes").val("30");
     $("#endHour").val("22");
@@ -416,7 +419,7 @@ function saveSchedule(){
             alert(xhr.responseText);
         }
         ,  complete: function() {
-            closeModal();
+            $('#meetupModal').modal('hide');
         }
     });
 }
@@ -486,6 +489,35 @@ function changeAllDayCheck(obj){
         checkTime();
     }
 }
+
+
+$("#startDate, #endDate").on("change", function() {
+
+    var startDateVal =$("#startDate").val();
+    var endDateVal =$("#endDate").val();
+    //시작일 - 종료일 동일하면 true
+    var flag1 = startDateVal == endDateVal ? true : false;
+
+    //올데이 체크되어 있으면 true
+    var flag2 = $("input[name='allDay']:checked").val();
+
+    //시작일과 종료일이 다르면 종일여부 버튼을 삭제한다.
+    //시작일과 종료일이 같으면 종일여부 활성화
+    toggleAllDayRadioButton(flag1);
+
+    //시작일이 종료일과 같고, 종일여부에 체크되어 있으면 시간을 다시 disable 한다
+    if(flag1 && flag2 =='Y'){
+     $('.time').prop('disabled', true)
+     };
+
+    //시작일이 종료일과 같고, 종일 여부에 체크되지 않았으면 다시간을 다시 enable
+    if(flag1 && flag2 =='N'){
+    $('.time').prop('disabled', false)
+    };
+
+});
+
+
     </script>
 </th:block>
 </html>

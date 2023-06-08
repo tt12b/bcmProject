@@ -10,6 +10,8 @@ import ywluv.bcmProject.entity.Member;
 import ywluv.bcmProject.entity.enumEntity.MeetupType;
 import ywluv.bcmProject.repository.meetup.MeetupRepository;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,12 +42,9 @@ public class MeetupService {
                 .toDto();
     }
 
-    List<MeetupDto> findAllMeetupsInMonth(String yearMonth){
-        LocalDateTime dateTime = LocalDateTime.parse(yearMonth + "T00:00:00");
-
-        List<Meetup> meetups = meetupRepository.findMeetupsByDateBetween(dateTime);
-
-        return null;
+    public List<MeetupDto> findAllMeetupsInMonth(String yearMonth){
+        LocalDateTime date = LocalDateTime.parse(yearMonth+"T00:00:00");
+        return meetupRepository.findMeetupsByDateBetween(date);
     }
 
 

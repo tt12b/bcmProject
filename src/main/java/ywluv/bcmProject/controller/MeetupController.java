@@ -11,6 +11,9 @@ import ywluv.bcmProject.service.MeetupService;
 import ywluv.bcmProject.service.MemberService;
 import ywluv.bcmProject.util.DateUtil;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class MeetupController {
@@ -20,11 +23,9 @@ public class MeetupController {
 
     @GetMapping("/meetup")
     public String meetupList(Model model){
-        model.addAttribute("localDate", DateUtil.getCurrentDate());
-        System.out.println("=====================");
-        System.out.println(model.getAttribute("localDate"));
-        System.out.println("=====================");
 
+        String currentDate = DateUtil.getCurrentDate().toString();
+        model.addAttribute("meetupList",meetupService.findAllMeetupsInMonth(currentDate));
         return "meetup/meetupList";
 
     }

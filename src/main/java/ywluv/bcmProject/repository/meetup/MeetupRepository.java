@@ -8,6 +8,7 @@ import ywluv.bcmProject.dto.MeetupDto;
 import ywluv.bcmProject.entity.Meetup;
 import ywluv.bcmProject.entity.Member;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,5 +36,5 @@ public interface MeetupRepository extends JpaRepository<Meetup,Long> {
         "                               ,   m.meetupMemo" +
         ") FROM Meetup m WHERE :date BETWEEN m.meetupStartDate AND m.meetupEndDate")
 
-    List<Meetup> findMeetupsByDateBetween(@Param("date") LocalDateTime date);
+    List<MeetupDto> findMeetupsByDateBetween(@Param("date") LocalDateTime date);
 }

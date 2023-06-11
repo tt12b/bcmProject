@@ -24,8 +24,7 @@ public class MeetupController {
     @GetMapping("/meetup")
     public String meetupList(Model model){
 
-        String currentDate = DateUtil.getCurrentDate().toString();
-        model.addAttribute("meetupList",meetupService.findAllMeetupsInMonth(currentDate));
+        model.addAttribute("meetupList",meetupService.findAllMeetups(DateUtil.getCurrentDate().toString()));
         return "meetup/meetupList";
 
     }

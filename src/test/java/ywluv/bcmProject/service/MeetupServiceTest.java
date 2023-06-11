@@ -18,7 +18,7 @@ class MeetupServiceTest {
     @Test
     void findAllMeetupsInMonth() {
         String yearMonth = "2023-06-07";
-        List<MeetupDto> allMeetupsInMonth = meetupService.findAllMeetupsInMonth(yearMonth);
+        List<MeetupDto> allMeetupsInMonth = meetupService.findAllMeetups(yearMonth);
 
         System.out.println("=====================");
         System.out.println(allMeetupsInMonth);

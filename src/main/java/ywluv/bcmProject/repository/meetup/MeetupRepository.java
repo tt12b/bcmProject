@@ -34,7 +34,7 @@ public interface MeetupRepository extends JpaRepository<Meetup,Long> {
         "                               ,   m.meetupHost.userNickName" +
         "                               ,   CAST(m.meetupType AS string)" +
         "                               ,   m.meetupMemo" +
-        ") FROM Meetup m WHERE :date BETWEEN m.meetupStartDate AND m.meetupEndDate")
+        ") FROM Meetup m WHERE :paramFrom <= m.meetupEndDate AND :paramTo >= m.meetupStartDate")
 
-    List<MeetupDto> findMeetupsByDateBetween(@Param("date") LocalDateTime date);
+    List<MeetupDto> findMeetupsByDateBetween(@Param("paramFrom") LocalDateTime paramFrom, @Param("paramTo") LocalDateTime paramTo);
 }

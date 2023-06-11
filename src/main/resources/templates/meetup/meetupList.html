@@ -158,20 +158,26 @@
             </div>
         </div>
     </div>
-    <script th:inline="javascript">
+</th:block>
+</html>
+
+
+<script th:inline="javascript">
 var calendar;
 var datepicker;
 var today;
 var test;
 
 $(document).ready(function() {
-    console.log(/*[[${meetupList}]]*/);
     <!--서버에서 가져온 설정값-->
    today = /*[[ ${localDate} ]]*/; //서버시간
+   test = /*[[${meetupList}]]*/;
 
     <!--동적객체 이벤트 START-->
 
     <!--동적객체 이벤트 END-->
+
+    <!--캘린더 생성-->
    var calendarEl = $('#calendar')[0];
       // full-calendar 생성하기
      calendar = new FullCalendar.Calendar(calendarEl, {
@@ -193,6 +199,7 @@ $(document).ready(function() {
         nowIndicator: true, // 현재 시간 마크
         dayMaxEvents: true, // 이벤트가 오버되면 높이 제한 (+ 몇 개식으로 표현)
         locale: 'ko', // 한국어 설정
+<!--        displayEventTime :false,-->
         eventAdd: function(obj) { // 이벤트가 추가되면 발생하는 이벤트
           console.log(obj);
         },
@@ -203,76 +210,18 @@ $(document).ready(function() {
           console.log(obj);
         },
         eventClick: function(info) {
-          showModal(info);
+        console.log("체크");
+        console.log(info);
+<!--          showModal(info);-->
         },
         select: function(arg) { // 캘린더에서 드래그로 이벤트를 생성할 수 있다.
           showModal(arg);
           calendar.unselect()
-        },
-          // 이벤트
-        events: [
-          {
-<!--    title: '시간 범위 이벤트',-->
-<!--  start: '2023-05-30T10:00:00',-->
-<!--  end: '2023-05-30T14:00:00',-->
-<!--            color: 'blue'-->
-          }
-<!--          ,-->
-<!--          {-->
-<!--            title: 'Long Event',-->
-<!--            start: '2021-07-07',-->
-<!--            end: '2021-07-10'-->
-<!--          },-->
-<!--          {-->
-<!--            groupId: 999,-->
-<!--            title: 'Repeating Event',-->
-<!--            start: '2021-07-09T16:00:00'-->
-<!--          },-->
-<!--          {-->
-<!--            groupId: 999,-->
-<!--            title: 'Repeating Event',-->
-<!--            start: '2021-07-16T16:00:00'-->
-<!--          },-->
-<!--          {-->
-<!--            title: 'Conference',-->
-<!--            start: '2021-07-11',-->
-<!--            end: '2021-07-13'-->
-<!--          },-->
-<!--          {-->
-<!--            title: 'Meeting',-->
-<!--            start: '2021-07-12T10:30:00',-->
-<!--            end: '2021-07-12T12:30:00'-->
-<!--          },-->
-<!--          {-->
-<!--            title: 'Lunch',-->
-<!--            start: '2021-07-12T12:00:00'-->
-<!--          },-->
-<!--          {-->
-<!--            title: 'Meeting',-->
-<!--            start: '2021-07-12T14:30:00'-->
-<!--          },-->
-<!--          {-->
-<!--            title: 'Happy Hour',-->
-<!--            start: '2021-07-12T17:30:00'-->
-<!--          },-->
-<!--          {-->
-<!--            title: 'Dinner',-->
-<!--            start: '2021-07-12T20:00:00'-->
-<!--          },-->
-<!--          {-->
-<!--            title: 'Birthday Party',-->
-<!--            start: '2021-07-13T07:00:00'-->
-<!--          },-->
-          ,{
-            title: 'Click for Google',
-            url: 'http://google.com/', // 클릭시 해당 url로 이동
-            start: '2023-06-28'
-          }
-        ]
-
+        }
       });
 
        calendar.render();
+       setDefaultCalendarDate(/*[[${meetupList}]]*/);
 <!--모달 데이트피커-->
 datepicker = $('.customPicker').datepicker({
   format: 'yyyy-mm-dd',
@@ -316,7 +265,7 @@ function showModal(data){
     }
 
     modalSetting(eventFlag,data);
-    $("#meetupModal").show();
+    $('#meetupModal').modal('show');
 }
 
 function modalSetting(eventFlag,data){
@@ -385,16 +334,27 @@ function saveSchedule(){
     var endDate = $('#endDate').val(); // 종료일 변수
     var meetupTitle = $('#meetupTitle').val(); // 일정명 변수
     var memo = $('#eventMemo').val(); // 메모 변수
-    var allDayYN = $("input[name='allDay']:checked").val(); //종일여부
     var meetupType = $("input[name='meetupType']:checked").val();
 
-    if(allDayYN == 'N'){
-        startDate = startDate+'T'+$("#startHour").val()+":"+$("#startMinutes").val()+":00";
-        endDate = endDate+'T'+$("#endHour").val()+":"+$("#endMinutes").val()+":00";
+
+    var allDayYN;
+    //올데이 여부가 체크 가능 할 때
+    if($("#allDayRadioDiv").is(":visible")){
+        allDayYN  = $("input[name='allDay']:checked").val() == 'N' ? false : true; //종일여부;
     } else {
+        allDayYN = false;
+    }
+
+    if(allDayYN){
         startDate = startDate+'T'+"00:00:00";
         endDate = endDate+'T'+"00:00:00";
+    } else {
+        startDate = startDate+'T'+$("#startHour").val()+":"+$("#startMinutes").val()+":00";
+        endDate = endDate+'T'+$("#endHour").val()+":"+$("#endMinutes").val()+":00";
     }
+
+    //오늘, 달력 전 후 구현 / 이미 등록된 이벤트 눌렀을 때 팝업에 세팅하기  구현 / 이벤트 수정 및 삭제 구현/
+
 
     var data = {
             "groupId"  :   groupId
@@ -424,12 +384,33 @@ function saveSchedule(){
     });
 }
 
+function setDefaultCalendarDate(eventList) {
+  eventList.map(function(result) {
+    var evt = {
+      title: result.meetupTitle,
+      start: result.startDate,
+      end: result.endDate,
+      allDay: (result.allDayYN === "true"),
+      groupId: result.groupId,
+      extendedProps: {
+        hostId: result.hostId,
+        hostNickName: result.hostNickName,
+        meetupType: result.meetupType,
+        memo: result.memo
+      }
+    };
+    console.log("이부이티");
+    console.log(evt);
+     calendar.addEvent(evt);
+  });
+}
+
 function setCalendarDate(result){
-    var event = {
+    var eventParam = {
         title: result.meetupTitle
     ,   start: result.startDate
     ,   end: result.endDate
-    ,   allDay : result.allDayYN
+    ,   allDay : (result.allDayYN === "true")
     ,   groupId : result.groupId
     ,   extendedProps: {
             hostId : result.hostId
@@ -438,8 +419,7 @@ function setCalendarDate(result){
         ,   memo : result.memo
       }
     }
-    console.log("추가된 이벤트");
-    calendar.addEvent(event);
+    calendar.addEvent(eventParam);
 }
 
 function meetupTitleCheck(){
@@ -461,6 +441,8 @@ function checkTime() {
     var allDay = $("input[name='allDay']:checked").val();
     if(allDay=='Y') return true
 
+    var startDate = new Date($("#startDate").val());
+    var endDate = new Date($("#endDate").val());
     var startHour = parseInt($('#startHour').val());
     var startMinutes = parseInt($('#startMinutes').val());
     var endHour = parseInt($('#endHour').val());
@@ -468,8 +450,8 @@ function checkTime() {
     var startTime = startHour * 60 + startMinutes;
     var endTime = endHour * 60 + endMinutes;
 
-    if (endTime >= startTime) {
-       $("#eventEndHourError").css('display','none');
+    if (endDate > startDate || (endDate.getTime() === startDate.getTime() && endTime >= startTime)) {
+        $("#eventEndHourError").css('display', 'none');
         $("#endHour,#endMinutes").removeClass('input-error');
 
         return true;
@@ -515,9 +497,10 @@ $("#startDate, #endDate").on("change", function() {
     $('.time').prop('disabled', false)
     };
 
+    //다시 한 번 시간 체크
+    checkTime();
+
 });
 
 
     </script>
-</th:block>
-</html>

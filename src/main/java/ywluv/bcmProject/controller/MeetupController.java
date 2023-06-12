@@ -23,13 +23,25 @@ public class MeetupController {
 
     @GetMapping("/meetup")
     public String meetupList(Model model){
-
-        model.addAttribute("meetupList",meetupService.findAllMeetups(DateUtil.getCurrentDate().toString()));
+        model.addAttribute("meetupList",meetupService.findAllMeetups(null));
         return "meetup/meetupList";
 
     }
 
     @PostMapping("/meetup")
+    @ResponseBody
+    public List<MeetupDto> meetupList(String initialDate){
+       return meetupService.findAllMeetups(initialDate);
+
+//       중복을 어떻게 처리 할 지 고민하기..
+//1. 검색 시작일~ 종료일을 함께 전달하고, 배열에 저장한 후 그 이후, 이전 값 가져오기
+//2. 이벤트 배열을 별도로 구분하고?..음..
+    }
+
+
+
+
+    @PostMapping("/meetupMake")
     @ResponseBody
     public MeetupDto meetupMake(@RequestBody MeetupDto meetupDto){
 

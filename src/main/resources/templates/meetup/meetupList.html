@@ -158,26 +158,15 @@
             </div>
         </div>
     </div>
-</th:block>
-</html>
-
-
 <script th:inline="javascript">
 var calendar;
 var datepicker;
-var today;
+var checkArr=[];
 var test;
 
 $(document).ready(function() {
-    <!--서버에서 가져온 설정값-->
-   today = /*[[ ${localDate} ]]*/; //서버시간
-   test = /*[[${meetupList}]]*/;
 
-    <!--동적객체 이벤트 START-->
-
-    <!--동적객체 이벤트 END-->
-
-    <!--캘린더 생성-->
+    <!--풀캘린더 생성 START-->
    var calendarEl = $('#calendar')[0];
       // full-calendar 생성하기
      calendar = new FullCalendar.Calendar(calendarEl, {
@@ -192,7 +181,7 @@ $(document).ready(function() {
           right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
         },
         initialView: 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
-        initialDate: today, // 초기 날짜 설정 (설정하지 않으면 오늘 날짜가 보인다.)
+        initialDate: null, // 초기 날짜 설정 (설정하지 않으면 오늘 날짜가 보인다.)
         navLinks: true, // 날짜를 선택하면 Day 캘린더나 Week 캘린더로 링크
         editable: true, // 수정 가능?
         selectable: true, // 달력 일자 드래그 설정가능
@@ -222,22 +211,46 @@ $(document).ready(function() {
 
        calendar.render();
        setDefaultCalendarDate(/*[[${meetupList}]]*/);
-<!--모달 데이트피커-->
-datepicker = $('.customPicker').datepicker({
-  format: 'yyyy-mm-dd',
-  autoclose: true,
-  language: 'ko',
-  startDate: '-10d',
-  endDate: '+2m',
-  templates: {
-    rightArrow: '<i class="fas fa-chevron-right"></i>',
-    leftArrow: '<i class="fas fa-chevron-left"></i>'
-  }
-}).on("hide", function(e) {
+   <!--풀캘린더 생성 END-->
 
-}).on("show", function(e) {
+   <!--풀캘린더 동적 이벤트 START-->
+    $('.fc-today-button, .fc-prev-button, .fc-next-button').on('click', function() {
+    var paramDate;
+      if ($(this).hasClass('fc-prev-button')) {
+        paramDate = addMonthsToDate(dateToYYYYMMString(calendar.getDate()),-1)
+        console.log(paramDate);
 
-})
+
+      } else if ($(this).hasClass('fc-next-button')) {
+        paramDate = addMonthsToDate(dateToYYYYMMString(calendar.getDate()),+1)
+        console.log(paramDate);
+      }
+
+      if (paramDate) {
+        console.log("가져온다 : "+paramDate);
+            loadMeetupList(paramDate);
+      }
+   });
+   <!--풀캘린더 동적 이벤트 END-->
+
+
+
+    <!--모달 데이트피커-->
+    datepicker = $('.customPicker').datepicker({
+      format: 'yyyy-mm-dd',
+      autoclose: true,
+      language: 'ko',
+      startDate: '-10d',
+      endDate: '+2m',
+      templates: {
+        rightArrow: '<i class="fas fa-chevron-right"></i>',
+        leftArrow: '<i class="fas fa-chevron-left"></i>'
+      }
+    }).on("hide", function(e) {
+
+    }).on("show", function(e) {
+
+    })
 
     $('#meetupModal').on('hidden.bs.modal', function () {
       initModal();
@@ -254,7 +267,6 @@ datepicker = $('.customPicker').datepicker({
     });
 
 });
-
 
 
 
@@ -369,7 +381,7 @@ function saveSchedule(){
 
     $.ajax({
         type: "POST"
-        , url: "/meetup"
+        , url: "/meetupMake"
         , data: JSON.stringify(data)
         , contentType: "application/json"
         , success: function(result) {
@@ -380,6 +392,25 @@ function saveSchedule(){
         }
         ,  complete: function() {
             $('#meetupModal').modal('hide');
+        }
+    });
+}
+
+function loadMeetupList(initialDate){
+console.log("가져오기!");
+    $.ajax({
+        type: "POST"
+        , url: "/meetup"
+        , data: initialDate
+        , contentType: "application/json"
+        , success: function(result) {
+            console.log(result);
+        }
+        , error: function(xhr, status, error) {
+            alert(xhr.responseText);
+        }
+        ,  complete: function() {
+            console.log("완료");
         }
     });
 }
@@ -399,8 +430,6 @@ function setDefaultCalendarDate(eventList) {
         memo: result.memo
       }
     };
-    console.log("이부이티");
-    console.log(evt);
      calendar.addEvent(evt);
   });
 }
@@ -504,3 +533,5 @@ $("#startDate, #endDate").on("change", function() {
 
 
     </script>
+</th:block>
+</html>

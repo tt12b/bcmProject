@@ -43,9 +43,12 @@ public class MeetupService {
                 .toDto();
     }
 
-    public List<MeetupDto> findAllMeetups(String yearMonth){
-        String from = DateUtil.manipulateDate(yearMonth, -10);
-        String tom = DateUtil.manipulateDate(yearMonth,+40);
+    public List<MeetupDto> findAllMeetups(String initialDate){
+        if(initialDate == null ) {
+            initialDate = DateUtil.getCurrentDate().toString();
+        }
+        String from = DateUtil.manipulateDate(initialDate, -10);
+        String tom = DateUtil.manipulateDate(initialDate,+40);
 
         LocalDateTime paramFrom = LocalDateTime.parse(from+"T00:00:00");
         LocalDateTime paramTo = LocalDateTime.parse(tom+"T00:00:00");

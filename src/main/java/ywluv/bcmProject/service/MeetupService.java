@@ -43,17 +43,35 @@ public class MeetupService {
                 .toDto();
     }
 
-    public List<MeetupDto> findAllMeetups(String initialDate){
+    public List<MeetupDto> findAllMeetups(String initialDate,List<Long> groupIdList){
         if(initialDate == null ) {
             initialDate = DateUtil.getCurrentDate().toString();
         }
-        String from = DateUtil.manipulateDate(initialDate, -10);
-        String tom = DateUtil.manipulateDate(initialDate,+40);
+
+        //그룹아이디가 비어있으면 강제로 넣는다.
+        //@Query 메소드, 쿼리에서 null이거나 empty일 경우 처리하였는데 오류가 나서 임의로 값을 집어넣음
+        //추후 QueryDsl로 수정하여 값이 없으면 조건이 없도록 수정
+        if(groupIdList == null ) {
+            groupIdList =  new ArrayList<>();
+            groupIdList.add(9999L);
+        }
+
+        System.out.println("기준일은 ");
+        System.out.println(initialDate);
+        //기준일 31일 전후로 가져온다.
+        String from = DateUtil.manipulateDate(initialDate, -31);
+        String to = DateUtil.manipulateDate(initialDate,+31);
 
         LocalDateTime paramFrom = LocalDateTime.parse(from+"T00:00:00");
-        LocalDateTime paramTo = LocalDateTime.parse(tom+"T00:00:00");
+        LocalDateTime paramTo = LocalDateTime.parse(to+"T00:00:00");
 
-        return meetupRepository.findMeetupsByDateBetween(paramFrom,paramTo);
+        System.out.println("프롬 ");
+        System.out.println(paramFrom);
+
+        System.out.println("투 ");
+        System.out.println(paramTo);
+
+        return meetupRepository.findMeetupsByDateBetween(paramFrom,paramTo,groupIdList);
     }
 
 

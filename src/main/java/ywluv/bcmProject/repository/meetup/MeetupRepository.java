@@ -15,26 +15,28 @@ import java.util.List;
 
 @Repository
 public interface MeetupRepository extends JpaRepository<Meetup,Long> {
+    @Query("SELECT m FROM Member m WHERE m.id IN (:pks)")     // 2. Spring JPA In cause using @Query
+    List<Member> findByTest(@Param("pks")List<Long> pks);
 
-//    @Query("SELECT new ywluv.bcmProject.dto.MeetupDto(m.id" +
-//            "                               ,   m.meetupTitle" +
-//            "                               ,   m.meetupStartDate" +
-//            "                               ,   m.meetupEndDate" +
-//            "                               ,   m.allDayYN" +
-//            "                               ,   m.meetupHost.id" +
-//            "                               ,   m.meetupHost.userNickName" +
-//            "                               ,   m.meetupType" +
-//            "                               ,   m.meetupMemo) FROM Meetup m WHERE :date BETWEEN m.meetupStartDate AND m.meetupEndDate")
-@Query("SELECT new ywluv.bcmProject.dto.MeetupDto(m.id" +
-        "                               ,   m.meetupTitle" +
-        "                               ,   m.meetupStartDate" +
-        "                               ,   m.meetupEndDate" +
-        "                               ,   m.allDayYN" +
-        "                               ,   m.meetupHost.id" +
-        "                               ,   m.meetupHost.userNickName" +
-        "                               ,   CAST(m.meetupType AS string)" +
-        "                               ,   m.meetupMemo" +
-        ") FROM Meetup m WHERE :paramFrom <= m.meetupEndDate AND :paramTo >= m.meetupStartDate")
+    @Query(
+            "SELECT new ywluv.bcmProject.dto.MeetupDto(m.id" +
+            "                               ,   m.meetupTitle" +
+            "                               ,   m.meetupStartDate" +
+            "                               ,   m.meetupEndDate" +
+            "                               ,   m.allDayYN" +
+            "                               ,   m.meetupHost.id" +
+            "                               ,   m.meetupHost.userNickName" +
+            "                               ,   CAST(m.meetupType AS string)" +
+            "                               ,   m.meetupMemo" +
+            ") FROM Meetup m " +
+            " WHERE :paramFrom <= m.meetupEndDate AND :paramTo >= m.meetupStartDate" +
+            " AND m.id NOT IN (:groupIdList)"
+            )
 
-    List<MeetupDto> findMeetupsByDateBetween(@Param("paramFrom") LocalDateTime paramFrom, @Param("paramTo") LocalDateTime paramTo);
+        List<MeetupDto> findMeetupsByDateBetween(@Param("paramFrom") LocalDateTime paramFrom, @Param("paramTo") LocalDateTime paramTo
+                                                 ,@Param("groupIdList") List<Long> groupIdList);
+
+    @Query("SELECT m FROM Member m WHERE m.id IN (:ids)")
+    List<Member> findByMembers(@Param("ids")List<Long> ids);
 }
+//" AND (:groupIdList IS NULL OR m.id NOT IN (:groupIdList))"

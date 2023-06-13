@@ -161,7 +161,7 @@
 <script th:inline="javascript">
 var calendar;
 var datepicker;
-var checkArr=[];
+var groupIdList=[]
 var test;
 
 $(document).ready(function() {
@@ -190,17 +190,17 @@ $(document).ready(function() {
         locale: 'ko', // 한국어 설정
 <!--        displayEventTime :false,-->
         eventAdd: function(obj) { // 이벤트가 추가되면 발생하는 이벤트
-          console.log(obj);
+<!--          console.log(obj);-->
         },
         eventChange: function(obj) { // 이벤트가 수정되면 발생하는 이벤트
-          console.log(obj);
+<!--          console.log(obj);-->
         },
         eventRemove: function(obj){ // 이벤트가 삭제되면 발생하는 이벤트
-          console.log(obj);
+<!--          console.log(obj);-->
         },
         eventClick: function(info) {
-        console.log("체크");
-        console.log(info);
+<!--        console.log("체크");-->
+<!--        console.log(info);-->
 <!--          showModal(info);-->
         },
         select: function(arg) { // 캘린더에서 드래그로 이벤트를 생성할 수 있다.
@@ -217,18 +217,15 @@ $(document).ready(function() {
     $('.fc-today-button, .fc-prev-button, .fc-next-button').on('click', function() {
     var paramDate;
       if ($(this).hasClass('fc-prev-button')) {
-        paramDate = addMonthsToDate(dateToYYYYMMString(calendar.getDate()),-1)
-        console.log(paramDate);
-
-
+<!--        paramDate = addMonthsToDate(dateToYYYYMMString(calendar.getDate()),-1)-->
+        paramDate = addMonthsToDate(dateToYYYYMMString(calendar.getDate()))
       } else if ($(this).hasClass('fc-next-button')) {
-        paramDate = addMonthsToDate(dateToYYYYMMString(calendar.getDate()),+1)
-        console.log(paramDate);
+<!--        paramDate = addMonthsToDate(dateToYYYYMMString(calendar.getDate()),+1)-->
+        paramDate = addMonthsToDate(dateToYYYYMMString(calendar.getDate()))
       }
 
       if (paramDate) {
-        console.log("가져온다 : "+paramDate);
-            loadMeetupList(paramDate);
+            loadMeetupList(paramDate,groupIdList);
       }
    });
    <!--풀캘린더 동적 이벤트 END-->
@@ -396,21 +393,27 @@ function saveSchedule(){
     });
 }
 
-function loadMeetupList(initialDate){
-console.log("가져오기!");
+
+function loadMeetupList(initialDate,groupIdList){
+
     $.ajax({
         type: "POST"
         , url: "/meetup"
-        , data: initialDate
-        , contentType: "application/json"
+        , data: {
+                    initialDate: initialDate
+                ,   groupIdList: JSON.stringify(groupIdList)
+                }
         , success: function(result) {
+            console.log("새로가져온이벤트");
             console.log(result);
+           setDefaultCalendarDate(result);
+           //여기까지함. 이미 등록된 이벤트 누르면 모달-수정창에 세팅, 수정하기, 삭제하기 구현할 것
         }
         , error: function(xhr, status, error) {
             alert(xhr.responseText);
         }
         ,  complete: function() {
-            console.log("완료");
+            console.log("가져오기완료");
         }
     });
 }
@@ -430,6 +433,7 @@ function setDefaultCalendarDate(eventList) {
         memo: result.memo
       }
     };
+     groupIdList.push(evt.groupId);
      calendar.addEvent(evt);
   });
 }

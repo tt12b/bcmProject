@@ -11,6 +11,7 @@ function subtractOneDay(isoDateString) {
 
 //첫번째 파라미터 기준 월, 두 번째 파라미터 더하거나 뺄 월)month)
 function addMonthsToDate(dateStr, monthsToAdd) {
+  monthsToAdd = (monthsToAdd == null) ? 0 : monthsToAdd;
   var date = new Date(dateStr);
   date.setMonth(date.getMonth() + monthsToAdd);
 

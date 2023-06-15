@@ -2,6 +2,425 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="layout/layout_FullCalendar">
 <th:block layout:fragment="content">
+<script th:inline="javascript">
+var calendar;
+var datepicker;
+var groupIdList=[]
+var test;
+
+$(document).ready(function() {
+
+    <!--풀캘린더 생성 START-->
+   var calendarEl = $('#calendar')[0];
+      // full-calendar 생성하기
+     calendar = new FullCalendar.Calendar(calendarEl, {
+        height: '700px', // calendar 높이 설정
+        expandRows: true, // 화면에 맞게 높이 재설정
+        slotMinTime: '08:00', // Day 캘린더에서 시작 시간
+        slotMaxTime: '20:00', // Day 캘린더에서 종료 시간
+        // 해더에 표시할 툴바
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+        },
+        initialView: 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
+        initialDate: null, // 초기 날짜 설정 (설정하지 않으면 오늘 날짜가 보인다.)
+        navLinks: true, // 날짜를 선택하면 Day 캘린더나 Week 캘린더로 링크
+        editable: true, // 수정 가능?
+        selectable: true, // 달력 일자 드래그 설정가능
+        nowIndicator: true, // 현재 시간 마크
+        dayMaxEvents: true, // 이벤트가 오버되면 높이 제한 (+ 몇 개식으로 표현)
+        locale: 'ko', // 한국어 설정
+<!--        displayEventTime :false,-->
+        eventAdd: function(obj) { // 이벤트가 추가되면 발생하는 이벤트
+<!--          console.log(obj);-->
+        },
+        eventChange: function(obj) { // 이벤트가 수정되면 발생하는 이벤트
+<!--          console.log(obj);-->
+        },
+        eventRemove: function(obj){ // 이벤트가 삭제되면 발생하는 이벤트
+<!--          console.log(obj);-->
+        },
+        eventClick: function(calEvent) {
+          showModal(calEvent);
+        },
+        select: function(arg) { // 캘린더에서 드래그로 이벤트를 생성할 수 있다.
+          showModal(arg);
+          calendar.unselect()
+        },
+        dateClick: function (info) {
+            console.log("데이트클릭");
+            console.log(info);
+        }
+      });
+
+       calendar.render();
+       setDefaultCalendarDate(/*[[${meetupList}]]*/);
+   <!--풀캘린더 생성 END-->
+
+   <!--풀캘린더 동적 이벤트 START-->
+    $('.fc-today-button, .fc-prev-button, .fc-next-button').on('click', function() {
+    var paramDate;
+      if ($(this).hasClass('fc-prev-button')) {
+<!--        paramDate = addMonthsToDate(dateToYYYYMMString(calendar.getDate()),-1)-->
+        paramDate = addMonthsToDate(dateToYYYYMMString(calendar.getDate()))
+      } else if ($(this).hasClass('fc-next-button')) {
+<!--        paramDate = addMonthsToDate(dateToYYYYMMString(calendar.getDate()),+1)-->
+        paramDate = addMonthsToDate(dateToYYYYMMString(calendar.getDate()))
+      }
+
+      if (paramDate) {
+            loadMeetupList(paramDate,groupIdList);
+      }
+   });
+   <!--풀캘린더 동적 이벤트 END-->
+
+
+
+    <!--모달 데이트피커-->
+    datepicker = $('.customPicker').datepicker({
+      format: 'yyyy-mm-dd',
+      autoclose: true,
+      language: 'ko',
+      startDate: '-10d',
+      endDate: '+2m',
+      templates: {
+        rightArrow: '<i class="fas fa-chevron-right"></i>',
+        leftArrow: '<i class="fas fa-chevron-left"></i>'
+      }
+    }).on("hide", function(e) {
+
+    }).on("show", function(e) {
+
+    })
+
+    $('#meetupModal').on('hidden.bs.modal', function () {
+      initModal();
+    });
+
+    <!--show리스너에 이벤트를 넣으면 기본 동작이 멈추는 오류가 있어 클릭이벤트로 대신한다-->
+     $("#startDate, #endDate").on("click", function() {
+        if($(".customPicker-drown").length==1){
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+            $("#startDate").datepicker('setDate',startDate);
+            $("#endDate").datepicker('setDate',endDate);
+        }
+    });
+
+});
+
+
+
+function showModal(data){
+    console.log("이벤트 분류");
+    console.log(test=data);
+
+    var eventFlag = false;  //이미 등록된 이벤트
+
+    if(data.event == null) {
+        eventFlag = true; //최초 이벤트
+    }
+
+    modalSetting(eventFlag,data);
+    $('#meetupModal').modal('show');
+}
+
+function modalSetting(eventFlag,data){
+    console.log("ㅇㅇㅇ");
+
+    let variables = {
+        mStartDate: null
+      , mEndDate: null
+      , mHostId: null
+      , mAllDayYN: true
+      , mStartHour: null
+      , mStartMinute: null
+      , mEndHour: null
+      , mEndMinute: null
+      , mEventId: null
+      , mGroupId: null
+      , mHostNickName: null
+      , mMeetupType: null
+      , mTitle: null
+      , mMemo: null
+    };
+    console.log("ㅇ11ㅇㅇ");
+
+
+    if(eventFlag){
+        variables.mStartDate =  data.startStr;
+        variables.mEndDate = data.endStr;
+        //월 스케쥴 최초 등록
+        if(data.view.type=="dayGridMonth" && data.id==null){
+             variables.mEndDate = subtractOneDay(data.endStr)
+        }
+
+        if(variables.mStartDate != variables.mEndDate){
+            variables.mAllDayYN = false;
+        }
+
+        toggleAllDayRadioButton(variables.mAllDayYN);
+        $("#startDate").val(variables.mStartDate)
+        $("#endDate").val(variables.mEndDate)
+        $('#meetupModal').modal('show');
+    } else {
+
+    variables.mStartDate = data.event.startStr.split('T')[0];
+    variables.mEndDate = data.event.endStr.split('T')[0];
+    variables.mStartHour = data.event.startStr.substring(11, 13);
+    variables.mStartMinute = data.event.startStr.substring(14, 16);
+    variables.mEndHour = data.event.endStr.substring(11, 13);
+    variables.mEndMinute = data.event.endStr.substring(14, 16);
+    variables.mEventId = data.event._def.groupId;
+    variables.mGroupId = data.event._def.groupId;
+    variables.mHostId = data.event._def.extendedProps.hostId;
+    variables.mHostNickName = data.event._def.extendedProps.hostNickName;
+    variables.mMeetupType = data.event._def.extendedProps.meetupType;
+    variables.mTitle = data.event._def.title;
+    variables.mMemo = data.event._def.extendedProps.memo;
+    variables.mAllDayYN= data.event._def.allDay;
+
+    console.log("이미 등록된 이벤트");
+    console.log(variables);
+    //모달에 세팅하기  / 수정하기 / 삭제하기
+
+    }
+
+}
+
+function toggleAllDayRadioButton(flag) {
+  var allDayRadioButtons = $("#allDayRadioDiv");
+
+ //플래그에 따라 보이고 안보이고 변경
+  if(flag) {
+    allDayRadioButtons.show();
+  } else {
+    allDayRadioButtons.hide();
+     $('.time').prop('disabled', false);
+  }
+}
+
+
+function initModal(){
+    $("#startHour").val("19");
+    $("#startMinutes").val("30");
+    $("#endHour").val("22");
+    $("#endMinutes").val("00");
+    $('input[name="allDay"][value="N"]').prop('checked', true);
+    $('input[name="meetupType"][value="badminton"]').prop('checked', true);
+    $("#meetupTitle").val('');
+    $("#eventMemo").val('');
+    $("#eventEndHourError").css('display','none');
+    $("#endHour,#endMinutes").removeClass('input-error');
+    $("#eventEndHourError").css('display','none');
+    $("#endHour,#endMinutes").removeClass('input-error');
+    changeAllDayCheck(false);
+}
+
+function saveSchedule(){
+
+    if(!checkTime()) return;
+    if(!meetupTitleCheck()) return;
+
+
+    var groupId = $('#groupId').val();
+    var startDate = $('#startDate').val(); // 시작일 변수
+    var endDate = $('#endDate').val(); // 종료일 변수
+    var meetupTitle = $('#meetupTitle').val(); // 일정명 변수
+    var memo = $('#eventMemo').val(); // 메모 변수
+    var meetupType = $("input[name='meetupType']:checked").val();
+
+
+    var allDayYN;
+    //올데이 여부가 체크 가능 할 때
+    if($("#allDayRadioDiv").is(":visible")){
+        allDayYN  = $("input[name='allDay']:checked").val() == 'N' ? false : true; //종일여부;
+    } else {
+        allDayYN = false;
+    }
+
+    if(allDayYN){
+        startDate = startDate+'T'+"00:00:00";
+        endDate = endDate+'T'+"00:00:00";
+    } else {
+        startDate = startDate+'T'+$("#startHour").val()+":"+$("#startMinutes").val()+":00";
+        endDate = endDate+'T'+$("#endHour").val()+":"+$("#endMinutes").val()+":00";
+    }
+
+    //오늘, 달력 전 후 구현 / 이미 등록된 이벤트 눌렀을 때 팝업에 세팅하기  구현 / 이벤트 수정 및 삭제 구현/
+
+
+    var data = {
+            "groupId"  :   groupId
+        ,   "meetupTitle":   meetupTitle
+        ,   "startDate" :   startDate
+        ,   "endDate"   :   endDate
+        ,   "memo"      :   memo
+        ,   "allDayYN"  :   allDayYN
+        ,   "meetupType":   meetupType
+
+      }
+
+    $.ajax({
+        type: "POST"
+        , url: "/meetupMake"
+        , data: JSON.stringify(data)
+        , contentType: "application/json"
+        , success: function(result) {
+            setCalendarDate(result);
+        }
+        , error: function(xhr, status, error) {
+            alert(xhr.responseText);
+        }
+        ,  complete: function() {
+            $('#meetupModal').modal('hide');
+        }
+    });
+}
+
+
+function loadMeetupList(initialDate,groupIdList){
+
+    $.ajax({
+        type: "POST"
+        , url: "/meetup"
+        , data: {
+                    initialDate: initialDate
+                ,   groupIdList: JSON.stringify(groupIdList)
+                }
+        , success: function(result) {
+           setDefaultCalendarDate(result);
+        }
+        , error: function(xhr, status, error) {
+            alert(xhr.responseText);
+        }
+        ,  complete: function() {
+            console.log("가져오기완료");
+        }
+    });
+}
+
+function setDefaultCalendarDate(eventList) {
+  eventList.map(function(result) {
+    var evt = {
+      title: result.meetupTitle,
+      start: result.startDate,
+      end: result.endDate,
+      allDay: (result.allDayYN === "true"),
+      groupId: result.groupId,
+      extendedProps: {
+        hostId: result.hostId,
+        hostNickName: result.hostNickName,
+        meetupType: result.meetupType,
+        memo: result.memo
+      }
+    };
+     groupIdList.push(evt.groupId);
+     calendar.addEvent(evt);
+  });
+}
+
+function setCalendarDate(result){
+    var eventParam = {
+        title: result.meetupTitle
+    ,   start: result.startDate
+    ,   end: result.endDate
+    ,   allDay : (result.allDayYN === "true")
+    ,   groupId : result.groupId
+    ,   extendedProps: {
+            hostId : result.hostId
+        ,   hostNickName : result.hostNickName
+        ,   meetupType : result.meetupType
+        ,   memo : result.memo
+      }
+    }
+    calendar.addEvent(eventParam);
+}
+
+function meetupTitleCheck(){
+  const meetupTitle = $('#meetupTitle');
+  const errorText = $('#meetupTitleError');
+  const meetupTitleInput = $('#meetupTitle');
+
+     if (meetupTitle.val().trim() === '') {
+        errorText.css('display', 'block');
+        meetupTitleInput.addClass('input-error');
+        return false;
+      }
+       errorText.css('display', 'none');
+       meetupTitleInput.removeClass('input-error');
+       return true;
+}
+
+function checkTime() {
+    var allDay = $("input[name='allDay']:checked").val();
+    if(allDay=='Y') return true
+
+    var startDate = new Date($("#startDate").val());
+    var endDate = new Date($("#endDate").val());
+    var startHour = parseInt($('#startHour').val());
+    var startMinutes = parseInt($('#startMinutes').val());
+    var endHour = parseInt($('#endHour').val());
+    var endMinutes = parseInt($('#endMinutes').val());
+    var startTime = startHour * 60 + startMinutes;
+    var endTime = endHour * 60 + endMinutes;
+
+    if (endDate > startDate || (endDate.getTime() === startDate.getTime() && endTime >= startTime)) {
+        $("#eventEndHourError").css('display', 'none');
+        $("#endHour,#endMinutes").removeClass('input-error');
+
+        return true;
+    }
+        $("#eventEndHourError").css('display','contents');
+        $("#endHour,#endMinutes").addClass('input-error');
+    return false;
+}
+
+function changeAllDayCheck(obj){
+    if(obj.value == 'Y'){
+        $('.time').prop('disabled', true);
+       $("#eventEndHourError").css('display','none');
+       $("#endHour,#endMinutes").removeClass('input-error');
+    } else {
+        $('.time').prop('disabled', false);
+        checkTime();
+    }
+}
+
+
+$("#startDate, #endDate").on("change", function() {
+
+    var startDateVal =$("#startDate").val();
+    var endDateVal =$("#endDate").val();
+    //시작일 - 종료일 동일하면 true
+    var flag1 = startDateVal == endDateVal ? true : false;
+
+    //올데이 체크되어 있으면 true
+    var flag2 = $("input[name='allDay']:checked").val();
+
+    //시작일과 종료일이 다르면 종일여부 버튼을 삭제한다.
+    //시작일과 종료일이 같으면 종일여부 활성화
+    toggleAllDayRadioButton(flag1);
+
+    //시작일이 종료일과 같고, 종일여부에 체크되어 있으면 시간을 다시 disable 한다
+    if(flag1 && flag2 =='Y'){
+     $('.time').prop('disabled', true)
+     };
+
+    //시작일이 종료일과 같고, 종일 여부에 체크되지 않았으면 다시간을 다시 enable
+    if(flag1 && flag2 =='N'){
+    $('.time').prop('disabled', false)
+    };
+
+    //다시 한 번 시간 체크
+    checkTime();
+
+});
+
+
+ </script>
     <!-- calendar 태그 -->
     <div id="calendar-container" class="my-3 mx-3">
         <div id='calendar'></div>
@@ -158,384 +577,5 @@
             </div>
         </div>
     </div>
-<script th:inline="javascript">
-var calendar;
-var datepicker;
-var groupIdList=[]
-var test;
-
-$(document).ready(function() {
-
-    <!--풀캘린더 생성 START-->
-   var calendarEl = $('#calendar')[0];
-      // full-calendar 생성하기
-     calendar = new FullCalendar.Calendar(calendarEl, {
-        height: '700px', // calendar 높이 설정
-        expandRows: true, // 화면에 맞게 높이 재설정
-        slotMinTime: '08:00', // Day 캘린더에서 시작 시간
-        slotMaxTime: '20:00', // Day 캘린더에서 종료 시간
-        // 해더에 표시할 툴바
-        headerToolbar: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-        },
-        initialView: 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
-        initialDate: null, // 초기 날짜 설정 (설정하지 않으면 오늘 날짜가 보인다.)
-        navLinks: true, // 날짜를 선택하면 Day 캘린더나 Week 캘린더로 링크
-        editable: true, // 수정 가능?
-        selectable: true, // 달력 일자 드래그 설정가능
-        nowIndicator: true, // 현재 시간 마크
-        dayMaxEvents: true, // 이벤트가 오버되면 높이 제한 (+ 몇 개식으로 표현)
-        locale: 'ko', // 한국어 설정
-<!--        displayEventTime :false,-->
-        eventAdd: function(obj) { // 이벤트가 추가되면 발생하는 이벤트
-<!--          console.log(obj);-->
-        },
-        eventChange: function(obj) { // 이벤트가 수정되면 발생하는 이벤트
-<!--          console.log(obj);-->
-        },
-        eventRemove: function(obj){ // 이벤트가 삭제되면 발생하는 이벤트
-<!--          console.log(obj);-->
-        },
-        eventClick: function(info) {
-<!--        console.log("체크");-->
-<!--        console.log(info);-->
-<!--          showModal(info);-->
-        },
-        select: function(arg) { // 캘린더에서 드래그로 이벤트를 생성할 수 있다.
-          showModal(arg);
-          calendar.unselect()
-        }
-      });
-
-       calendar.render();
-       setDefaultCalendarDate(/*[[${meetupList}]]*/);
-   <!--풀캘린더 생성 END-->
-
-   <!--풀캘린더 동적 이벤트 START-->
-    $('.fc-today-button, .fc-prev-button, .fc-next-button').on('click', function() {
-    var paramDate;
-      if ($(this).hasClass('fc-prev-button')) {
-<!--        paramDate = addMonthsToDate(dateToYYYYMMString(calendar.getDate()),-1)-->
-        paramDate = addMonthsToDate(dateToYYYYMMString(calendar.getDate()))
-      } else if ($(this).hasClass('fc-next-button')) {
-<!--        paramDate = addMonthsToDate(dateToYYYYMMString(calendar.getDate()),+1)-->
-        paramDate = addMonthsToDate(dateToYYYYMMString(calendar.getDate()))
-      }
-
-      if (paramDate) {
-            loadMeetupList(paramDate,groupIdList);
-      }
-   });
-   <!--풀캘린더 동적 이벤트 END-->
-
-
-
-    <!--모달 데이트피커-->
-    datepicker = $('.customPicker').datepicker({
-      format: 'yyyy-mm-dd',
-      autoclose: true,
-      language: 'ko',
-      startDate: '-10d',
-      endDate: '+2m',
-      templates: {
-        rightArrow: '<i class="fas fa-chevron-right"></i>',
-        leftArrow: '<i class="fas fa-chevron-left"></i>'
-      }
-    }).on("hide", function(e) {
-
-    }).on("show", function(e) {
-
-    })
-
-    $('#meetupModal').on('hidden.bs.modal', function () {
-      initModal();
-    });
-
-    <!--show리스너에 이벤트를 넣으면 기본 동작이 멈추는 오류가 있어 클릭이벤트로 대신한다-->
-     $("#startDate, #endDate").on("click", function() {
-        if($(".customPicker-drown").length==1){
-            var startDate = $("#startDate").val();
-            var endDate = $("#endDate").val();
-            $("#startDate").datepicker('setDate',startDate);
-            $("#endDate").datepicker('setDate',endDate);
-        }
-    });
-
-});
-
-
-
-function showModal(data){
-    var eventFlag = false;  //이미 등록된 이벤트
-    if(data.event == null) {
-        eventFlag = true; //최초 이벤트
-    }
-
-    modalSetting(eventFlag,data);
-    $('#meetupModal').modal('show');
-}
-
-function modalSetting(eventFlag,data){
-    if(eventFlag){
-        var startDate =  data.startStr;
-        var endDate = data.endStr;
-        var allDayToggle = true;
-        //월 스케쥴 최초 등록
-        if(data.view.type=="dayGridMonth" && data.id==null){
-             endDate = subtractOneDay(data.endStr)
-        }
-
-        if(startDate != endDate){
-            allDayToggle = false;
-        }
-
-        toggleAllDayRadioButton(allDayToggle);
-        $("#startDate").val(startDate)
-        $("#endDate").val(endDate)
-        $('#meetupModal').modal('show');
-    } else {
-        console.log("이미 등록된 이벤트");
-        console.log(data);
-
-    }
-
-}
-
-function toggleAllDayRadioButton(flag) {
-  var allDayRadioButtons = $("#allDayRadioDiv");
-
- //플래그에 따라 보이고 안보이고 변경
-  if(flag) {
-    allDayRadioButtons.show();
-  } else {
-    allDayRadioButtons.hide();
-     $('.time').prop('disabled', false);
-  }
-}
-
-
-function initModal(){
-    $("#startHour").val("19");
-    $("#startMinutes").val("30");
-    $("#endHour").val("22");
-    $("#endMinutes").val("00");
-    $('input[name="allDay"][value="N"]').prop('checked', true);
-    $('input[name="meetupType"][value="badminton"]').prop('checked', true);
-    $("#meetupTitle").val('');
-    $("#eventMemo").val('');
-    $("#eventEndHourError").css('display','none');
-    $("#endHour,#endMinutes").removeClass('input-error');
-    $("#eventEndHourError").css('display','none');
-    $("#endHour,#endMinutes").removeClass('input-error');
-    changeAllDayCheck(false);
-}
-
-function saveSchedule(){
-
-    if(!checkTime()) return;
-    if(!meetupTitleCheck()) return;
-
-
-    var groupId = $('#groupId').val();
-    var startDate = $('#startDate').val(); // 시작일 변수
-    var endDate = $('#endDate').val(); // 종료일 변수
-    var meetupTitle = $('#meetupTitle').val(); // 일정명 변수
-    var memo = $('#eventMemo').val(); // 메모 변수
-    var meetupType = $("input[name='meetupType']:checked").val();
-
-
-    var allDayYN;
-    //올데이 여부가 체크 가능 할 때
-    if($("#allDayRadioDiv").is(":visible")){
-        allDayYN  = $("input[name='allDay']:checked").val() == 'N' ? false : true; //종일여부;
-    } else {
-        allDayYN = false;
-    }
-
-    if(allDayYN){
-        startDate = startDate+'T'+"00:00:00";
-        endDate = endDate+'T'+"00:00:00";
-    } else {
-        startDate = startDate+'T'+$("#startHour").val()+":"+$("#startMinutes").val()+":00";
-        endDate = endDate+'T'+$("#endHour").val()+":"+$("#endMinutes").val()+":00";
-    }
-
-    //오늘, 달력 전 후 구현 / 이미 등록된 이벤트 눌렀을 때 팝업에 세팅하기  구현 / 이벤트 수정 및 삭제 구현/
-
-
-    var data = {
-            "groupId"  :   groupId
-        ,   "meetupTitle":   meetupTitle
-        ,   "startDate" :   startDate
-        ,   "endDate"   :   endDate
-        ,   "memo"      :   memo
-        ,   "allDayYN"  :   allDayYN
-        ,   "meetupType":   meetupType
-
-      }
-
-    $.ajax({
-        type: "POST"
-        , url: "/meetupMake"
-        , data: JSON.stringify(data)
-        , contentType: "application/json"
-        , success: function(result) {
-            setCalendarDate(result);
-        }
-        , error: function(xhr, status, error) {
-            alert(xhr.responseText);
-        }
-        ,  complete: function() {
-            $('#meetupModal').modal('hide');
-        }
-    });
-}
-
-
-function loadMeetupList(initialDate,groupIdList){
-
-    $.ajax({
-        type: "POST"
-        , url: "/meetup"
-        , data: {
-                    initialDate: initialDate
-                ,   groupIdList: JSON.stringify(groupIdList)
-                }
-        , success: function(result) {
-            console.log("새로가져온이벤트");
-            console.log(result);
-           setDefaultCalendarDate(result);
-           //여기까지함. 이미 등록된 이벤트 누르면 모달-수정창에 세팅, 수정하기, 삭제하기 구현할 것
-        }
-        , error: function(xhr, status, error) {
-            alert(xhr.responseText);
-        }
-        ,  complete: function() {
-            console.log("가져오기완료");
-        }
-    });
-}
-
-function setDefaultCalendarDate(eventList) {
-  eventList.map(function(result) {
-    var evt = {
-      title: result.meetupTitle,
-      start: result.startDate,
-      end: result.endDate,
-      allDay: (result.allDayYN === "true"),
-      groupId: result.groupId,
-      extendedProps: {
-        hostId: result.hostId,
-        hostNickName: result.hostNickName,
-        meetupType: result.meetupType,
-        memo: result.memo
-      }
-    };
-     groupIdList.push(evt.groupId);
-     calendar.addEvent(evt);
-  });
-}
-
-function setCalendarDate(result){
-    var eventParam = {
-        title: result.meetupTitle
-    ,   start: result.startDate
-    ,   end: result.endDate
-    ,   allDay : (result.allDayYN === "true")
-    ,   groupId : result.groupId
-    ,   extendedProps: {
-            hostId : result.hostId
-        ,   hostNickName : result.hostNickName
-        ,   meetupType : result.meetupType
-        ,   memo : result.memo
-      }
-    }
-    calendar.addEvent(eventParam);
-}
-
-function meetupTitleCheck(){
-  const meetupTitle = $('#meetupTitle');
-  const errorText = $('#meetupTitleError');
-  const meetupTitleInput = $('#meetupTitle');
-
-     if (meetupTitle.val().trim() === '') {
-        errorText.css('display', 'block');
-        meetupTitleInput.addClass('input-error');
-        return false;
-      }
-       errorText.css('display', 'none');
-       meetupTitleInput.removeClass('input-error');
-       return true;
-}
-
-function checkTime() {
-    var allDay = $("input[name='allDay']:checked").val();
-    if(allDay=='Y') return true
-
-    var startDate = new Date($("#startDate").val());
-    var endDate = new Date($("#endDate").val());
-    var startHour = parseInt($('#startHour').val());
-    var startMinutes = parseInt($('#startMinutes').val());
-    var endHour = parseInt($('#endHour').val());
-    var endMinutes = parseInt($('#endMinutes').val());
-    var startTime = startHour * 60 + startMinutes;
-    var endTime = endHour * 60 + endMinutes;
-
-    if (endDate > startDate || (endDate.getTime() === startDate.getTime() && endTime >= startTime)) {
-        $("#eventEndHourError").css('display', 'none');
-        $("#endHour,#endMinutes").removeClass('input-error');
-
-        return true;
-    }
-        $("#eventEndHourError").css('display','contents');
-        $("#endHour,#endMinutes").addClass('input-error');
-    return false;
-}
-
-function changeAllDayCheck(obj){
-    if(obj.value == 'Y'){
-        $('.time').prop('disabled', true);
-       $("#eventEndHourError").css('display','none');
-       $("#endHour,#endMinutes").removeClass('input-error');
-    } else {
-        $('.time').prop('disabled', false);
-        checkTime();
-    }
-}
-
-
-$("#startDate, #endDate").on("change", function() {
-
-    var startDateVal =$("#startDate").val();
-    var endDateVal =$("#endDate").val();
-    //시작일 - 종료일 동일하면 true
-    var flag1 = startDateVal == endDateVal ? true : false;
-
-    //올데이 체크되어 있으면 true
-    var flag2 = $("input[name='allDay']:checked").val();
-
-    //시작일과 종료일이 다르면 종일여부 버튼을 삭제한다.
-    //시작일과 종료일이 같으면 종일여부 활성화
-    toggleAllDayRadioButton(flag1);
-
-    //시작일이 종료일과 같고, 종일여부에 체크되어 있으면 시간을 다시 disable 한다
-    if(flag1 && flag2 =='Y'){
-     $('.time').prop('disabled', true)
-     };
-
-    //시작일이 종료일과 같고, 종일 여부에 체크되지 않았으면 다시간을 다시 enable
-    if(flag1 && flag2 =='N'){
-    $('.time').prop('disabled', false)
-    };
-
-    //다시 한 번 시간 체크
-    checkTime();
-
-});
-
-
-    </script>
 </th:block>
 </html>

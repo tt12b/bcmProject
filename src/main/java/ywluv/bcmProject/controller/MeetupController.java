@@ -49,14 +49,22 @@ public class MeetupController {
 
         //List<String>으로 받았더니 List 첫번째 값과 마지막 값에 대괄호가 붙은채로 넘어와서 문자열로 받음
         //String으로 넘겼더니 cast 오류 발생하여 Long타입으로 수정
-        List<String> StringList = Arrays.asList(groupIdList.substring(1, groupIdList.length() - 1).split(","));
-        List<Long> longList = new ArrayList<>();
 
-        for (String str : StringList) {
-            longList.add(Long.parseLong(str.trim()));
+
+        try{
+            List<String> StringList = Arrays.asList(groupIdList.substring(1, groupIdList.length() - 1).split(","));
+            List<Long> longList = new ArrayList<>();
+
+            for (String str : StringList) {
+                longList.add(Long.parseLong(str.trim()));
+            }
+
+            return meetupService.findAllMeetups(initialDate,longList);
+        } catch(Exception e){
+            e.printStackTrace();
+            return null;
         }
 
-       return meetupService.findAllMeetups(initialDate,longList);
     }
 
 
@@ -68,6 +76,8 @@ public class MeetupController {
         Long meetupId = meetupService.makeMeetup(meetupDto);
         MeetupDto result = meetupService.findById(meetupId);
 
+        System.out.println("결과-------------------------");
+        System.out.println(result);
         return result;
     }
 }

@@ -19,7 +19,9 @@ public interface MeetupRepository extends JpaRepository<Meetup,Long> {
     List<Member> findByTest(@Param("pks")List<Long> pks);
 
     @Query(
-            "SELECT new ywluv.bcmProject.dto.MeetupDto(m.id" +
+            "SELECT new ywluv.bcmProject.dto.MeetupDto(" +
+            "                                   m.id" +
+            "                               ,   m.groupId" +
             "                               ,   m.meetupTitle" +
             "                               ,   m.meetupStartDate" +
             "                               ,   m.meetupEndDate" +

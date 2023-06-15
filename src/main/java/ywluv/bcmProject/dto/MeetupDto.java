@@ -22,6 +22,7 @@ import java.util.ArrayList;
 //다만 직렬화를 위해 기본 생성자는 필수다.
 public class MeetupDto {
 
+    private Long id;
     private Long groupId;
     private String meetupTitle;
     private LocalDateTime startDate;
@@ -32,7 +33,8 @@ public class MeetupDto {
     private String meetupType;
     private String memo;
 
-    public MeetupDto(Long groupId, String meetupTitle, LocalDateTime startDate, LocalDateTime endDate, String allDayYN,   Long hostId, String HostNickName) {
+    public MeetupDto(Long id,Long groupId, String meetupTitle, LocalDateTime startDate, LocalDateTime endDate, String allDayYN,   Long hostId, String HostNickName) {
+        this.id = id;
         this.groupId = groupId;
         this.meetupTitle = meetupTitle;
         this.startDate = startDate;
@@ -43,12 +45,13 @@ public class MeetupDto {
     }
 
     @QueryProjection
-    public MeetupDto(Long groupId, String meetupTitle, LocalDateTime startDate, LocalDateTime endDate
+    public MeetupDto(Long id, Long groupId, String meetupTitle, LocalDateTime startDate, LocalDateTime endDate
             ,   String allDayYN
             ,   Long hostId, String HostNickName
             ,   String meetupType
             ,   String memo)
     {
+        this.id = id;
         this.groupId = groupId;
         this.meetupTitle = meetupTitle;
         this.startDate = startDate;

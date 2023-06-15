@@ -78,7 +78,8 @@ public class MeetupService {
     private Meetup dtoToEntity(MeetupDto meetupDto){
 
         Meetup meetup = new Meetup(
-            meetupDto.getGroupId()
+            meetupDto.getId()
+        ,   meetupDto.getGroupId()
         ,   meetupDto.getMeetupTitle()
         ,   meetupDto.getStartDate()
         ,   meetupDto.getEndDate()

@@ -25,6 +25,8 @@ public class Meetup extends BaseEntity {
     @Column(name ="meetup_id")
     private Long id;
 
+    private Long groupId;
+
     private String meetupTitle;
 
     private LocalDateTime meetupStartDate;
@@ -44,8 +46,9 @@ public class Meetup extends BaseEntity {
     @OneToMany(mappedBy = "meetup")
     private List<MeetupMember> meetupMembers = new ArrayList<>();
 
-    public Meetup(Long id, String meetupTitle, LocalDateTime meetupStartDate, LocalDateTime meetupEndDate, String allDayYN, Member meetupHost, MeetupType meetupType, String meetupMemo, List<MeetupMember> meetupMembers) {
+    public Meetup(Long id, Long groupId, String meetupTitle, LocalDateTime meetupStartDate, LocalDateTime meetupEndDate, String allDayYN, Member meetupHost, MeetupType meetupType, String meetupMemo, List<MeetupMember> meetupMembers) {
         this.id = id;
+        this.groupId=groupId;
         this.meetupTitle = meetupTitle;
         this.meetupStartDate = meetupStartDate;
         this.meetupEndDate = meetupEndDate;
@@ -58,7 +61,8 @@ public class Meetup extends BaseEntity {
 
     public MeetupDto toDto() {
         MeetupDto meetupDto = new MeetupDto();
-        meetupDto.setGroupId(this.id);
+        meetupDto.setId(this.id);
+        meetupDto.setGroupId(this.groupId);
         meetupDto.setMeetupTitle(this.meetupTitle);
         meetupDto.setStartDate(this.meetupStartDate);
         meetupDto.setAllDayYN(this.allDayYN);

@@ -34,13 +34,10 @@ $(document).ready(function() {
         locale: 'ko', // 한국어 설정
 <!--        displayEventTime :false,-->
         eventAdd: function(obj) { // 이벤트가 추가되면 발생하는 이벤트
-<!--          console.log(obj);-->
         },
         eventChange: function(obj) { // 이벤트가 수정되면 발생하는 이벤트
-<!--          console.log(obj);-->
         },
         eventRemove: function(obj){ // 이벤트가 삭제되면 발생하는 이벤트
-<!--          console.log(obj);-->
         },
         eventClick: function(calEvent) {
           showModal(calEvent);
@@ -50,8 +47,8 @@ $(document).ready(function() {
           calendar.unselect()
         },
         dateClick: function (info) {
-            console.log("데이트클릭");
-            console.log(info);
+<!--            console.log("데이트클릭");-->
+<!--            console.log(info);-->
         }
       });
 
@@ -83,8 +80,8 @@ $(document).ready(function() {
       format: 'yyyy-mm-dd',
       autoclose: true,
       language: 'ko',
-      startDate: '-10d',
-      endDate: '+2m',
+<!--      startDate: '-10d',-->
+<!--      endDate: '+2m',-->
       templates: {
         rightArrow: '<i class="fas fa-chevron-right"></i>',
         leftArrow: '<i class="fas fa-chevron-left"></i>'
@@ -102,51 +99,49 @@ $(document).ready(function() {
     <!--show리스너에 이벤트를 넣으면 기본 동작이 멈추는 오류가 있어 클릭이벤트로 대신한다-->
      $("#startDate, #endDate").on("click", function() {
         if($(".customPicker-drown").length==1){
-            var startDate = $("#startDate").val();
-            var endDate = $("#endDate").val();
-            $("#startDate").datepicker('setDate',startDate);
-            $("#endDate").datepicker('setDate',endDate);
+            datePickerDateSetting();
         }
     });
 
 });
 
+function datePickerDateSetting(){
+    let startDate = $("#startDate").val();
+    let endDate = $("#endDate").val();
+    $("#startDate").datepicker('setDate',startDate);
+    $("#endDate").datepicker('setDate',endDate);
+}
 
 
 function showModal(data){
-    console.log("이벤트 분류");
-    console.log(test=data);
-
     var eventFlag = false;  //이미 등록된 이벤트
 
     if(data.event == null) {
         eventFlag = true; //최초 이벤트
     }
 
-    modalSetting(eventFlag,data);
+    modalSetting(data,eventFlag);
     $('#meetupModal').modal('show');
 }
 
-function modalSetting(eventFlag,data){
-    console.log("ㅇㅇㅇ");
+function modalSetting(data,eventFlag){
 
     let variables = {
         mStartDate: null
       , mEndDate: null
       , mHostId: null
-      , mAllDayYN: true
+      , mAllDay: true
       , mStartHour: null
       , mStartMinute: null
       , mEndHour: null
       , mEndMinute: null
-      , mEventId: null
+      , mPublicId: null
       , mGroupId: null
       , mHostNickName: null
       , mMeetupType: null
       , mTitle: null
-      , mMemo: null
+      , mEventMemo: null
     };
-    console.log("ㅇ11ㅇㅇ");
 
 
     if(eventFlag){
@@ -158,7 +153,7 @@ function modalSetting(eventFlag,data){
         }
 
         if(variables.mStartDate != variables.mEndDate){
-            variables.mAllDayYN = false;
+            variables.mAllDay = false;
         }
 
         toggleAllDayRadioButton(variables.mAllDayYN);
@@ -173,22 +168,54 @@ function modalSetting(eventFlag,data){
     variables.mStartMinute = data.event.startStr.substring(14, 16);
     variables.mEndHour = data.event.endStr.substring(11, 13);
     variables.mEndMinute = data.event.endStr.substring(14, 16);
-    variables.mEventId = data.event._def.groupId;
+    variables.mPublicId = data.event._def.publicId;
     variables.mGroupId = data.event._def.groupId;
     variables.mHostId = data.event._def.extendedProps.hostId;
     variables.mHostNickName = data.event._def.extendedProps.hostNickName;
     variables.mMeetupType = data.event._def.extendedProps.meetupType;
-    variables.mTitle = data.event._def.title;
-    variables.mMemo = data.event._def.extendedProps.memo;
-    variables.mAllDayYN= data.event._def.allDay;
+    variables.mMeetupTitle = data.event._def.title;
+    variables.mEventMemo = data.event._def.extendedProps.memo;
+    variables.mAllDay= data.event._def.allDay;
 
-    console.log("이미 등록된 이벤트");
-    console.log(variables);
-    //모달에 세팅하기  / 수정하기 / 삭제하기
+
+<!--    sync($(".modal"),variables);-->
+
+        console.log(test = variables);
+        $("#startDate").datepicker('setDate',variables.mStartDate);
+        $("#endDate").datepicker('setDate',variables.mEndDate);
+        $("#startHour").val(variables.mStartHour);
+        $("#startMinute").val(variables.mStartMinute);
+        $("#endHour").val(variables.mEndHour);
+        $("#endMinute").val(variables.mEndMinute);
+        $('input[name="meetupType"][value="' + variables.mMeetupType + '"]').prop('checked', true);
+        $('input[name="allDay"][value="' + variables.mAllDay + '"]').prop('checked', true);
+        $("#meetupTitle").val(variables.mMeetupTitle);
+        $("#eventMemo").val(variables.mEventMemo);
+        $("#groupId").val(variables.mGroupId);
+        $("#publicId").val(variables.mPublicId);
+        $("#hostId").val(variables.mHostId);
+        $("#hostName").val(variables.mHostNickName);
+
+//여기까지함 종일여부 안뜨는거, 모달 꺼도 시간체크 빨간불 뜨는거, 이미 등록된 이벤트일 때 모달 세팅하는거하기
 
     }
 
 }
+
+<!--미사용-->
+function sync(jqueryClass,variables){
+    let id;
+    jqueryClass.find('input:not(:radio), textarea').each( function ( idx, element ) {
+        id="m"+this.id.substring(0,1).toUpperCase()+this.id.substring(1);
+
+        if(!(this.id=="startDate" || this.id=="endDate")) {
+           $(this).val(variables[id]);
+        }
+
+    });
+<!--    datePickerDateSetting();-->
+}
+
 
 function toggleAllDayRadioButton(flag) {
   var allDayRadioButtons = $("#allDayRadioDiv");
@@ -205,17 +232,17 @@ function toggleAllDayRadioButton(flag) {
 
 function initModal(){
     $("#startHour").val("19");
-    $("#startMinutes").val("30");
+    $("#startMinute").val("30");
     $("#endHour").val("22");
-    $("#endMinutes").val("00");
+    $("#endMinute").val("00");
     $('input[name="allDay"][value="N"]').prop('checked', true);
     $('input[name="meetupType"][value="badminton"]').prop('checked', true);
     $("#meetupTitle").val('');
     $("#eventMemo").val('');
     $("#eventEndHourError").css('display','none');
-    $("#endHour,#endMinutes").removeClass('input-error');
+    $("#endHour,#endMinute").removeClass('input-error');
     $("#eventEndHourError").css('display','none');
-    $("#endHour,#endMinutes").removeClass('input-error');
+    $("#endHour,#endMinute").removeClass('input-error');
     changeAllDayCheck(false);
 }
 
@@ -245,8 +272,8 @@ function saveSchedule(){
         startDate = startDate+'T'+"00:00:00";
         endDate = endDate+'T'+"00:00:00";
     } else {
-        startDate = startDate+'T'+$("#startHour").val()+":"+$("#startMinutes").val()+":00";
-        endDate = endDate+'T'+$("#endHour").val()+":"+$("#endMinutes").val()+":00";
+        startDate = startDate+'T'+$("#startHour").val()+":"+$("#startMinute").val()+":00";
+        endDate = endDate+'T'+$("#endHour").val()+":"+$("#endMinute").val()+":00";
     }
 
     //오늘, 달력 전 후 구현 / 이미 등록된 이벤트 눌렀을 때 팝업에 세팅하기  구현 / 이벤트 수정 및 삭제 구현/
@@ -282,7 +309,6 @@ function saveSchedule(){
 
 
 function loadMeetupList(initialDate,groupIdList){
-
     $.ajax({
         type: "POST"
         , url: "/meetup"
@@ -297,14 +323,14 @@ function loadMeetupList(initialDate,groupIdList){
             alert(xhr.responseText);
         }
         ,  complete: function() {
-            console.log("가져오기완료");
         }
     });
 }
 
 function setDefaultCalendarDate(eventList) {
   eventList.map(function(result) {
-    var evt = {
+    let evt = {
+      id: result.id,
       title: result.meetupTitle,
       start: result.startDate,
       end: result.endDate,
@@ -317,14 +343,15 @@ function setDefaultCalendarDate(eventList) {
         memo: result.memo
       }
     };
-     groupIdList.push(evt.groupId);
+     groupIdList.push(evt.id);
      calendar.addEvent(evt);
   });
 }
 
 function setCalendarDate(result){
     var eventParam = {
-        title: result.meetupTitle
+        id:result.id
+    ,   title: result.meetupTitle
     ,   start: result.startDate
     ,   end: result.endDate
     ,   allDay : (result.allDayYN === "true")
@@ -361,20 +388,20 @@ function checkTime() {
     var startDate = new Date($("#startDate").val());
     var endDate = new Date($("#endDate").val());
     var startHour = parseInt($('#startHour').val());
-    var startMinutes = parseInt($('#startMinutes').val());
+    var startMinute = parseInt($('#startMinute').val());
     var endHour = parseInt($('#endHour').val());
-    var endMinutes = parseInt($('#endMinutes').val());
-    var startTime = startHour * 60 + startMinutes;
-    var endTime = endHour * 60 + endMinutes;
+    var endMinute = parseInt($('#endMinute').val());
+    var startTime = startHour * 60 + startMinute;
+    var endTime = endHour * 60 + endMinute;
 
     if (endDate > startDate || (endDate.getTime() === startDate.getTime() && endTime >= startTime)) {
         $("#eventEndHourError").css('display', 'none');
-        $("#endHour,#endMinutes").removeClass('input-error');
+        $("#endHour,#endMinute").removeClass('input-error');
 
         return true;
     }
         $("#eventEndHourError").css('display','contents');
-        $("#endHour,#endMinutes").addClass('input-error');
+        $("#endHour,#endMinute").addClass('input-error');
     return false;
 }
 
@@ -382,7 +409,7 @@ function changeAllDayCheck(obj){
     if(obj.value == 'Y'){
         $('.time').prop('disabled', true);
        $("#eventEndHourError").css('display','none');
-       $("#endHour,#endMinutes").removeClass('input-error');
+       $("#endHour,#endMinute").removeClass('input-error');
     } else {
         $('.time').prop('disabled', false);
         checkTime();
@@ -418,8 +445,6 @@ $("#startDate, #endDate").on("change", function() {
     checkTime();
 
 });
-
-
  </script>
     <!-- calendar 태그 -->
     <div id="calendar-container" class="my-3 mx-3">
@@ -459,7 +484,7 @@ $("#startDate, #endDate").on("change", function() {
                             <option value="21">21시</option>
                             <option value="22">22시</option>
                         </select>
-                        <select class="form-control time" id="startMinutes">
+                        <select class="form-control time" id="startMinute">
                             <option value="00">00분</option>
                             <option value="05">05분</option>
                             <option value="10">10분</option>
@@ -494,7 +519,7 @@ $("#startDate, #endDate").on("change", function() {
                             <option value="21">21시</option>
                             <option value="22" selected>22시</option>
                         </select>
-                        <select class="form-control time" id="endMinutes" onchange="checkTime()">
+                        <select class="form-control time" id="endMinute" onchange="checkTime()">
                             <option value="00" selected>00분</option>
                             <option value="05">05분</option>
                             <option value="10">10분</option>
@@ -572,7 +597,10 @@ $("#startDate, #endDate").on("change", function() {
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
                         <button type="button" class="btn btn-primary" onclick="saveSchedule()">일정 저장하기</button>
                     </div>
-                    <input type="hidden" id="groupId">
+                    <input type="text" id="groupId">
+                    <input type="text" id="publicId">
+                    <input type="text" id="hostId">
+                    <input type="text" id="hostName">
                 </div>
             </div>
         </div>

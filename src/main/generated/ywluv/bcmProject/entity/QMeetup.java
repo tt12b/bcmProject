@@ -32,6 +32,8 @@ public class QMeetup extends EntityPathBase<Meetup> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
+    public final NumberPath<Long> groupId = createNumber("groupId", Long.class);
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     //inherited

@@ -115,7 +115,8 @@ public class testInit {
 
                 // Meetup 객체 생성
                 Meetup meetup = new Meetup(
-                        null
+                         null
+                        ,null
                         , meetupTitle
                         , meetupStartDate
                         , meetupEndDate

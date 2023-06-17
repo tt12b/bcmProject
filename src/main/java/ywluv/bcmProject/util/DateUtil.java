@@ -28,4 +28,29 @@ public class DateUtil {
         return manipulatedDate.format(DateTimeFormatter.ISO_DATE);
     }
 
+    /**
+     *
+     * @param dateString(yyyy/mm/dd)Or(yyyy-mm-dd)
+     * @return LocalDateTime
+     */
+    public static LocalDateTime StringToLocalDateTime(String dateString) {
+       ;
+        String defaultValue ="T00:00:00.000000000";
+
+        return LocalDateTime.parse((dateString+defaultValue).replace('/','-'));
+    }
+
+    /**
+     *
+     * @param dateString(yyyy/mm/dd)Or(yyyy-mm-dd)
+     * @return LocalDateTime
+     */
+    public static LocalDateTime StringTOLastMomentOfDay(String dateString) {
+        ;
+        String defaultValue ="T23:59:59.999";
+
+        return LocalDateTime.parse((dateString+defaultValue).replace('/','-'));
+    }
 }
+
+

@@ -41,3 +41,4 @@ function dateToYYYYMMString(date){
 
     return year + '-' + month;
 }
+

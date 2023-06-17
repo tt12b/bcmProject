@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ywluv.bcmProject.util.DateUtil.StringTOLastMomentOfDay;
+import static ywluv.bcmProject.util.DateUtil.StringToLocalDateTime;
+
 @Service
 @Transactional(readOnly = true)
 public class MeetupService {
@@ -37,10 +40,20 @@ public class MeetupService {
         return meetupRepository.save(meetup).getId();
     }
 
-    public MeetupDto findById(Long id){
+    public Meetup findById(Long id){
         return meetupRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("모임을 찾을 수 없습니다. :" + id))
-                .toDto();
+                .orElseThrow(() -> new IllegalArgumentException("모임을 찾을 수 없습니다. :" + id));
+
+    }
+
+    public List<MeetupDto> findDailyMeetup(String initialDate){
+
+        ArrayList<Long> groupIdList = new ArrayList<>();
+        groupIdList.add(9999L);
+        LocalDateTime paramFrom = StringToLocalDateTime(initialDate);
+        LocalDateTime paramTo = StringTOLastMomentOfDay(initialDate);
+
+        return meetupRepository.findMeetupsByDateBetween(paramFrom,paramTo,groupIdList);
     }
 
     public List<MeetupDto> findAllMeetups(String initialDate,List<Long> groupIdList){
@@ -56,20 +69,12 @@ public class MeetupService {
             groupIdList.add(9999L);
         }
 
-        System.out.println("기준일은 ");
-        System.out.println(initialDate);
         //기준일 31일 전후로 가져온다.
         String from = DateUtil.manipulateDate(initialDate, -31);
         String to = DateUtil.manipulateDate(initialDate,+31);
 
         LocalDateTime paramFrom = LocalDateTime.parse(from+"T00:00:00");
         LocalDateTime paramTo = LocalDateTime.parse(to+"T00:00:00");
-
-        System.out.println("프롬 ");
-        System.out.println(paramFrom);
-
-        System.out.println("투 ");
-        System.out.println(paramTo);
 
         return meetupRepository.findMeetupsByDateBetween(paramFrom,paramTo,groupIdList);
     }

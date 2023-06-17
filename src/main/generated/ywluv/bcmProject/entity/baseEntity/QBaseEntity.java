@@ -26,6 +26,8 @@ public class QBaseEntity extends EntityPathBase<BaseEntity> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
+    public final StringPath delete = createString("delete");
+
     public final StringPath lastModifiedBy = createString("lastModifiedBy");
 
     //inherited

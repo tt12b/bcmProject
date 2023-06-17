@@ -32,7 +32,8 @@ public interface MeetupRepository extends JpaRepository<Meetup,Long> {
             "                               ,   m.meetupMemo" +
             ") FROM Meetup m " +
             " WHERE :paramFrom <= m.meetupEndDate AND :paramTo >= m.meetupStartDate" +
-            " AND m.id NOT IN (:groupIdList)"
+            " AND m.id NOT IN (:groupIdList) " +
+            " AND m.delete<>'Y'"
             )
 
         List<MeetupDto> findMeetupsByDateBetween(@Param("paramFrom") LocalDateTime paramFrom, @Param("paramTo") LocalDateTime paramTo

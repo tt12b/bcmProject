@@ -30,6 +30,9 @@ public class QMember extends EntityPathBase<Member> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
+    //inherited
+    public final StringPath delete = _super.delete;
+
     public final NumberPath<Integer> deposit = createNumber("deposit", Integer.class);
 
     public final ListPath<DepositHistory, QDepositHistory> depositHistories = this.<DepositHistory, QDepositHistory>createList("depositHistories", DepositHistory.class, QDepositHistory.class, PathInits.DIRECT2);

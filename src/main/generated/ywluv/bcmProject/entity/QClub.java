@@ -30,6 +30,9 @@ public class QClub extends EntityPathBase<Club> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
+    //inherited
+    public final StringPath delete = _super.delete;
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     //inherited

@@ -67,6 +67,15 @@ public class MeetupController {
 
     }
 
+    /**
+     * 하루치 meetup가져오기
+     */
+    @PostMapping("/dailyMeetup")
+    @ResponseBody
+    public List<MeetupDto> dailyMeetup(    @RequestParam("initialDate") String initialDate)
+    {
+            return meetupService.findDailyMeetup(initialDate);
+    }
 
 
     @PostMapping("/meetupMake")
@@ -74,10 +83,19 @@ public class MeetupController {
     public MeetupDto meetupMake(@RequestBody MeetupDto meetupDto){
 
         Long meetupId = meetupService.makeMeetup(meetupDto);
-        MeetupDto result = meetupService.findById(meetupId);
+        MeetupDto result = meetupService.findById(meetupId).toDto();
 
-        System.out.println("결과-------------------------");
-        System.out.println(result);
         return result;
+    }
+
+    @PostMapping("/meetupDelete")
+    @ResponseBody
+    public Long meetupDelete(@RequestParam("meetupId") Long meetupId ){
+
+        Meetup findMeetup = meetupService.findById(meetupId);
+        findMeetup.setDelete("Y");
+        Long id = meetupService.makeMeetup(findMeetup);
+
+        return id;
     }
 }

@@ -2,8 +2,14 @@ package ywluv.bcmProject.util;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.convert.Jsr310Converters;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static ywluv.bcmProject.util.DateUtil.StringToLocalDateTime;
 
 
 class DateUtilTest {
@@ -12,16 +18,12 @@ class DateUtilTest {
 
     @Test
     void basicTest(){
-        String defaultDate = "2023-06-30";
-        int startDate = -10;
-        int endDate = 10;
+        String defaultDate = "2023/06/30";
 
-        String result1 = dateUtil.manipulateDate(defaultDate, startDate);
-        String result2 = dateUtil.manipulateDate(defaultDate, endDate);
+        System.out.println(StringToLocalDateTime(defaultDate));
 
-        System.out.println(result1);
-        System.out.println(result2);
 
     }
+
 
 }

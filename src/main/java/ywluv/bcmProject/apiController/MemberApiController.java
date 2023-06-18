@@ -27,7 +27,7 @@ public class MemberApiController {
         return memberClubService.search(condition, pageable);
     }
 
-    @GetMapping("/test")
+    @GetMapping("/test1")
     public Page<MemberDto> test(@ModelAttribute MemberSearchCondition condition, Pageable pageable){
 
         System.out.println("====================");

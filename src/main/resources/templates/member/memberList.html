@@ -21,27 +21,30 @@
                 <div class="table-responsive">
                     <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
                         <thead>
-                        <tr>
-                            <th>닉네임</th>
-                            <th>이름</th>
-                            <th>회원구분</th>
-                            <th>소속클럽</th>
-                            <th>예치금</th>
-                            <th style="display:none">id</th>
-                        </tr>
-                        </thead>
+                            <tr>
+                                <th><input type="checkbox" name="select_all" value="1" id="select-all"></th>
+                                <th>닉네임</th>
+                                <th>이름</th>
+                                <th>회원구분</th>
+                                <th>소속클럽</th>
+                                <th>예치금</th>
+                                <th style="display:none">id</th>
+                            </tr>
+                            </thead>
                         <tfoot>
-                        <tr>
-                            <th>닉네임</th>
-                            <th>이름</th>
-                            <th>회원구분</th>
-                            <th>소속클럽</th>
-                            <th>예치금</th>
-                            <th style="display:none">id</th>
-                        </tr>
+                            <tr>
+                                <th></th>
+                                <th>닉네임</th>
+                                <th>이름</th>
+                                <th>회원구분</th>
+                                <th>소속클럽</th>
+                                <th>예치금</th>
+                                <th style="display:none">id</th>
+                            </tr>
                         </tfoot>
                         <tbody>
                         <tr th:each="member : ${memberInfo}">
+                            <td></td>
                             <td th:text="${member.userNickName}"></td>
                             <td th:text="${member.userName}"></td>
                             <td th:text="${member.addressType}"></td>
@@ -51,7 +54,8 @@
                                       th:text="${member.deposit}"></span>
                                 <div style="display: inline;">
                                     <a href="#" class="btn btn-primary btn-sm">
-                                        <span class="text chulcheck" style="padding:.185rem .325rem; font-size:10ox">출석</span>
+                                        <span class="text chulcheck"
+                                              style="padding:.185rem .325rem; font-size:10ox">출석</span>
                                     </a>
                                     <a href="#" class="btn btn-success btn-sm">
                                         <span class="text" style="padding:.185rem .325rem; font-size:10ox">-1500</span>
@@ -66,7 +70,7 @@
                                     </a>
                                 </div>
                             </td>
-                            <td style="display:none" th:text="${member.memberId}"></td>
+                            <td th:text="${member.memberId}" th:hidden="true"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -75,100 +79,125 @@
         </div>
     </div>
 <script th:inline="javascript">
-    var test;
-$(document).ready(function() {
+    $(document).ready(function() {
+<!--        var a = 0;-->
+<!--      var test = (/*[[${memberInfo}]]*/);-->
+<!--      console.log(test);-->
+        <!--데이터테이블 START-->
+        var lastRowIdx = null;
+        var lastColIdx = null;
+        var table = $('#myTable').DataTable({
+              initComplete: function(settings, json) {
+              var filterRow = $(this).closest('.dataTables_wrapper').find('.dataTables_filter');
+              var customObject1 = $('<div class="customPickerDropdown" style="display: inline-block; margin: 1em; width:7em" ><input id="calandar" name="calandar" type="text" class="form-control" style="width: inherit;"></div>'); // 원하는 객체를 생성합니다.
+              var customObject2 = $('<select class="custom-select" id="meetupList" style="width:8.6rem" >  <!--<option value="" disabled style="display:none" selected>날짜를 선택하세요.</option>--></select>')
+              filterRow.prepend(customObject1); // 필터 영역에 객체를 추가합니다.
+              filterRow.prepend(customObject2); // 필터 영역에 객체를 추가합니다.
+            },
+        columnDefs: [{
+             'targets': 0,
+    <!--         'searchable': false,-->
+    <!--         'orderable': false,-->
+    <!--         'className': 'dt-body-center',-->
+             'render': function (data, type, full, meta){
+                console.log(data);
+                console.log(type);
+                console.log(full);
+                console.log(meta);
 
-    <!--데이터테이블 START-->
-    var lastRowIdx = null;
-    var lastColIdx = null;
-    var table = $('#myTable').DataTable({
-          initComplete: function(settings, json) {
-          var filterRow = $(this).closest('.dataTables_wrapper').find('.dataTables_filter');
-          var customObject1 = $('<div class="customPickerDropdown" style="display: inline-block; margin: 1em; width:7em" ><input id="calandar" name="calandar" type="text" class="form-control" style="width: inherit;"></div>'); // 원하는 객체를 생성합니다.
-          var customObject2 = $('<select class="custom-select" id="meetupList" style="width:8.6rem" >  <option value="" disabled style="display:none" selected>날짜를 선택하세요.</option></select>')
-          filterRow.prepend(customObject1); // 필터 영역에 객체를 추가합니다.
-          filterRow.prepend(customObject2); // 필터 영역에 객체를 추가합니다.
-        }
-    });
-
-    $('#myTable tbody')
-        .on('mouseover', 'td', function () {
-            var rowIdx = table.cell(this).index().row;
-            var colIdx = table.cell(this).index().column;
-
-            $(table.cells().nodes()).removeClass('highlight');
-
-            $(table.column(colIdx).nodes()).addClass('highlight');
-            $(table.row(rowIdx).nodes()).addClass('highlight');
-
-            if (lastRowIdx !== null && lastRowIdx !== rowIdx) {
-                $(table.row(lastRowIdx).nodes()).removeClass('highlight');
-            }
-
-            lastRowIdx = rowIdx;
-            lastColIdx = colIdx;
-        })
-        .on('mouseleave', function () {
-            $( table.cells().nodes() ).removeClass( 'highlight' );
-            lastRowIdx = null;
-            lastColIdx = null;
+                 return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
+             }
+          }]
         });
-    <!--데이터테이블 END-->
-
-    <!--부트스트랩 데이트 피커  START-->
-   $('#calandar').dateDropper({
-
-   }).on('change', function(e) {
-       $('#meetupList').empty();
-       $("#meetupList").append('<option value="" disabled style="display:none" selected>날짜를 선택하세요.</option>');
-       getDailyMeetupList($(this).val());
-   })
-    <!--부트스트랩 데이트 피커  END-->
 
 
-    <!-- 동적객체에 대한 이벤트    -->
-     $(document).on("click",".chulcheck",function(event){
-            alert($(this).text());
-      });
+        $('#myTable tbody')
+            .on('mouseover', 'td', function () {
+                var rowIdx = table.cell(this).index().row;
+                var colIdx = table.cell(this).index().column;
 
-    <!-- 동적객체에 대한 이벤트    -->
+                $(table.cells().nodes()).removeClass('highlight');
 
-});
+                $(table.column(colIdx).nodes()).addClass('highlight');
+                $(table.row(rowIdx).nodes()).addClass('highlight');
 
-function getDailyMeetupList(initialDate,groupIdList){
-    $.ajax({
-        type: "POST"
-        , url: "/dailyMeetup"
-        , data: {
-                    initialDate: initialDate
+                if (lastRowIdx !== null && lastRowIdx !== rowIdx) {
+                    $(table.row(lastRowIdx).nodes()).removeClass('highlight');
                 }
-        , success: function(result) {
-            console.log("아뭔가왔나");
-            console.log(result);
-            addMeetupLis(result);
-        }
-        , error: function(xhr, status, error) {
-            alert(xhr.responseText);
-        }
-        ,  complete: function() {
-        console.log("보낸후");
-        }
+
+                lastRowIdx = rowIdx;
+                lastColIdx = colIdx;
+            })
+            .on('mouseleave', function () {
+                $( table.cells().nodes() ).removeClass( 'highlight' );
+                lastRowIdx = null;
+                lastColIdx = null;
+            });
+
+         $('#select-all').on('click', function(){
+         //중
+           var rows = table.rows({ 'search': 'applied' }).nodes();
+           $('input[type="checkbox"]', rows).prop('checked', this.checked);
+        });
+        <!--데이터테이블 END-->
+
+        <!--부트스트랩 데이트 피커  START-->
+       $('#calandar').dateDropper({})
+        .on('change', function(e) {
+           $('#meetupList').empty();
+    <!--       $("#meetupList").append('<option value="" disabled style="display:none" selected>날짜를 선택하세요.</option>');-->
+           getDailyMeetupList($(this).val());
+       })
+        <!--부트스트랩 데이트 피커  END-->
+        getDailyMeetupList($('#calandar').val());
+
+        <!-- 동적객체에 대한 이벤트    -->
+         $(document).on("click",".chulcheck",function(event){
+                alert($(this).text());
+          });
+
+
+
+
+
+        <!-- 동적객체에 대한 이벤트    -->
+
     });
 
-}
+    function getDailyMeetupList(initialDate){
+        $.ajax({
+            type: "POST"
+            , url: "/dailyMeetup"
+            , data: {
+                        initialDate: initialDate
+                    }
+            , success: function(result) {
+                addMeetupLis(result);
+            }
+            , error: function(xhr, status, error) {
+                alert(xhr.responseText);
+            }
+            ,  complete: function() {
+            console.log("보낸후");
+            }
+        });
 
-function addMeetupLis(data){
-//옵션에 추가하는거 하는중..
-console.log(data)
-    for(idx in data){
-        $("#meetupList").append(
-            $('<option>', {
-                value: data[idx].id
-            ,   text: data[idx].startDate+"시작_"+data[idx].meetupTitle
-            })
-        )
-    };
-}
+    }
+
+    function addMeetupLis(data){
+        if(data.length==0){
+            $("#meetupList").append('<option value="" disabled style="display:none" selected>일정이 없습니다.</option>');
+            return;
+        }
+        for(idx in data){
+            $("#meetupList").append(
+                $('<option>', {
+                    value: data[idx].id
+                ,   text: data[idx].startDate.substring(0,10)+"/"+data[idx].meetupTitle
+                })
+            )
+        };
+    }
 </script>
 </th:block>
 </html>

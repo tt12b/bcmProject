@@ -22,7 +22,7 @@
                     <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                <th><input type="checkbox" name="select_all" value="1" id="select-all"></th>
+                                <th style="text-align:center; padding-right:12px"--><input type="checkbox" id="select-all"></th>
                                 <th>닉네임</th>
                                 <th>이름</th>
                                 <th>회원구분</th>
@@ -44,7 +44,7 @@
                         </tfoot>
                         <tbody>
                         <tr th:each="member : ${memberInfo}">
-                            <td></td>
+                            <td style="text-align:center;"></td>
                             <td th:text="${member.userNickName}"></td>
                             <td th:text="${member.userName}"></td>
                             <td th:text="${member.addressType}"></td>
@@ -79,6 +79,7 @@
         </div>
     </div>
 <script th:inline="javascript">
+var test;
     $(document).ready(function() {
 <!--        var a = 0;-->
 <!--      var test = (/*[[${memberInfo}]]*/);-->
@@ -93,19 +94,27 @@
               var customObject2 = $('<select class="custom-select" id="meetupList" style="width:8.6rem" >  <!--<option value="" disabled style="display:none" selected>날짜를 선택하세요.</option>--></select>')
               filterRow.prepend(customObject1); // 필터 영역에 객체를 추가합니다.
               filterRow.prepend(customObject2); // 필터 영역에 객체를 추가합니다.
+
+              var entriesRow = $(this).closest('.dataTables_wrapper').find('.dataTables_length');
+              var customObject3 = $('<div style="margin: 10px;display: initial;"><a href="#" onclick="test()" class="btn btn-primary btn"> <span class="text" style="padding:.185rem .325rem; font-size:10ox">일괄출석</span></a></div>');
+              entriesRow.append(customObject3); // 필터 영역에 객체를 추가합니다.
+
+
+
             },
         columnDefs: [{
              'targets': 0,
     <!--         'searchable': false,-->
     <!--         'orderable': false,-->
-    <!--         'className': 'dt-body-center',-->
+             'className': 'dt-body-center',
              'render': function (data, type, full, meta){
-                console.log(data);
-                console.log(type);
-                console.log(full);
-                console.log(meta);
+<!--                console.log(data);-->
+<!--                console.log(type);-->
+<!--                console.log(full);-->
+<!--                console.log(meta);-->
 
                  return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
+<!--                 return '<input type="checkbox" name="id[]">';-->
              }
           }]
         });
@@ -134,12 +143,13 @@
                 lastColIdx = null;
             });
 
+        //셀렉 올체크
          $('#select-all').on('click', function(){
-         //중
            var rows = table.rows({ 'search': 'applied' }).nodes();
            $('input[type="checkbox"]', rows).prop('checked', this.checked);
-        });
+         });
         <!--데이터테이블 END-->
+
 
         <!--부트스트랩 데이트 피커  START-->
        $('#calandar').dateDropper({})
@@ -178,7 +188,7 @@
                 alert(xhr.responseText);
             }
             ,  complete: function() {
-            console.log("보낸후");
+<!--            console.log("보낸후");-->
             }
         });
 
@@ -197,6 +207,10 @@
                 })
             )
         };
+    }
+
+    function test(){
+            //중  체크된 애들 가져와서 일괄 출석
     }
 </script>
 </th:block>

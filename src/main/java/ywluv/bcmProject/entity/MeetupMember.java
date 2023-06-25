@@ -11,7 +11,7 @@ import ywluv.bcmProject.entity.baseEntity.BaseEntity;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@ToString(of = {"member", "meetup"})
+@ToString(exclude = {"member", "meetup"})
 public class MeetupMember extends BaseEntity {
 
     @Id @GeneratedValue

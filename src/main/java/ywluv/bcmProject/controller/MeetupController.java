@@ -26,7 +26,6 @@ public class MeetupController {
 
     private final MeetupService meetupService;
     private final MemberService memberService;
-    private final MeetupRepository meetupRepository;
 
     @GetMapping("/meetup")
     public String meetupList(Model model){
@@ -97,5 +96,18 @@ public class MeetupController {
         Long id = meetupService.makeMeetup(findMeetup);
 
         return id;
+    }
+
+
+
+    @PostMapping("/meetupCheckAttendance")
+    @ResponseBody
+    public String meetupCheckAttendance(  @RequestParam("meetupId") Long meetupId
+                                    ,    @RequestParam("memberIdList") String memberIdList)
+    {
+
+        meetupService.saveMeetupMembers(meetupId,memberIdList);
+
+        return "보낸다";
     }
 }

@@ -239,13 +239,52 @@ var table;
     }
 
     function bulkAttendance(){
-        var result = getCheckUserList();
+        let selectMeetupText = $("#meetupList").find(":selected").text();
+        let selectMeetupId = $("#meetupList").val()
+        if(!selectMeetupId){
+            alert("선택된 일정이 없습니다");
+            return;
+        }
+
+        let result = getCheckUserList();
+
+        if(!result){
+            alert("선택된 회원이 없습니다.");
+            return;
+        }
+
+        let nickNameList = result.nickNameList.substring(1,result.nickNameList.length);
+        let idList = result.idList.substring(1,result.idList.length)
+        let confirmMessage = selectMeetupText + "모임에 " + nickNameList + " 회원의 출석을 체크합니다.";
 
 
-            console.log("일괄출석");
+        if(confirm(confirmMessage)){
+            chulchek(selectMeetupId,idList);
+            alert("출석 완료");
+        } else {
+            alert("출석 취소");
+        }
 
     }
 
+    function chulchek(meetupId,memberIdList){
+        $.ajax({
+            type: "POST"
+            , url: "/meetupCheckAttendance"
+            , data: {
+                        meetupId: meetupId
+                    ,   memberIdList: memberIdList
+                    }
+            , success: function(result) {
+                console.log("result");
+            }
+            , error: function(xhr, status, error) {
+                alert(xhr.responseText);
+            }
+            ,  complete: function() {
+            }
+        });
+    }
 
 
 </script>

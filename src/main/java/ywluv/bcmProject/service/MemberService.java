@@ -64,7 +64,6 @@ public class MemberService {
      * @return Member
      */
     public Member findById(Long memberId) {
-        System.out.println("==여기오니?==");
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다. :" + memberId));
     }

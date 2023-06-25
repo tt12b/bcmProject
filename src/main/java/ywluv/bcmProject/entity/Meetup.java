@@ -74,6 +74,12 @@ public class Meetup extends BaseEntity {
         return meetupDto;
     }
 
+    public void addMeetupMember(MeetupMember meetupMember) {
+
+        meetupMembers.add(meetupMember);
+        meetupMember.setMeetup(this);
+    }
+
 
 
 }

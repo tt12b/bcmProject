@@ -22,7 +22,8 @@ $(document).ready(function() {
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+<!--          right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'-->
+          right: 'dayGridMonth,listWeek'
         },
         initialView: 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
         initialDate: null, // 초기 날짜 설정 (설정하지 않으면 오늘 날짜가 보인다.)
@@ -649,13 +650,168 @@ function allDayCheck(){
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                        <button type="button" id="deleteSchedule" class="btn btn-danger" onclick="deleteSchedule()">일정 삭제하기</button>
+                        <button type="button" id="deleteSchedule" class="btn btn-danger" onclick="deleteSchedule()">일정 취소하기</button>
                         <button type="button" class="btn btn-primary" onclick="saveSchedule()">일정 저장하기</button>
                     </div>
-                    <input type="text" id="groupId">
-                    <input type="text" id="publicId">
-                    <input type="text" id="hostId">
-                    <input type="text" id="hostName">
+                    <input type="hidden" id="groupId">
+                    <input type="hidden" id="publicId">
+                    <input type="hidden" id="hostId">
+                    <input type="hidden" id="hostName">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="meetupModalDetail" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">일정을 입력하세요</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group customPicker">
+                        <label for="startDate">날짜:</label>
+                        <input type="text" class="form-control" id="startDate2" style="display:inline; width:45%"
+                               placeholder="시작일" readonly>
+                        <input type="text" class="form-control" id="endDate2" style="display:inline; width:45%"
+                               placeholder="종료일" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="startHour">시작시간:</label>
+                        <select class="form-control time" id="startHour2" style="margin-bottom:0.5rem">
+                            <option value="09">09시</option>
+                            <option value="10">10시</option>
+                            <option value="11">11시</option>
+                            <option value="12">12시</option>
+                            <option value="13">13시</option>
+                            <option value="14">14시</option>
+                            <option value="15">15시</option>
+                            <option value="16">16시</option>
+                            <option value="17">17시</option>
+                            <option value="18">18시</option>
+                            <option value="19" selected>19시</option>
+                            <option value="20">20시</option>
+                            <option value="21">21시</option>
+                            <option value="22">22시</option>
+                        </select>
+                        <select class="form-control time" id="startMinute2">
+                            <option value="00">00분</option>
+                            <option value="05">05분</option>
+                            <option value="10">10분</option>
+                            <option value="15">15분</option>
+                            <option value="20">20분</option>
+                            <option value="25">25분</option>
+                            <option value="30" selected>30분</option>
+                            <option value="35">35분</option>
+                            <option value="40">40분</option>
+                            <option value="45">45분</option>
+                            <option value="50">50분</option>
+                            <option value="55">55분</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="endHour">종료시간:</label>
+                        <p id="eventEndHourError2" class="error-message" style="display: none;"> 종료시간은 시작시간보다 늦어야합니다.</p>
+                        <select class="form-control time" id="endHour2" style="margin-bottom:0.5rem"
+                                onchange="checkTime()">
+                            <option value="09">09시</option>
+                            <option value="10">10시</option>
+                            <option value="11">11시</option>
+                            <option value="12">12시</option>
+                            <option value="13">13시</option>
+                            <option value="14">14시</option>
+                            <option value="15">15시</option>
+                            <option value="16">16시</option>
+                            <option value="17">17시</option>
+                            <option value="18">18시</option>
+                            <option value="19">19시</option>
+                            <option value="20">20시</option>
+                            <option value="21">21시</option>
+                            <option value="22" selected>22시</option>
+                        </select>
+                        <select class="form-control time" id="endMinute2" onchange="checkTime()">
+                            <option value="00" selected>00분</option>
+                            <option value="05">05분</option>
+                            <option value="10">10분</option>
+                            <option value="15">15분</option>
+                            <option value="20">20분</option>
+                            <option value="25">25분</option>
+                            <option value="30">30분</option>
+                            <option value="35">35분</option>
+                            <option value="40">40분</option>
+                            <option value="45">45분</option>
+                            <option value="50">50분</option>
+                            <option value="55">55분</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="allDayRadioDiv2">
+                        <label for="allDay">종일 여부:</label>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" class="form-check-input" value="Y" id="allDay2" name="allDay"
+                                       onclick="changeAllDayCheck(this)"> 예
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="radio" checked="checked" class="form-check-input" value="N" name="allDay"
+                                       onclick="changeAllDayCheck(this)"> 아니오
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="meetupType">모임 종류:</label>
+                        <div class="form-check" style="padding-left: 0;">
+                            <label class="form-check-label">
+                                <input type="radio" name="meetupType" id="meetupType2" value="badminton"
+                                       checked="checked"> 배드민턴
+                            </label>
+
+                            <label class="form-check-label">
+                                <input type="radio" name="meetupType" value="boardGame"> 보드게임
+                            </label>
+
+                            <label class="form-check-label">
+                                <input type="radio" name="meetupType" value="overallGathering"> 전체 회식
+                            </label>
+
+                            <label class="form-check-label">
+                                <input type="radio" name="meetupType" value="partialGathering"> 부분 회식
+                            </label>
+
+                            <label class="form-check-label">
+                                <input type="radio" name="meetupType" value="walk"> 산책
+                            </label>
+
+                            <label class="form-check-label">
+                                <input type="radio" name="meetupType" value="shopping"> 쇼핑
+                            </label>
+
+                            <label class="form-check-label">
+                                <input type="radio" name="meetupType" value="etc"> 기타
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="meetupTitle">일정명 <span class="required-field">*</span></label>
+                            <input type="text" class="form-control" id="meetupTitle2" onblur="meetupTitleCheck()">
+                            <p id="meetupTitleError2" class="error-message" style="display:none"> 일정명을 입력하세요 </p>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventMemo">메모</label>
+                            <textarea class="form-control" id="eventMemo2" rows="3" maxlength="300"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                        <button type="button" id="deleteSchedule2" class="btn btn-danger" onclick="deleteSchedule()">일정 취소하기</button>
+                        <button type="button" class="btn btn-primary" onclick="saveSchedule()">일정 저장하기</button>
+                    </div>
+                    <input type="hidden" id="groupId2">
+                    <input type="hidden" id="publicId2">
+                    <input type="hidden" id="hostId2">
+                    <input type="hidden" id="hostName2">
                 </div>
             </div>
         </div>

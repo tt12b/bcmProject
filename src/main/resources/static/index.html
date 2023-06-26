@@ -1,71 +1,137 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.104.2">
-    <title>Headers · Bootstrap v5.2</title>
-    <!-- datepicker 는 jquery 1.7.1 이상 bootstrap 2.0.4 이상 버전이 필요함 -->
-    <!-- jQuery가 먼저 로드 된 후 datepicker가 로드 되어야함.-->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" >
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/locales/bootstrap-datepicker.ko.min.js" ></script>
-
+    <!-- toast grid -->
+    <script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+    <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
 </head>
-<body>
-<!-- 우선 body 부분에 input tag를 하나 만들어준다. -->
-<body>
-<!-- 시작시 기본 날짜 설정은 value를 이용 -->
-<input type="text" id="datePicker" class="form-control" value="2019-06-27" />
-</body>
 
-
+<body>
 <script>
-   $('#datePicker')
-      .datepicker({
-         format: 'yyyy-mm-dd', //데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
-         startDate: '-10d', //달력에서 선택 할 수 있는 가장 빠른 날짜. 이전으로는 선택 불가능 ( d : 일 m : 달 y : 년 w : 주)
-         endDate: '+10d', //달력에서 선택 할 수 있는 가장 느린 날짜. 이후로 선택 불가 ( d : 일 m : 달 y : 년 w : 주)
-         autoclose: true, //사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
-         calendarWeeks: false, //캘린더 옆에 몇 주차인지 보여주는 옵션 기본값 false 보여주려면 true
-         clearBtn: false, //날짜 선택한 값 초기화 해주는 버튼 보여주는 옵션 기본값 false 보여주려면 true
-         datesDisabled: ['2019-06-24', '2019-06-26'], //선택 불가능한 일 설정 하는 배열 위에 있는 format 과 형식이 같아야함.
-         daysOfWeekDisabled: [0, 6], //선택 불가능한 요일 설정 0 : 일요일 ~ 6 : 토요일
-         daysOfWeekHighlighted: [3], //강조 되어야 하는 요일 설정
-         disableTouchKeyboard: false, //모바일에서 플러그인 작동 여부 기본값 false 가 작동 true가 작동 안함.
-         immediateUpdates: false, //사용자가 보는 화면으로 바로바로 날짜를 변경할지 여부 기본값 :false
-         multidate: false, //여러 날짜 선택할 수 있게 하는 옵션 기본값 :false
-         multidateSeparator: ',', //여러 날짜를 선택했을 때 사이에 나타나는 글짜 2019-05-01,2019-06-01
-         templates: {
-            leftArrow: '&laquo;',
-            rightArrow: '&raquo;',
-         }, //다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징
-         showWeekDays: true, // 위에 요일 보여주는 옵션 기본값 : true
-         title: '테스트', //캘린더 상단에 보여주는 타이틀
-         todayHighlight: true, //오늘 날짜에 하이라이팅 기능 기본값 :false
-         toggleActive: true, //이미 선택된 날짜 선택하면 기본값 : false인경우 그대로 유지 true인 경우 날짜 삭제
-         weekStart: 0, //달력 시작 요일 선택하는 것 기본값은 0인 일요일
-         language: 'ko', //달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
-      })
-      .on('changeDate', function (e) {
-         /* 이벤트의 종류 */
-         //show : datePicker가 보이는 순간 호출
-         //hide : datePicker가 숨겨지는 순간 호출
-         //clearDate: clear 버튼 누르면 호출
-         //changeDate : 사용자가 클릭해서 날짜가 변경되면 호출 (개인적으로 가장 많이 사용함)
-         //changeMonth : 월이 변경되면 호출
-         //changeYear : 년이 변경되는 호출
-         //changeCentury : 한 세기가 변경되면 호출 ex) 20세기에서 21세기가 되는 순간
+    const initGrid = () => {
+    // 그리드 객체
+    const Grid = tui.Grid;
 
-         console.log(e);
-         // e.date를 찍어보면 Thu Jun 27 2019 00:00:00 GMT+0900 (한국 표준시) 위와 같은 형태로 보인다.
-      });
+    /**
+     * Grid 테마 커스텀
+     * Grid.applyTheme('striped', {...}) :
+     * @param {String} default : 프리셋 (기본)
+     * @param {String} striped : 프리셋 (줄무늬)
+     * @param {String} clean : 프리셋 (클린)
+     *      - preset theme name. Available values are 'default', 'striped' and 'clean'.
+     *      - https://nhn.github.io/tui.grid/latest/Grid#applyTheme
+     */
+    Grid.applyTheme('defualt',  {
+        cell: {
+            normal: {
+                border: 'black'
+            },
+            header: {
+                background: 'gray',
+                text: 'white'
+            },
+            evenRow: {
+                background: '#fee'
+            }
+        }
+    });
+
+    /**
+     * 그리드 설정
+     * @variable {Dom} el : 그리드 element(DOM)
+     * @variable {boolean} scrollX : X 스크롤 사용여부
+     * @variable {boolean} scrollY : Y 스크롤 사용여부
+     * @variable {boolean} draggable : 드레그 사용 여부
+     * @variable {Object} header
+     *      - @variable {Number} height : 헤더 높이
+     * @variable {Number} bodyHeight : 그리드 바디 높이
+     * @variable {*} contextMenu : 마우스 우클릭 옵션
+     * @variable {Array} columns :
+     *      - @variable {String} header : 컬럼명(헤더)
+     *      - @variable {String} name : 컬럼 name (input data와 이름이 일치해야함)
+     *      - @variable {String} align : 정렬
+     *      - @variable {Number} width : 너비
+     *      - @variable {String} whiteSpace : 줄바꿈 설정
+     *      - @variable {Function} formatter : 출력 포멧
+     * 기타 옵션은 공식 document를 참조하자.
+     */
+
+    const sampleGrid = new Grid({
+        el: document.getElementById('gridDiv'),
+        scrollX: true,
+        scrollY: true,
+        draggable: false,
+        header: { height: 30 },
+        bodyHeight: 200,
+        contextMenu: null,
+        columns: [
+            {
+                header: '날짜',
+                name: 'date',
+                align: "center",
+                width: 150,
+                whiteSpace: 'normal',
+                formatter: function (e) {
+                    return e.value
+                },
+            },
+            {
+                header: '이름',
+                name: 'name',
+                align: "left",
+                width: 100,
+                whiteSpace: 'normal',
+                formatter: function (e) {
+                    return e.value
+                },
+            },
+            {
+                header: '위치',
+                name: 'location',
+                align: "left",
+                width: 150,
+                whiteSpace: 'normal',
+                formatter: function (e) {
+                    return e.value
+                },
+            },
+        ]
+    });
+
+    return sampleGrid;
+}
+
+window.onload = () => {
+    // 그리드 설정
+    const createdGrid = initGrid();
+
+    // 샘플 데이터
+    const sampleData = [
+        {
+            date: '2022-12-04',
+            name: '석봉박1',
+            location: '부천',
+        },
+        {
+            date: '2022-12-07',
+            name: '석봉박2',
+            location: '마곡',
+        },
+        {
+            date: '2022-12-12',
+            name: '석봉박3',
+            location: '충주',
+        }
+    ];
+
+    // 그리드에 데이터 넣기(출력)
+    createdGrid.resetData(sampleData);
+}
+
 </script>
 
-
+<div id="gridDiv"></div>
 </body>
-</html>
+

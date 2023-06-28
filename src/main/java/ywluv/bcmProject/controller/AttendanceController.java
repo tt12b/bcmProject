@@ -13,7 +13,6 @@ public class AttendanceController {
     @GetMapping("/attendance")
     public String attendance(Model model){
 
-        System.out.println("ㅇㅇㅇㅇㅇㅇㅇ출석부");
         return "attendance/attendance";
 
     }

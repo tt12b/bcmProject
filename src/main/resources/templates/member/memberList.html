@@ -189,8 +189,17 @@ var table;
     });
 
     function getDailyMeetupList(initialDate){
+        <!--스프링 시큐리티 CSRF -->
+        var header = /*[[${_csrf.headerName}]]*/;
+        var token = /*[[${_csrf.token}]]*/;
+        console.log(header);
+        console.log(token);
         $.ajax({
             type: "POST"
+            	/*데이터를 전송하기 전에 헤더에 csrf값을 설정한다*/
+            , beforeSend : function(xhr){
+                xhr.setRequestHeader(header, token);
+              }
             , url: "/dailyMeetup"
             , data: {
                         initialDate: initialDate
@@ -199,6 +208,7 @@ var table;
                 addMeetupLis(result);
             }
             , error: function(xhr, status, error) {
+                 console.log(xhr.responseText);
                 alert(xhr.responseText);
             }
             ,  complete: function() {

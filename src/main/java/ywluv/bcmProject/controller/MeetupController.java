@@ -73,6 +73,7 @@ public class MeetupController {
     @ResponseBody
     public List<MeetupDto> dailyMeetup(    @RequestParam("initialDate") String initialDate)
     {
+
             return meetupService.findDailyMeetup(initialDate);
     }
 

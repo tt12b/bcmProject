@@ -23,6 +23,11 @@ spring:
 #      enabled: true
   thymeleaf:
     cache: false
+    #SpringSecurity
+  security:
+    user:
+      name: user
+      password: 1234
 logging:
   level:
     org.hibernate.SQL: debug
@@ -40,3 +45,17 @@ decorator:
     p6spy:
       ##운영환경에서는 false로 변경, 리소스 소모
       enable-logging: true
+
+
+#세션 설정
+server:
+  servlet:
+    session:
+#      document.cookie와 같은 자바스크립트로 쿠키를 조회하는 것을 막는 옵션
+#      브라우저에서 HTTP Only가 설정된 쿠키를 조회할 수 없다.
+#      서버로 HTTP Request 요청을 보낼때만 쿠키를 전송한다.
+#      이를 통해 XSS(Cross Site Scripting) 공격을 차단할 수 있다.
+      timeout: 60m
+      http-only: true
+      cookie:
+        max-age: 60m

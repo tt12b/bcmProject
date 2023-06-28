@@ -40,3 +40,4 @@ decorator:
     p6spy:
       ##운영환경에서는 false로 변경, 리소스 소모
       enable-logging: true
+

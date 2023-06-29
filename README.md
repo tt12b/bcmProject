@@ -6,7 +6,7 @@
 
 -  백엔드 :  SpringBoot / JAVA11 / SpringSecurity
 -  프론트엔드: Thymleaf / JavaScript / AJAX
--  DB/API/기타 : h2 / JPA(hibernate) / QueryDSL /  lombok/ gradlew 
+-  DB/API/기타 : h2 / JPA(hibernate) / QueryDSL /  lombok/ gradlew / JUnit5
 
 -  실행 및 구성 환경 : Ubuntu(예정) / Git/ Jenkins(예정)
 

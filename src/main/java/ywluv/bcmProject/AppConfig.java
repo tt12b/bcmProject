@@ -3,6 +3,7 @@ package ywluv.bcmProject;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import ywluv.bcmProject.aspect.TimeTraceAop;
 
 @Configuration
@@ -13,5 +14,8 @@ public class AppConfig {
         return new TimeTraceAop();
     }
 
-
+    @Bean
+    public SessionRegistryImpl sessionRegistry() {
+        return new SessionRegistryImpl();
+    }
 }

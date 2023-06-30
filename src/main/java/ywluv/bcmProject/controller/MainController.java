@@ -42,7 +42,7 @@ public class MainController {
 
     @PostMapping("/login")
     @ResponseBody
-    public ResponseCookieDto sessionCheck(@AuthenticationPrincipal User user, HttpSession httpSession){
+    public ResponseCookieDto loginCheck(@AuthenticationPrincipal User user, HttpSession httpSession){
         String username = "empty";
         String session_id = "empty";
 
@@ -58,6 +58,7 @@ public class MainController {
 
 
     @GetMapping("/test")
+    @ResponseBody
     public String testController(Model model, MemberSearchCondition memberSearchCondition, Pageable pageable){
         pageable = PageRequest.of(0,1000,Sort.by(Sort.Order.asc("userNickName").ignoreCase()));
 

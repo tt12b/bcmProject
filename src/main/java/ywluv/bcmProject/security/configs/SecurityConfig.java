@@ -62,7 +62,7 @@ public class SecurityConfig {
         UserDetails manager = User.builder()
                 .username("manager")
                 .password( password )
-                .roles("MANAGER")
+                .roles("MANAGER","USER")
                 .build();
 
         UserDetails admin = User.builder()
@@ -73,17 +73,24 @@ public class SecurityConfig {
 
 //        nMemoryUserDetailsManager는 스프링 시큐리티에서 제공하는 사용자 정보를 메모리에 저장하고 관리하는 클래스입니다. 이 클래스를 사용하면 애플리케이션의 사용자 정보를 정적으로 관리할 수 있습니다.
 //        테스트용으로 사용
-        return new InMemoryUserDetailsManager( user, manager, admin );
+        return new InMemoryUserDetailsManager( user, manager, admin );   //InMemoryUserDetailsManager 초기화 되면서, InMemoryUserDetailsManager 생성자 통해 초기화 작업 수행
     }
 
 
     // image, js, css 등의 정적 파일을 시큐리티가 필터하지 않도록 설정
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> {
-            web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-//            web.ignoring().pathMatchers("/favicon.ico", "/resources/**", "/error");
-        };
+//        return (web) -> {
+//            web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+//            web.ignoring().antMatchers("/favicon.ico", "/resources/**", "/error");
+//        };
+
+            /*requestMatchers().permitAll()과 달리 보안필터 자체를 거치지 않는다.*/
+            return (web) ->  web.ignoring()
+                    .requestMatchers("/css/**")
+                    .requestMatchers("/font/**")
+                    .requestMatchers("/img/**")
+                    .requestMatchers("/sbadmin/**");
     }
 
 

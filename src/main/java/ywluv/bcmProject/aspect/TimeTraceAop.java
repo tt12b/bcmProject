@@ -10,8 +10,8 @@ import org.aspectj.lang.annotation.Aspect;
 @Slf4j
 //@Component 수동빈으로 등록
 public class TimeTraceAop {
-
-    @Around("execution(* ywluv.bcmProject.controller.*.*(..)) || execution(* ywluv.bcmProject.service.*.*(..))")
+    @Around("execution(* ywluv.bcmProject.controller..*.*(..)) || execution(* ywluv.bcmProject.service.*.*(..))")       //테스트용도로 모든 컨트롤러를 대상으로 추가
+//    @Around("execution(* ywluv.bcmProject.controller.*.*(..)) || execution(* ywluv.bcmProject.service.*.*(..))")
     public Object measureExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
 
         log.info("START : " + joinPoint.toString()+" 메소드가 실행 시작");

@@ -18,15 +18,17 @@ public class MemberDto {
     private Long memberId;
     private String userNickName;
     private String userName;
+    private String password;
     private String addressType;
     private String clubList;
     private int deposit;
 
     @QueryProjection
-    public MemberDto(Long memberId,String userNickName, String userName, String addressType,String clubList,int deposit) {
+    public MemberDto(Long memberId,String userNickName, String userName, String password, String addressType,String clubList,int deposit) {
         this.memberId = memberId;
         this.userNickName = userNickName;
         this.userName = userName;
+        this.password = password;
         this.addressType =addressType;
         this.clubList = clubList;
         this.deposit = deposit;

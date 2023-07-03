@@ -41,9 +41,11 @@ public class MeetupMember extends BaseEntity {
         }
     }
 
-    public MeetupMember(Member member, Meetup meetup) {
-        this.member = member;
-        this.meetup = meetup;
+    public static MeetupMember createMeetupMember(Member member, Meetup meetup){
+        MeetupMember meetupMember = new MeetupMember();
+        meetupMember.setMember(member);
+        meetupMember.setMeetup(meetup);
+        return meetupMember;
     }
 
 }

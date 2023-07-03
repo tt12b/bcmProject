@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static ywluv.bcmProject.entity.MeetupMember.createMeetupMember;
 import static ywluv.bcmProject.util.DateUtil.StringTOLastMomentOfDay;
 import static ywluv.bcmProject.util.DateUtil.StringToLocalDateTime;
 
@@ -131,7 +132,7 @@ public class MeetupService {
             Member member = memberService.findById(Long.parseLong(id));
 
             //밋업멤버 생성
-            MeetupMember meetupMember = new MeetupMember(member, meetup);
+            MeetupMember meetupMember = createMeetupMember(member, meetup);
 
             //영속화
             meetupMemberRepository.save(meetupMember);

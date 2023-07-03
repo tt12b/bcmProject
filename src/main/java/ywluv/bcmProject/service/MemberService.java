@@ -4,12 +4,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ywluv.bcmProject.config.CustomYml;
-import ywluv.bcmProject.entity.DepositHistory;
-import ywluv.bcmProject.entity.Member;
+import ywluv.bcmProject.dto.MeetupDto;
+import ywluv.bcmProject.dto.MemberDto;
+import ywluv.bcmProject.entity.*;
+import ywluv.bcmProject.entity.enumEntity.AddressType;
+import ywluv.bcmProject.entity.enumEntity.MeetupType;
 import ywluv.bcmProject.repository.Deposit.DepositHistoryRepository;
 import ywluv.bcmProject.repository.member.MemberRepository;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ywluv.bcmProject.config.CustomYml.*;
 
@@ -101,7 +107,18 @@ public class MemberService {
         return newDeposit;
     }
 
+    public Member dtoToEntity(MemberDto memberDto){
+
+
+        Member member = new Member(
+                memberDto.getUserNickName()
+            ,   memberDto.getUserName()
+            ,   memberDto.getPassword()
+            ,   AddressType.valueOf(memberDto.getAddressType())
+            ,   memberDto.getDeposit()
+            ,   null
+        );
+        return member;
+    }
 
 }
-
-

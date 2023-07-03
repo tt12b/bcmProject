@@ -1,22 +1,32 @@
 package ywluv.bcmProject.service;
 
+import groovy.util.logging.Slf4j;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
+import ywluv.bcmProject.dto.MemberDto;
+import ywluv.bcmProject.entity.Club;
 import ywluv.bcmProject.entity.Member;
+import ywluv.bcmProject.entity.MemberClub;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static ywluv.bcmProject.entity.MemberClub.*;
 
 @SpringBootTest
 @Transactional
+@Slf4j
 @Commit
 class MemberServiceTest {
 
     @Autowired EntityManager em;
     @Autowired MemberService memberService;
+    @Autowired ClubService clubService;
+    @Autowired MemberClubService memberClubService;
 
 
     @Test
@@ -47,28 +57,19 @@ class MemberServiceTest {
     }
 
     @Test
-    public void basicTest3(){
+    public void dtoToEntityTest(){
 
-        System.out.println("====================================");
-        Member findMember = memberService.findById(1L);
-        System.out.println(findMember.toString());
-        System.out.println("변경 전  : "+ findMember.getDeposit());
-        memberService.depositMoney(1L,-4000,"콕비");
-        memberService.depositMoney(1L,1500,"콕비");
-        memberService.depositMoney(1L,15000,"예치금");
+        Member member1 = memberService.findById(1L);
+        Club club2 = clubService.findById(2L);
+
+        MemberClub memberClub1 = createMemberClub(member1,club2);
 
 
-//        System.out.println("================== : "+CustomYml.getNegativeDepositLimit());
-//        System.out.println("================== : "+ 미사용CustomYml2.getNegativeDepositLimit());
-//        System.out.println("================== : "+ 미사용CustomYml.getNegativeDepositLimit());
-//        System.out.println("================== : "+ CustomYml.getNegativeDepositLimit());
+        MemberDto memberDto = member1.toDto();
+//        dtoTOEntity 만들기
 
-
-//        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-//            memberService.depositMoney(1L,-1000,"콕비");
-//        });
-
-//        int deposit = memberService.getDeposit(1L);
+        System.out.println("========================");
+        System.out.println(memberDto);
 
 
     }

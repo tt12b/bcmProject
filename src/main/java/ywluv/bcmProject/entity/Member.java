@@ -6,11 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import ywluv.bcmProject.dto.MeetupDto;
+import ywluv.bcmProject.dto.MemberDto;
 import ywluv.bcmProject.entity.baseEntity.BaseEntity;
 import ywluv.bcmProject.entity.enumEntity.AddressType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -24,6 +27,9 @@ public class Member extends BaseEntity {
 
     private String userNickName;
     private String userName;
+
+    private String password = "0000";
+    private String role = "USER";
 
     @Enumerated(EnumType.STRING)
     private AddressType addressType;
@@ -65,6 +71,36 @@ public class Member extends BaseEntity {
         this.deposit = deposit;
         addMemberClub(memberClub);
     }
+
+    //회원가입용
+    public Member(String userNickName, String userName, String password, AddressType addressType, int deposit, MemberClub memberClub) {
+        this.userNickName = userNickName;
+        this.userName = userName;
+        this.password = password;
+        this.addressType = addressType;
+        this.deposit = deposit;
+        addMemberClub(memberClub);
+    }
+
+    public MemberDto toDto() {
+        MemberDto memberDto = new MemberDto();
+
+        memberDto.setMemberId(this.id);
+        memberDto.setUserNickName(this.userNickName);
+        memberDto.setUserName(this.userName);
+        memberDto.setPassword(this.password);
+        memberDto.setAddressType(this.addressType.toString());
+        memberDto.setClubList(this.memberClubs.stream()
+                .map(memberClub -> {
+                    Club club = memberClub.getClub();
+                    return "/" + club.getId() + ":" + club.getClubName();
+                })
+                .collect(Collectors.joining()));
+        return memberDto;
+    }
+
+
+
 
     public void addMemberClub(MemberClub memberClub){
         memberClub.setMember(this);

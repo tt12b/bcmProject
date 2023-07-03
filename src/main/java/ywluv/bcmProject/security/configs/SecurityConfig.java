@@ -97,6 +97,11 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        /*
+        ex  : passwordEncoder().encode("1234"); // 인코드
+            : passwordEncoder().matches("1234",encodePassword); // 패스워드 비교
+        * */
+
     }
 
     /*시큐리티 인가 및 인증*/

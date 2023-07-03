@@ -20,4 +20,11 @@ public class ClubService {
         return clubRepository.findAll();
     }
 
+    public Club findById(Long clubId){
+
+        return clubRepository.findById(clubId)
+                .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다. :" + clubId));
+    }
+
+
 }

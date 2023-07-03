@@ -77,7 +77,7 @@ public class testInit {
                     deposit = 20;
                 }
                 deposit = i*100;
-                MemberClub memberClub = new MemberClub(member, selectedClub);
+                MemberClub memberClub = MemberClub.createMemberClub(member, selectedClub);
                 member.changeAddressType(addressType);
                 member.getMemberClubs().add(memberClub);
                 member.updateDeposit(deposit);

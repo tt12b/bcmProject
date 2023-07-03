@@ -37,8 +37,20 @@ public class MemberClub extends BaseEntity {
         }
     }
 
-    public MemberClub(Member member, Club club){
-        this.member = member;
-        this.club = club;
+    public static MemberClub createMemberClub(Member member, Club club){
+        MemberClub memberClub = new MemberClub();
+        memberClub.setMember(member);
+        memberClub.setClub(club);
+        return memberClub;
     }
+
+//    public MemberClub(Member member, Club club){
+//        this.member = member;
+//        this.club = club;
+//    }
+//
+//    private MemberClub(Club club,Member member){
+//        this.member = member;
+//        this.club = club;
+//    }
 }

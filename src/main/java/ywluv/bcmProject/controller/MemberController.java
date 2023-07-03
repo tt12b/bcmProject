@@ -8,14 +8,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.util.DateUtils;
+import ywluv.bcmProject.dto.MeetupDto;
 import ywluv.bcmProject.dto.MemberSearchCondition;
 import ywluv.bcmProject.service.MemberClubService;
 import ywluv.bcmProject.dto.MemberDto;
+import ywluv.bcmProject.service.MemberService;
 import ywluv.bcmProject.util.DateUtil;
 
 import java.time.LocalDate;
@@ -28,11 +27,22 @@ import java.util.List;
 public class MemberController {
 
     private final MemberClubService memberClubService;
+    private final MemberService memberService;
 
     @GetMapping("/memberRegister")
-    public String memberRegister(){
+    public String memberRegisterPage(){
 
         return "member/memberRegister";
+
+    }
+
+    @PostMapping("/memberRegister")
+    public String memberRegister(@RequestBody MemberDto memberDto){
+
+//        memberService.join(memberDto)
+
+
+        return "";
 
     }
     @GetMapping("/memberList")

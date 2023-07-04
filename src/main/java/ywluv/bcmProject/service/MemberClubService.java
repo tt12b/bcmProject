@@ -27,7 +27,7 @@ public class MemberClubService {
     }
 
     @Transactional
-    public void join(MemberClub memberClub){
+    public void save(MemberClub memberClub){
         memberClubRepository.save(memberClub);
     }
 

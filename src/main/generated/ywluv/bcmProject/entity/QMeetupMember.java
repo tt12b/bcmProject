@@ -22,7 +22,7 @@ public class QMeetupMember extends EntityPathBase<MeetupMember> {
 
     public static final QMeetupMember meetupMember = new QMeetupMember("meetupMember");
 
-    public final ywluv.bcmProject.entity.baseEntity.QBaseEntity _super = new ywluv.bcmProject.entity.baseEntity.QBaseEntity(this);
+    public final ywluv.bcmProject.security.configs.baseEntity.QBaseEntity _super = new ywluv.bcmProject.security.configs.baseEntity.QBaseEntity(this);
 
     //inherited
     public final StringPath createdBy = _super.createdBy;

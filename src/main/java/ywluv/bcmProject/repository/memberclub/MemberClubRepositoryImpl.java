@@ -1,6 +1,7 @@
 package ywluv.bcmProject.repository.memberclub;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -39,7 +40,9 @@ public class MemberClubRepositoryImpl implements MemberClubRepositoryCustom {
                                 , member.userName
                                 , member.password
                                 , member.addressType.stringValue()
-                                , club.clubName.concat("/").as("clubNames")
+                                , Expressions.stringTemplate(
+                        "GROUP_CONCAT({0})",club.id.stringValue().concat(":").concat(club.clubName)
+                                )
                                 , member.deposit
 
                         )

@@ -4,10 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.springframework.data.annotation.LastModifiedBy;
-import ywluv.bcmProject.entity.baseEntity.BaseEntity;
-import ywluv.bcmProject.entity.baseEntity.BaseEntityOnlyCreated;
+import ywluv.bcmProject.security.configs.baseEntity.BaseEntityOnlyCreated;
 
 /**
  * Deposit의 변경 이력을 저장하는 엔티티

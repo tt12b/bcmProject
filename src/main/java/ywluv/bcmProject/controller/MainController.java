@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +21,13 @@ import ywluv.bcmProject.dto.MemberSearchCondition;
 import ywluv.bcmProject.dto.ResponseCookieDto;
 import ywluv.bcmProject.service.MeetupService;
 import ywluv.bcmProject.service.MemberClubService;
+import ywluv.bcmProject.service.MemberService;
 import ywluv.bcmProject.util.DateUtil;
 
 @Controller
 @Slf4j
 public class MainController {
     @Autowired MemberClubService memberClubService;
-
 
     @GetMapping("/")
     public String main(Model model){
@@ -37,7 +38,7 @@ public class MainController {
 
     @GetMapping("/login")
     public String login(){
-        return "login";
+        return "member/login/login";
     }
 
     @PostMapping("/login")

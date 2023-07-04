@@ -8,11 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.AuditorAware;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ywluv.bcmProject.entity.*;
-import ywluv.bcmProject.entity.baseEntity.BaseTimeEntity;
 import ywluv.bcmProject.entity.enumEntity.AddressType;
 import ywluv.bcmProject.entity.enumEntity.MeetupType;
 
@@ -21,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+
+import static ywluv.bcmProject.entity.MemberClub.*;
 
 @Profile("test")
 @Component
@@ -77,7 +77,7 @@ public class testInit {
                     deposit = 20;
                 }
                 deposit = i*100;
-                MemberClub memberClub = MemberClub.createMemberClub(member, selectedClub);
+                MemberClub memberClub = joinClub(member, selectedClub);
                 member.changeAddressType(addressType);
                 member.getMemberClubs().add(memberClub);
                 member.updateDeposit(deposit);
@@ -86,6 +86,10 @@ public class testInit {
                 em.persist(member);
                 em.persist(memberClub);
             }
+
+
+            em.persist(joinClub(em.find(Member.class,1L),em.find(Club.class,2L)));
+
         }
     }
 

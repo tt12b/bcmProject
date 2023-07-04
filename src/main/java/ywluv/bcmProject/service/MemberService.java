@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ywluv.bcmProject.config.CustomYml;
+import ywluv.bcmProject.dto.ClubDto;
 import ywluv.bcmProject.dto.MeetupDto;
 import ywluv.bcmProject.dto.MemberDto;
 import ywluv.bcmProject.entity.*;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static ywluv.bcmProject.config.CustomYml.*;
+import static ywluv.bcmProject.entity.MemberClub.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +28,8 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final DepositHistoryRepository depositHistoryRepository;
+    private final MemberClubService memberClubService;
+    private final ClubService clubService;
 
 
     /**
@@ -42,9 +46,38 @@ public class MemberService {
      * @Return Long Id
      */
     @Transactional
-    public Long join(Member member){
+    public Long createUser(Member member){
         memberRepository.save(member);
         return member.getId();
+    }
+
+    /**
+     * 멤버 추가(회원 가입)
+     * @Param Member
+     * @Return Long Id
+     */
+    @Transactional
+    public Long createUser(MemberDto memberDto){
+
+
+        Member newMember = new Member(
+                    memberDto.getUserNickName()
+                ,   memberDto.getUserName()
+                ,   memberDto.getPassword()
+                ,   (memberDto.getAddressType() != null ) ? AddressType.valueOf(memberDto.getAddressType()) : null
+                ,   0
+        );
+
+        memberRepository.save(newMember);
+
+        if(memberDto.getClubList() != null){
+            List<ClubDto> clubList = memberDto.getClubList();
+            for (ClubDto clubDto : clubList) {
+                memberClubService.save( joinClub(newMember,clubService.findById(clubDto.getId())));
+            }
+        }
+
+        return newMember.getId();
     }
 
     /**
@@ -106,19 +139,4 @@ public class MemberService {
         //기록과 비교하기
         return newDeposit;
     }
-
-    public Member dtoToEntity(MemberDto memberDto){
-
-
-        Member member = new Member(
-                memberDto.getUserNickName()
-            ,   memberDto.getUserName()
-            ,   memberDto.getPassword()
-            ,   AddressType.valueOf(memberDto.getAddressType())
-            ,   memberDto.getDeposit()
-            ,   null
-        );
-        return member;
-    }
-
 }

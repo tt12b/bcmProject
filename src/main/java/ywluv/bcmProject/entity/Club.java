@@ -5,7 +5,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import ywluv.bcmProject.entity.baseEntity.BaseEntity;
+import ywluv.bcmProject.dto.ClubDto;
+import ywluv.bcmProject.security.configs.baseEntity.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,4 +38,9 @@ public class Club extends BaseEntity {
         memberClubs.remove(memberClub);
         memberClub.setClub(null);
     }
+
+    public ClubDto toDto(){
+        return new ClubDto(id,clubName);
+    }
+
 }

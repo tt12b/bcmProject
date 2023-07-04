@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
+import ywluv.bcmProject.dto.ClubDto;
 import ywluv.bcmProject.dto.MemberDto;
 import ywluv.bcmProject.entity.Club;
 import ywluv.bcmProject.entity.Member;
 import ywluv.bcmProject.entity.MemberClub;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,16 +61,11 @@ class MemberServiceTest {
     @Test
     public void dtoToEntityTest(){
 
-        Member member1 = memberService.findById(1L);
-        Club club2 = clubService.findById(2L);
-
-        MemberClub memberClub1 = createMemberClub(member1,club2);
+        Member member = memberService.findById(1L);
 
 
-        MemberDto memberDto = member1.toDto();
-//        dtoTOEntity 만들기
+        MemberDto memberDto = member.toDto();
 
-        System.out.println("========================");
         System.out.println(memberDto);
 
 

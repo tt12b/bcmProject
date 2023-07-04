@@ -20,7 +20,7 @@ public class QMember extends EntityPathBase<Member> {
 
     public static final QMember member = new QMember("member1");
 
-    public final ywluv.bcmProject.entity.baseEntity.QBaseEntity _super = new ywluv.bcmProject.entity.baseEntity.QBaseEntity(this);
+    public final ywluv.bcmProject.security.configs.baseEntity.QBaseEntity _super = new ywluv.bcmProject.security.configs.baseEntity.QBaseEntity(this);
 
     public final EnumPath<ywluv.bcmProject.entity.enumEntity.AddressType> addressType = createEnum("addressType", ywluv.bcmProject.entity.enumEntity.AddressType.class);
 

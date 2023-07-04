@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,26 +24,35 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-//@RequestMapping("/member")
 public class MemberController {
 
     private final MemberClubService memberClubService;
     private final MemberService memberService;
+    private final PasswordEncoder passwordEncoder;
+
+    @GetMapping("/myPage")
+    public String myPage(){
+
+        return "member/myPage";
+
+    }
 
     @GetMapping("/memberRegister")
     public String memberRegisterPage(){
 
-        return "member/memberRegister";
+        return "member/login/register";
 
     }
 
     @PostMapping("/memberRegister")
-    public String memberRegister(@RequestBody MemberDto memberDto){
+    public String memberRegister(@ModelAttribute MemberDto memberDto){
 
-//        memberService.join(memberDto)
+        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+        memberService.createUser(memberDto);
 
 
-        return "";
+        //회원 가입 중,  회원 가입 시 주소 타입, 클럽타입 등 선택하게 하고 회원 가입 시 반영시킬것
+        return "redirect:/";
 
     }
     @GetMapping("/memberList")

@@ -2,7 +2,7 @@ package ywluv.bcmProject.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ywluv.bcmProject.entity.baseEntity.BaseEntity;
+import ywluv.bcmProject.security.configs.baseEntity.BaseEntity;
 
 //연결 테이블용 엔티티
 @Entity
@@ -37,20 +37,23 @@ public class MemberClub extends BaseEntity {
         }
     }
 
-    public static MemberClub createMemberClub(Member member, Club club){
+    public static MemberClub joinClub(Member member, Club club){
         MemberClub memberClub = new MemberClub();
         memberClub.setMember(member);
         memberClub.setClub(club);
         return memberClub;
     }
 
-//    public MemberClub(Member member, Club club){
-//        this.member = member;
-//        this.club = club;
-//    }
-//
-//    private MemberClub(Club club,Member member){
-//        this.member = member;
-//        this.club = club;
-//    }
+    public void withdrawMembership() {
+        if (member != null) {
+            member.getMemberClubs().remove(this);
+            member = null;
+        }
+
+        if (club != null) {
+            club.getMemberClubs().remove(this);
+            club = null;
+        }
+    }
+
 }

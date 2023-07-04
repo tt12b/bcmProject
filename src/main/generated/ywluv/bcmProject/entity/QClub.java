@@ -20,7 +20,7 @@ public class QClub extends EntityPathBase<Club> {
 
     public static final QClub club = new QClub("club");
 
-    public final ywluv.bcmProject.entity.baseEntity.QBaseEntity _super = new ywluv.bcmProject.entity.baseEntity.QBaseEntity(this);
+    public final ywluv.bcmProject.security.configs.baseEntity.QBaseEntity _super = new ywluv.bcmProject.security.configs.baseEntity.QBaseEntity(this);
 
     public final StringPath clubName = createString("clubName");
 

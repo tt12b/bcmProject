@@ -22,7 +22,7 @@ public class QDepositHistory extends EntityPathBase<DepositHistory> {
 
     public static final QDepositHistory depositHistory = new QDepositHistory("depositHistory");
 
-    public final ywluv.bcmProject.entity.baseEntity.QBaseEntityOnlyCreated _super = new ywluv.bcmProject.entity.baseEntity.QBaseEntityOnlyCreated(this);
+    public final ywluv.bcmProject.security.configs.baseEntity.QBaseEntityOnlyCreated _super = new ywluv.bcmProject.security.configs.baseEntity.QBaseEntityOnlyCreated(this);
 
     public final NumberPath<Integer> amount = createNumber("amount", Integer.class);
 

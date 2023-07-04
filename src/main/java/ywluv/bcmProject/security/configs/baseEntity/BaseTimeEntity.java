@@ -1,4 +1,4 @@
-package ywluv.bcmProject.entity.baseEntity;
+package ywluv.bcmProject.security.configs.baseEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

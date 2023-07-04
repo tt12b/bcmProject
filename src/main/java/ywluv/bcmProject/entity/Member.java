@@ -6,13 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import ywluv.bcmProject.dto.MeetupDto;
+import ywluv.bcmProject.dto.ClubDto;
 import ywluv.bcmProject.dto.MemberDto;
-import ywluv.bcmProject.entity.baseEntity.BaseEntity;
+import ywluv.bcmProject.security.configs.baseEntity.BaseEntity;
 import ywluv.bcmProject.entity.enumEntity.AddressType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Entity
@@ -64,57 +65,62 @@ public class Member extends BaseEntity {
         this.deposit = deposit;
     }
 
-    public Member(String userNickName, String userName, AddressType addressType, int deposit, MemberClub memberClub) {
-        this.userNickName = userNickName;
-        this.userName = userName;
-        this.addressType = addressType;
-        this.deposit = deposit;
-        addMemberClub(memberClub);
-    }
+//    public Member(String userNickName, String userName, AddressType addressType, int deposit, MemberClub memberClub) {
+//        this.userNickName = userNickName;
+//        this.userName = userName;
+//        this.addressType = addressType;
+//        this.deposit = deposit;
+//        if(memberClub != null) {
+//            addMemberClub(memberClub);
+//        }
+//    }
 
     //회원가입용
-    public Member(String userNickName, String userName, String password, AddressType addressType, int deposit, MemberClub memberClub) {
+    public Member(String userNickName, String userName, String password, AddressType addressType, int deposit) {
         this.userNickName = userNickName;
         this.userName = userName;
         this.password = password;
         this.addressType = addressType;
         this.deposit = deposit;
-        addMemberClub(memberClub);
     }
 
     public MemberDto toDto() {
         MemberDto memberDto = new MemberDto();
-
         memberDto.setMemberId(this.id);
         memberDto.setUserNickName(this.userNickName);
         memberDto.setUserName(this.userName);
         memberDto.setPassword(this.password);
         memberDto.setAddressType(this.addressType.toString());
-        memberDto.setClubList(this.memberClubs.stream()
-                .map(memberClub -> {
-                    Club club = memberClub.getClub();
-                    return "/" + club.getId() + ":" + club.getClubName();
-                })
-                .collect(Collectors.joining()));
+        memberDto.setClubList(
+                this.memberClubs.stream()
+                        .map(memberClub -> {
+                            ClubDto clubDto = new ClubDto();
+                            Club club = memberClub.getClub();
+                            clubDto.setId(club.getId());
+                            clubDto.setClubName(club.getClubName());
+                            return clubDto;
+                        })
+                        .collect(Collectors.toList())
+        );
         return memberDto;
     }
 
 
 
 
-    public void addMemberClub(MemberClub memberClub){
-        memberClub.setMember(this);
-        this.memberClubs.add(memberClub);
-    }
-
-    public void removeMemberClub(MemberClub memberClub) {
-        memberClubs.remove(memberClub);
-        memberClub.setMember(null);
-    }
-
-    public void removeAllClub(){
-        this.getMemberClubs().clear();
-    }
+//    public void addMemberClub(MemberClub memberClub){
+//        memberClub.setMember(this);
+//        this.memberClubs.add(memberClub);
+//    }
+//
+//    public void removeMemberClub(MemberClub memberClub) {
+//        memberClubs.remove(memberClub);
+//        memberClub.setMember(null);
+//    }
+//
+//    public void removeAllClub(){
+//        this.getMemberClubs().clear();
+//    }
 
     public void changeAddressType(AddressType addressType){
         this.addressType=addressType;

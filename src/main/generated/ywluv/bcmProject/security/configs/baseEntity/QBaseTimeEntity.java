@@ -1,4 +1,4 @@
-package ywluv.bcmProject.entity.baseEntity;
+package ywluv.bcmProject.security.configs.baseEntity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultSupertypeSerializer")
 public class QBaseTimeEntity extends EntityPathBase<BaseTimeEntity> {
 
-    private static final long serialVersionUID = 848084242L;
+    private static final long serialVersionUID = 1849940850L;
 
     public static final QBaseTimeEntity baseTimeEntity = new QBaseTimeEntity("baseTimeEntity");
 

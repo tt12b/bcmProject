@@ -2,14 +2,9 @@ package ywluv.bcmProject.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import ywluv.bcmProject.dto.MeetupDto;
-import ywluv.bcmProject.dto.MemberDto;
-import ywluv.bcmProject.entity.baseEntity.BaseEntity;
-import ywluv.bcmProject.entity.enumEntity.AddressType;
+import ywluv.bcmProject.security.configs.baseEntity.BaseEntity;
 import ywluv.bcmProject.entity.enumEntity.MeetupType;
-import ywluv.bcmProject.service.MemberService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

@@ -48,7 +48,12 @@
                             <td th:text="${member.userNickName}"></td>
                             <td th:text="${member.userName}"></td>
                             <td th:text="${member.addressType}"></td>
-                            <td th:text="${member.clubList}"></td>
+                            <td>
+                                <span th:each="club, iterStat : ${member.clubList}">
+                                    <span th:text="${club.clubName}"></span>
+                                    <span th:if="${!iterStat.last}"> / </span>
+                                </span>
+                            </td>
                             <td>
                                 <span style="display: inline-block; width:3em;"
                                       th:text="${member.deposit}"></span>

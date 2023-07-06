@@ -23,12 +23,12 @@ public class WebErrorController implements ErrorController {
             int statusCode = Integer.valueOf(status.toString());
 
             if(statusCode == HttpStatus.NOT_FOUND.value()) {
-                return "error/404";
+                return "error/error";
             } else {
-                return "error/blank";
+                return "error/error";
             }
         }
 
-        return "error/blank";
+        return "error/error";
     }
 }

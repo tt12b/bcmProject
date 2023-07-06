@@ -1,5 +1,6 @@
 package ywluv.bcmProject.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,10 +10,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.util.DateUtils;
+import ywluv.bcmProject.controller.form.MemberForm;
 import ywluv.bcmProject.dto.MeetupDto;
 import ywluv.bcmProject.dto.MemberSearchCondition;
+import ywluv.bcmProject.entity.enumEntity.AddressType;
+import ywluv.bcmProject.entity.enumEntity.ClubType;
 import ywluv.bcmProject.service.MemberClubService;
 import ywluv.bcmProject.dto.MemberDto;
 import ywluv.bcmProject.service.MemberService;
@@ -38,20 +43,33 @@ public class MemberController {
     }
 
     @GetMapping("/memberRegister")
-    public String memberRegisterPage(){
+    public String memberRegisterPage(Model model){
+
+        //밸리데이션 위해 멤버폼 클라이언트에 전달
+        model.addAttribute("memberForm", new MemberForm());
+        model.addAttribute("AddressType", AddressType.class);
+        model.addAttribute("ClubType", ClubType.class);
+
 
         return "member/login/register";
 
     }
 
     @PostMapping("/memberRegister")
-    public String memberRegister(@ModelAttribute MemberDto memberDto){
+//    public String memberRegister(@ModelAttribute MemberDto memberDto){
+    public String memberRegister(@Valid MemberForm memberForm, BindingResult result){
 
-        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-        memberService.createUser(memberDto);
+        //밸리데이션 결과 오류가 생기면 result에 결과가 바인딩 된다.
+        //에러가 존재하면 페이지 이동
+        //바인딩 리절트를 폼에서 사용 가능
+       if(result.hasErrors()) {
+            return "member/login/register";
+        }
 
+        System.out.println("생성");
+//        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+//        memberService.createUser(memberDto);
 
-        //회원 가입 중,  회원 가입 시 주소 타입, 클럽타입 등 선택하게 하고 회원 가입 시 반영시킬것
         return "redirect:/";
 
     }

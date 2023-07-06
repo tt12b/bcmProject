@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ywluv.bcmProject.entity.*;
 import ywluv.bcmProject.entity.enumEntity.AddressType;
+import ywluv.bcmProject.entity.enumEntity.ClubType;
 import ywluv.bcmProject.entity.enumEntity.MeetupType;
 
 import java.time.LocalDateTime;
@@ -54,8 +55,8 @@ public class testInit {
         }
         @Transactional
         public void createMembers() {
-            Club clubA = new Club("clubA");
-            Club clubB = new Club("clubB");
+            Club clubA = new Club(ClubType.OBKK.toString());
+            Club clubB = new Club(ClubType.HRGR.toString());
 
             em.persist(clubA);
             em.persist(clubB);

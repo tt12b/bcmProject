@@ -1,4 +1,4 @@
-package ywluv.bcmProject.entity;
+package ywluv.bcmProject.repository.member.entity;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -8,21 +8,24 @@ import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
+import ywluv.bcmProject.entity.MemberClub;
 
 
 /**
- * QMeetupMember is a Querydsl query type for MeetupMember
+ * QMemberClub is a Querydsl query type for MemberClub
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QMeetupMember extends EntityPathBase<MeetupMember> {
+public class QMemberClub extends EntityPathBase<MemberClub> {
 
-    private static final long serialVersionUID = 671238661L;
+    private static final long serialVersionUID = 1967465561L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QMeetupMember meetupMember = new QMeetupMember("meetupMember");
+    public static final QMemberClub memberClub = new QMemberClub("memberClub");
 
     public final ywluv.bcmProject.security.configs.baseEntity.QBaseEntity _super = new ywluv.bcmProject.security.configs.baseEntity.QBaseEntity(this);
+
+    public final QClub club;
 
     //inherited
     public final StringPath createdBy = _super.createdBy;
@@ -41,29 +44,27 @@ public class QMeetupMember extends EntityPathBase<MeetupMember> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> lastModifiedDate = _super.lastModifiedDate;
 
-    public final QMeetup meetup;
-
     public final QMember member;
 
-    public QMeetupMember(String variable) {
-        this(MeetupMember.class, forVariable(variable), INITS);
+    public QMemberClub(String variable) {
+        this(MemberClub.class, forVariable(variable), INITS);
     }
 
-    public QMeetupMember(Path<? extends MeetupMember> path) {
+    public QMemberClub(Path<? extends MemberClub> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QMeetupMember(PathMetadata metadata) {
+    public QMemberClub(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QMeetupMember(PathMetadata metadata, PathInits inits) {
-        this(MeetupMember.class, metadata, inits);
+    public QMemberClub(PathMetadata metadata, PathInits inits) {
+        this(MemberClub.class, metadata, inits);
     }
 
-    public QMeetupMember(Class<? extends MeetupMember> type, PathMetadata metadata, PathInits inits) {
+    public QMemberClub(Class<? extends MemberClub> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.meetup = inits.isInitialized("meetup") ? new QMeetup(forProperty("meetup"), inits.get("meetup")) : null;
+        this.club = inits.isInitialized("club") ? new QClub(forProperty("club")) : null;
         this.member = inits.isInitialized("member") ? new QMember(forProperty("member")) : null;
     }
 

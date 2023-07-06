@@ -54,6 +54,9 @@ dependencies {
 	//6.29 스프링 시큐리티 추가
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 //	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+
+	//7.6 스프링 벨리데이션 추가(@NotEmpty / @Valid)
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 

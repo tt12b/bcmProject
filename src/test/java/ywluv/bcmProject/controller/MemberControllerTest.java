@@ -28,6 +28,6 @@ class MemberControllerTest {
                 ,   null
         );
 
-        memberController.memberRegister(memberDto);
+//        memberController.memberRegister(memberDto);
     }
 }

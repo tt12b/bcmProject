@@ -19,7 +19,7 @@
 
     <!-- Custom styles for this template-->
     <link href="sbadmin/css/sb-admin-2.min.css" rel="stylesheet">
-
+    <link href="sbadmin/css/custom.css" rel="stylesheet">
 </head>
 
 <body class="bg-gradient-primary">
@@ -36,33 +36,60 @@
                         <div class="text-center">
                             <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                         </div>
-                        <form class="user" th:action="@{/memberRegister}" method="post">
+                        <form class="user" th:action="@{/memberRegister}" th:object="${memberForm}" method="post">
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input type="text" class="form-control form-control-user" id="userNickName" name="userNickName"
-                                           placeholder="닉네임">
+                                    <input type="text" class="form-control form-control-user" placeholder="닉네임"
+                                           th:field="*{userNickName}"
+                                           th:class="${#fields.hasErrors('userNickName')} ? 'form-control form-control-user input-error' : 'form-control form-control-user'">
+<!--                                            //➚userNickName에 에러가 있으면 기본클래스_ fileError클래스 추가, 없으면 기본 클래스 추가-->
+
+                                    <!--필드에 userNickName관련 에러가 있으면, 에러메시지 출력-->
+                                   <p th:if="${#fields.hasErrors('userNickName')}" th:errors="*{userNickName}">에러메시지는 Form클래스 에서 설정</p>
                                 </div>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control form-control-user" id="userName" name="userName"
-                                           placeholder="실명">
+                                    <input type="text" class="form-control form-control-user" placeholder="실명"
+                                           th:field="*{userName}"
+                                           th:class="${#fields.hasErrors('userName')} ? 'form-control form-control-user input-error' : 'form-control form-control-user'">
+
+                                    <p th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">에러메시지는 Form클래스 에서 설정</p>
                                 </div>
                             </div>
-<!--                            <div class="form-group row">-->
-<!--                                <div class="col-sm-6 mb-3 mb-sm-0">-->
-<!--                                    <p>주소 타입</p>-->
-<!--&lt;!&ndash;                                    <ul>&ndash;&gt;-->
-<!--&lt;!&ndash;                                        <li th:each="type : ${T(ywluv.bcmProject.entity.enumEntity.AddressType).values()}">&ndash;&gt;-->
-<!--&lt;!&ndash;                                            <span th:text="${type}"></span> - <span th:text="${type.getDisplayName()}"></span>&ndash;&gt;-->
-<!--&lt;!&ndash;                                        </li>&ndash;&gt;-->
-<!--&lt;!&ndash;                                    </ul>&ndash;&gt;-->
-<!--                                </div>-->
-<!--                                <div class="col-sm-6">-->
-<!--                                </div>-->
-<!--                            </div>-->
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input type="password" class="form-control form-control-user"
-                                           id="password" name="password"placeholder="비밀번호">
+                                    <select class="form-control form-control-user"  style=" height: auto; width: auto; padding: 1em;" th:field="*{addressType}">
+<!--                                            th:class="${#fields.hasErrors('addressType')} ? 'form-control form-control-user input-error' : 'form-control form-control-user'">>-->
+                                        <option value="" disabled style="display:none" selected>주소 타입</option>
+                                        <option th:each="value : ${T(ywluv.bcmProject.entity.enumEntity.AddressType).values()}"
+                                                th:value="${value}"
+                                                th:text="${value.getDisplayName()}"></option>
+                                    </select>
+                                    <p th:if="${#fields.hasErrors('addressType')}" th:errors="*{addressType}">에러메시지는 Form클래스 에서 설정</p>
+                                </div>
+
+                                <!--추후 할 일-->
+                                <!--1.주소타입/동아리타입/밸리데이션 체크-->
+                                <!--2.패스워드 체크 -->
+                                <!-- 임베디드 타입으로 주소 엔티티 만들기-->
+                                <!-- 시큐리티 계속-->
+
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <select class="form-control form-control-user" style=" height: auto; width: auto; padding: 1em;" th:field="*{clubType}">
+<!--                                            th:class="${#fields.hasErrors('clubType')} ? 'form-control form-control-user input-error' : 'form-control form-control-user'">-->
+                                        <option value="" disabled style="display:none" selected> 동아리</option>
+                                        <option th:each="value : ${T(ywluv.bcmProject.entity.enumEntity.ClubType).values()}"
+                                                th:value="${value}"
+                                                th:text="${value.getDisplayName()}"></option>
+                                    </select>
+                                    <p th:if="${#fields.hasErrors('clubType')}" th:errors="*{clubType}">에러메시지는 Form클래스 에서 설정</p>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <input type="password" class="form-control form-control-user" placeholder="비밀번호"
+                                           th:field="*{password}"
+                                           th:class="${#fields.hasErrors('password')} ? 'form-control form-control-user input-error' : 'form-control form-control-user'">
+                                    <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}">에러메시지는 Form클래스 에서 설정</p>
                                 </div>
                                 <div class="col-sm-6">
                                     <input type="password" class="form-control form-control-user"
@@ -92,7 +119,11 @@
     </div>
 
 </div>
-
+<script>
+    document.getElementsByTagName("button")[0].addEventListener("click", function(event) {
+        alert("dd");
+  });
+</script>
 <!-- Bootstrap core JavaScript-->
 <script src="sbadmin/vendor/jquery/jquery.min.js"></script>
 <script src="sbadmin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

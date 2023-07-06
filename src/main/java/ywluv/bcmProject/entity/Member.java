@@ -35,6 +35,10 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private AddressType addressType;
 
+    //미사용
+//    @Embedded
+//    private Address address;
+
     private int deposit = 0;
     @OneToMany(mappedBy = "member")
     private List<DepositHistory> depositHistories = new ArrayList<>();
@@ -75,7 +79,6 @@ public class Member extends BaseEntity {
 //        }
 //    }
 
-    //회원가입용
     public Member(String userNickName, String userName, String password, AddressType addressType, int deposit) {
         this.userNickName = userNickName;
         this.userName = userName;

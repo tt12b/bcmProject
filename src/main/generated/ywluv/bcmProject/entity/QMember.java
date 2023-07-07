@@ -18,11 +18,15 @@ public class QMember extends EntityPathBase<Member> {
 
     private static final long serialVersionUID = -1020967677L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QMember member = new QMember("member1");
 
     public final ywluv.bcmProject.security.configs.baseEntity.QBaseEntity _super = new ywluv.bcmProject.security.configs.baseEntity.QBaseEntity(this);
 
     public final EnumPath<ywluv.bcmProject.entity.enumEntity.AddressType> addressType = createEnum("addressType", ywluv.bcmProject.entity.enumEntity.AddressType.class);
+
+    public final ywluv.bcmProject.entity.embedded.QContactInfo contactInfo;
 
     //inherited
     public final StringPath createdBy = _super.createdBy;
@@ -60,15 +64,24 @@ public class QMember extends EntityPathBase<Member> {
     public final StringPath userNickName = createString("userNickName");
 
     public QMember(String variable) {
-        super(Member.class, forVariable(variable));
+        this(Member.class, forVariable(variable), INITS);
     }
 
     public QMember(Path<? extends Member> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QMember(PathMetadata metadata) {
-        super(Member.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QMember(PathMetadata metadata, PathInits inits) {
+        this(Member.class, metadata, inits);
+    }
+
+    public QMember(Class<? extends Member> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.contactInfo = inits.isInitialized("contactInfo") ? new ywluv.bcmProject.entity.embedded.QContactInfo(forProperty("contactInfo")) : null;
     }
 
 }

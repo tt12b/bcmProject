@@ -57,9 +57,9 @@
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <select class="form-control form-control-user"  style=" height: auto; width: auto; padding: 1em;" th:field="*{addressType}">
-<!--                                            th:class="${#fields.hasErrors('addressType')} ? 'form-control form-control-user input-error' : 'form-control form-control-user'">>-->
-                                        <option value="" disabled style="display:none" selected>주소 타입</option>
+                                    <select class="form-control form-control-user"  id="addressType" name="addressType" style=" height: auto; width: auto; padding: 1em;"
+                                            th:class="${#fields.hasErrors('addressType')} ? 'form-control form-control-user input-error' : 'form-control form-control-user'">
+                                        <option value="" disabled style="display:none" selected>주소 타입을 선택하세요.</option>
                                         <option th:each="value : ${T(ywluv.bcmProject.entity.enumEntity.AddressType).values()}"
                                                 th:value="${value}"
                                                 th:text="${value.getDisplayName()}"></option>
@@ -67,16 +67,11 @@
                                     <p th:if="${#fields.hasErrors('addressType')}" th:errors="*{addressType}">에러메시지는 Form클래스 에서 설정</p>
                                 </div>
 
-                                <!--추후 할 일-->
-                                <!--1.주소타입/동아리타입/밸리데이션 체크-->
-                                <!--2.패스워드 체크 -->
-                                <!-- 임베디드 타입으로 주소 엔티티 만들기-->
-                                <!-- 시큐리티 계속-->
 
                                 <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <select class="form-control form-control-user" style=" height: auto; width: auto; padding: 1em;" th:field="*{clubType}">
-<!--                                            th:class="${#fields.hasErrors('clubType')} ? 'form-control form-control-user input-error' : 'form-control form-control-user'">-->
-                                        <option value="" disabled style="display:none" selected> 동아리</option>
+                                    <select class="form-control form-control-user"  id="clubType" name="clubType" style=" height: auto; width: auto; padding: 1em;"
+                                            th:class="${#fields.hasErrors('clubType')} ? 'form-control form-control-user input-error' : 'form-control form-control-user'">
+                                        <option value="" disabled style="display:none" selected>동아리를 선택하세요.</option>
                                         <option th:each="value : ${T(ywluv.bcmProject.entity.enumEntity.ClubType).values()}"
                                                 th:value="${value}"
                                                 th:text="${value.getDisplayName()}"></option>

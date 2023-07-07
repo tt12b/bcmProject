@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import ywluv.bcmProject.dto.ClubDto;
 import ywluv.bcmProject.dto.MemberDto;
+import ywluv.bcmProject.entity.embedded.ContactInfo;
 import ywluv.bcmProject.security.configs.baseEntity.BaseEntity;
 import ywluv.bcmProject.entity.enumEntity.AddressType;
 
@@ -35,9 +36,9 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private AddressType addressType;
 
-    //미사용
-//    @Embedded
-//    private Address address;
+//    미사용
+    @Embedded
+    private ContactInfo contactInfo;
 
     private int deposit = 0;
     @OneToMany(mappedBy = "member")

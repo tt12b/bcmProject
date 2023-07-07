@@ -11,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.util.DateUtils;
 import ywluv.bcmProject.controller.form.MemberForm;
@@ -56,13 +58,9 @@ public class MemberController {
     }
 
     @PostMapping("/memberRegister")
-//    public String memberRegister(@ModelAttribute MemberDto memberDto){
-    public String memberRegister(@Valid MemberForm memberForm, BindingResult result){
+    public String memberRegister(@Valid MemberForm memberForm, BindingResult result, Model model){
 
-        //밸리데이션 결과 오류가 생기면 result에 결과가 바인딩 된다.
-        //에러가 존재하면 페이지 이동
-        //바인딩 리절트를 폼에서 사용 가능
-       if(result.hasErrors()) {
+        if (result.hasErrors()) {
             return "member/login/register";
         }
 

@@ -116,17 +116,12 @@
             </div>
         </div>
     </div>
-
 </div>
-<script th:inline="javascript">
-
-document.getElementsByTagName("button")[0].addEventListener("click", function(event) {
-        alert("dd");
-});
-
-
-
-</script>
+<div th:if="${message != null}">
+    <script th:inline="javascript">
+        alert([[${message}]]);
+    </script>
+</div>
 <!-- Bootstrap core JavaScript-->
 <script src="sbadmin/vendor/jquery/jquery.min.js"></script>
 <script src="sbadmin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

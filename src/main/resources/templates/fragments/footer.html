@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="footerFragment">
+<div th:if="${message != null}">
+    <script th:inline="javascript">
+        alert([[${message}]]);
+    </script>
+</div>
     <footer class="sticky-footer bg-white">
         <div class="container my-auto">
             <div class="copyright text-center my-auto">

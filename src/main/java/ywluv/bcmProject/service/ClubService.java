@@ -30,8 +30,8 @@ public class ClubService {
 
     public String createClub(Club club){
 
-        clubRepository.save(club);
-        return null;
+       clubRepository.save(club);
+        return club.getId();
     }
 
     /**

@@ -11,12 +11,17 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.stereotype.Component;
 import ywluv.bcmProject.dto.ClubDto;
 import ywluv.bcmProject.dto.MemberDto;
+import ywluv.bcmProject.entity.enumEntity.AddressType;
+import ywluv.bcmProject.entity.enumEntity.ClubType;
 import ywluv.bcmProject.validator.PasswordValidator;
 
 import java.lang.annotation.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -48,16 +53,29 @@ public class MemberForm {
     private String clubType;
 
     public MemberDto toDto(){
+        //하드코딩 추후 변경
+        List<ClubDto> clubDtos = new ArrayList<>();
+        if(ClubType.valueOf(clubType).toString().equals("OBKKAndHRGR")){
+            clubDtos.add(new ClubDto(ClubType.valueOf("OBKK").toString(),ClubType.valueOf("OBKK").getDisplayName()));
+            clubDtos.add(new ClubDto(ClubType.valueOf("HRGR").toString(),ClubType.valueOf("HRGR").getDisplayName()));
 
-      return new MemberDto(
-              null
-            ,   this.userNickName
-            ,   this.userName
-            ,   this.password
-            ,   this.addressType
-            ,   this.clubType
-          ,     0
-      );
+        } else {
+            clubDtos.add(new ClubDto(ClubType.valueOf(clubType).toString(),ClubType.valueOf(clubType).getDisplayName()));
+        }
+
+        MemberDto memberDto = new MemberDto(
+                null
+                , this.userNickName
+                , this.userName
+                , this.password
+                , this.addressType
+                , clubDtos
+        );
+
+        /**/
+
+
+        return memberDto;
     }
 
 }

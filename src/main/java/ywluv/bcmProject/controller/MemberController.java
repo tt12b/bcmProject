@@ -2,6 +2,7 @@ package ywluv.bcmProject.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,10 +17,12 @@ import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.thymeleaf.util.DateUtils;
 import ywluv.bcmProject.controller.form.MemberForm;
 import ywluv.bcmProject.dto.MeetupDto;
 import ywluv.bcmProject.dto.MemberSearchCondition;
+import ywluv.bcmProject.entity.Member;
 import ywluv.bcmProject.entity.enumEntity.AddressType;
 import ywluv.bcmProject.entity.enumEntity.ClubType;
 import ywluv.bcmProject.service.MemberClubService;
@@ -63,18 +66,31 @@ public class MemberController {
     }
 
     @PostMapping("/memberRegister")
-    public String memberRegister(@Valid MemberForm memberForm, BindingResult result, Model model){
+    public String memberRegister(@Valid MemberForm memberForm, @NotNull BindingResult result, Model model, RedirectAttributes redirectAttributes){
 
-        if (result.hasErrors()) {
+        try{
+            if (result.hasErrors()) {
+                return "member/login/register";
+            }
+
+            MemberDto memberDto = memberForm.toDto();
+            memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+            memberService.createUser(memberDto);
+//            if (true) {
+//                throw new RuntimeException("에러 발생!");
+//            }
+
+            // 성공 알림을 출력하기 위한 JavaScript 코드
+            redirectAttributes.addFlashAttribute("message", "가입 성공");
+
+            //추후 개발 회원 가입 후 세션 생성 후 저장할 것,(로그인 상태 유지)
+            return "redirect:/";
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("message", "가입 실패");
             return "member/login/register";
         }
 
-//
-//
-//        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-//        memberService.createUser(memberDto);
-
-        return "redirect:/";
 
     }
     @GetMapping("/memberList")

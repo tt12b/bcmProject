@@ -73,7 +73,7 @@ public class MemberService {
         if(memberDto.getClubList() != null){
             List<ClubDto> clubList = memberDto.getClubList();
             for (ClubDto clubDto : clubList) {
-                memberClubService.save( joinClub(newMember,clubService.findById(clubDto.getId())));
+//                memberClubService.save( joinClub(newMember,clubService.findById(clubDto.getId())));
             }
         }
 

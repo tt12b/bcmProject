@@ -14,6 +14,7 @@ import ywluv.bcmProject.entity.*;
 import ywluv.bcmProject.entity.enumEntity.AddressType;
 import ywluv.bcmProject.entity.enumEntity.ClubType;
 import ywluv.bcmProject.entity.enumEntity.MeetupType;
+import ywluv.bcmProject.service.ClubService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -49,20 +50,21 @@ public class testInit {
     static class InitMember {
         @Autowired EntityManager em;
         //AuditorAware을 Bean으로 등록하게 되면 Auditor를 추출해     @CreatedBy/lastModifiedBy에 매핑
+        @Autowired ClubService clubService;
         @Bean
         public AuditorAware<String> auditorProvider() {
             return () -> Optional.of("테스트");
         }
         @Transactional
         public void createMembers() {
-            Club clubA = new Club(ClubType.OBKK.toString());
-            Club clubB = new Club(ClubType.HRGR.toString());
 
-            em.persist(clubA);
-            em.persist(clubB);
+
+            clubService.createAllClub();
+
+            Club clubA = em.find(Club.class,ClubType.HRGR.toString());
+            Club clubB = em.find(Club.class,ClubType.OBKK.toString());
 
             String createdBy = "테스트";
-
             int deposit = 0;
             AddressType addressType;
             Club selectedClub;
@@ -83,13 +85,11 @@ public class testInit {
                 member.getMemberClubs().add(memberClub);
                 member.updateDeposit(deposit);
                 selectedClub.getMemberClubs().add(memberClub);
-
                 em.persist(member);
                 em.persist(memberClub);
             }
 
-
-            em.persist(joinClub(em.find(Member.class,1L),em.find(Club.class,2L)));
+            em.persist(joinClub(em.find(Member.class,1L), em.find(Club.class, ClubType.HRGR.toString())));
 
         }
     }

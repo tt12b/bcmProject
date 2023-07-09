@@ -8,11 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ClubDto {
 
-    private Long id;
+    private String id;
     private String clubName;
 
     @QueryProjection
-    public ClubDto(Long id, String clubName) {
+    public ClubDto(String id, String clubName) {
         this.id = id;
         this.clubName = clubName;
     }

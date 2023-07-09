@@ -41,7 +41,7 @@ public class MemberDto {
         this.clubList = clubList != null  ? Arrays.stream(clubList.split(","))
                     .map(str -> {
                                     String[] parts = str.split(":");
-                                    Long id = Long.parseLong(parts[0]);
+                                    String id = parts[0];
                                     String clubName = parts[1];
                                     return new ClubDto(id,clubName);
                                 }
@@ -50,8 +50,6 @@ public class MemberDto {
         this.deposit = deposit;
     }
 
-
-    //회원가입용
     public MemberDto(Long memberId,String userNickName, String userName, String password, String addressType,List<ClubDto> clubList) {
         this.memberId = memberId;
         this.userNickName = userNickName;

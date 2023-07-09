@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import ywluv.bcmProject.dto.ClubDto;
+import ywluv.bcmProject.entity.enumEntity.ClubType;
 import ywluv.bcmProject.security.configs.baseEntity.BaseEntity;
 
 import java.util.ArrayList;
@@ -17,15 +18,16 @@ import java.util.List;
 @ToString(of = {"id","teamName"})
 public class Club extends BaseEntity {
 
-    @Id @GeneratedValue
+    @Id
     @Column(name="club_id")
-    private Long id;
+    private String id;
     private String clubName;
 
     @OneToMany(mappedBy = "club")
     private List<MemberClub> memberClubs = new ArrayList<>();
 
-    public Club(String clubName) {
+    public Club(String id, String clubName) {
+        this.id = id;
         this.clubName = clubName;
     }
 

@@ -33,7 +33,7 @@ public class QClub extends EntityPathBase<Club> {
     //inherited
     public final StringPath delete = _super.delete;
 
-    public final NumberPath<Long> id = createNumber("id", Long.class);
+    public final StringPath id = createString("id");
 
     //inherited
     public final StringPath lastModifiedBy = _super.lastModifiedBy;

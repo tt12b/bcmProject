@@ -66,20 +66,11 @@ public class MemberController {
     public String memberRegister(@Valid MemberForm memberForm, BindingResult result, Model model){
 
         if (result.hasErrors()) {
-            for (ObjectError error : result.getGlobalErrors()) {
-                System.out.println(error.getArguments());
-                System.out.println(error.getCode());
-                System.out.println(error.getCodes());
-                System.out.println(error.getDefaultMessage());
-                System.out.println(error.getClass());
-
-                String objectName = error.getObjectName();
-                System.out.println("글로벌 에러의 이름: " + objectName);
-            }
             return "member/login/register";
         }
 
-        System.out.println("생성");
+//
+//
 //        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
 //        memberService.createUser(memberDto);
 

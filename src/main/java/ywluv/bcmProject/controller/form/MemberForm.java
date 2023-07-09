@@ -10,6 +10,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.stereotype.Component;
 import ywluv.bcmProject.dto.ClubDto;
+import ywluv.bcmProject.dto.MemberDto;
 import ywluv.bcmProject.validator.PasswordValidator;
 
 import java.lang.annotation.*;
@@ -45,5 +46,18 @@ public class MemberForm {
 
     @NotBlank(message = "동호회 선택은 필수입니다.")
     private String clubType;
+
+    public MemberDto toDto(){
+
+      return new MemberDto(
+              null
+            ,   this.userNickName
+            ,   this.userName
+            ,   this.password
+            ,   this.addressType
+            ,   this.clubType
+          ,     0
+      );
+    }
 
 }

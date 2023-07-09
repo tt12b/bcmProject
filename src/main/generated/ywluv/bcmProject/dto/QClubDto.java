@@ -13,8 +13,8 @@ public class QClubDto extends ConstructorExpression<ClubDto> {
 
     private static final long serialVersionUID = -85129864L;
 
-    public QClubDto(com.querydsl.core.types.Expression<Long> id, com.querydsl.core.types.Expression<String> clubName) {
-        super(ClubDto.class, new Class<?>[]{long.class, String.class}, id, clubName);
+    public QClubDto(com.querydsl.core.types.Expression<String> id, com.querydsl.core.types.Expression<String> clubName) {
+        super(ClubDto.class, new Class<?>[]{String.class, String.class}, id, clubName);
     }
 
 }

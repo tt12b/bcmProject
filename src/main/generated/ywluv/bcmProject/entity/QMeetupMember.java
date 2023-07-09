@@ -64,7 +64,7 @@ public class QMeetupMember extends EntityPathBase<MeetupMember> {
     public QMeetupMember(Class<? extends MeetupMember> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.meetup = inits.isInitialized("meetup") ? new QMeetup(forProperty("meetup"), inits.get("meetup")) : null;
-        this.member = inits.isInitialized("member") ? new QMember(forProperty("member")) : null;
+        this.member = inits.isInitialized("member") ? new QMember(forProperty("member"), inits.get("member")) : null;
     }
 
 }

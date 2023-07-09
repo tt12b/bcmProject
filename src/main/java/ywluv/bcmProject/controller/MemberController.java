@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.util.DateUtils;
 import ywluv.bcmProject.controller.form.MemberForm;
@@ -25,6 +27,8 @@ import ywluv.bcmProject.dto.MemberDto;
 import ywluv.bcmProject.service.MemberService;
 import ywluv.bcmProject.util.DateUtil;
 
+import java.awt.*;
+import java.beans.PropertyEditorSupport;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -44,6 +48,7 @@ public class MemberController {
 
     }
 
+
     @GetMapping("/memberRegister")
     public String memberRegisterPage(Model model){
 
@@ -61,6 +66,16 @@ public class MemberController {
     public String memberRegister(@Valid MemberForm memberForm, BindingResult result, Model model){
 
         if (result.hasErrors()) {
+            for (ObjectError error : result.getGlobalErrors()) {
+                System.out.println(error.getArguments());
+                System.out.println(error.getCode());
+                System.out.println(error.getCodes());
+                System.out.println(error.getDefaultMessage());
+                System.out.println(error.getClass());
+
+                String objectName = error.getObjectName();
+                System.out.println("글로벌 에러의 이름: " + objectName);
+            }
             return "member/login/register";
         }
 

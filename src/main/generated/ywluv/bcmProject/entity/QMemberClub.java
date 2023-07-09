@@ -64,7 +64,7 @@ public class QMemberClub extends EntityPathBase<MemberClub> {
     public QMemberClub(Class<? extends MemberClub> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.club = inits.isInitialized("club") ? new QClub(forProperty("club")) : null;
-        this.member = inits.isInitialized("member") ? new QMember(forProperty("member")) : null;
+        this.member = inits.isInitialized("member") ? new QMember(forProperty("member"), inits.get("member")) : null;
     }
 
 }

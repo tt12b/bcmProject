@@ -93,7 +93,7 @@ configurations {
 
 //4) QueryDsl 추가
 // complieQuerydsl Task에 clean 동작 추가
-tasks.compileQuerydsl.dependsOn(clean);
+tasks.compileQuerydsl.dependsOn(clean)
 
 compileQuerydsl{
 	options.annotationProcessorPath = configurations.querydsl

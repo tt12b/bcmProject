@@ -17,9 +17,10 @@ import ywluv.bcmProject.entity.enumEntity.AddressType;
 import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;
-import static ywluv.bcmProject.repository.member.entity.QClub.*;
-import static ywluv.bcmProject.repository.member.entity.QMember.*;
-import static ywluv.bcmProject.repository.member.entity.QMemberClub.memberClub;
+import static ywluv.bcmProject.entity.QClub.club;
+import static ywluv.bcmProject.entity.QMember.member;
+import static ywluv.bcmProject.entity.QMemberClub.memberClub;
+
 
 public class MemberClubRepositoryImpl implements MemberClubRepositoryCustom {
 

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ywluv.bcmProject.entity.*;
@@ -51,6 +52,7 @@ public class testInit {
         @Autowired EntityManager em;
         //AuditorAware을 Bean으로 등록하게 되면 Auditor를 추출해     @CreatedBy/lastModifiedBy에 매핑
         @Autowired ClubService clubService;
+        @Autowired PasswordEncoder passwordEncoder;
         @Bean
         public AuditorAware<String> auditorProvider() {
             return () -> Optional.of("테스트");
@@ -60,6 +62,7 @@ public class testInit {
 
 
             clubService.createAllClub();
+            String password =passwordEncoder.encode("0000");
 
             Club clubA = em.find(Club.class,ClubType.HRGR.toString());
             Club clubB = em.find(Club.class,ClubType.OBKK.toString());
@@ -69,7 +72,7 @@ public class testInit {
             AddressType addressType;
             Club selectedClub;
             for (int i = 1; i <= 100; i++) {
-                Member member = new Member("닉네임 " +i, "이름"+i);
+                Member member = new Member("닉네임" +i, "이름"+i);
                 if (i % 2 == 0) {
                     selectedClub = clubB;
                     addressType = AddressType.OBS;
@@ -84,6 +87,7 @@ public class testInit {
                 member.changeAddressType(addressType);
                 member.getMemberClubs().add(memberClub);
                 member.updateDeposit(deposit);
+                member.setPassword(password);
                 selectedClub.getMemberClubs().add(memberClub);
                 em.persist(member);
                 em.persist(memberClub);

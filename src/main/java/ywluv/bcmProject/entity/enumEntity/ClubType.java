@@ -7,7 +7,7 @@ public enum ClubType {
 ,   NONE("미정")
 ;
 
-    private String displayName;
+    private final String displayName;
 
     ClubType(String displayName) {
         this.displayName = displayName;

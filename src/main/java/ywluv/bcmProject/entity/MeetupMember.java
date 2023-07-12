@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import ywluv.bcmProject.security.configs.baseEntity.BaseEntity;
+import ywluv.bcmProject.entity.baseEntity.BaseEntity;
 
 //연결 테이블용 엔티티
 @Entity

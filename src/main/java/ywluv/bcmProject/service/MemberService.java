@@ -3,20 +3,16 @@ package ywluv.bcmProject.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ywluv.bcmProject.config.CustomYml;
 import ywluv.bcmProject.dto.ClubDto;
-import ywluv.bcmProject.dto.MeetupDto;
 import ywluv.bcmProject.dto.MemberDto;
 import ywluv.bcmProject.entity.*;
 import ywluv.bcmProject.entity.enumEntity.AddressType;
-import ywluv.bcmProject.entity.enumEntity.MeetupType;
+import ywluv.bcmProject.exceptions.UserAlreadyExistsException;
+import ywluv.bcmProject.exceptions.UserNotFoundException;
 import ywluv.bcmProject.repository.Deposit.DepositHistoryRepository;
 import ywluv.bcmProject.repository.member.MemberRepository;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static ywluv.bcmProject.config.CustomYml.*;
 import static ywluv.bcmProject.entity.MemberClub.*;
@@ -57,7 +53,14 @@ public class MemberService {
      * @Return Long Id
      */
     @Transactional
+    //회원 가입시 닉네임 중복 여부 기능 추가 필요
     public Long createUser(MemberDto memberDto){
+        String userNickName = memberDto.getUserNickName();
+
+        memberRepository.findByUserNickName(userNickName)
+                .ifPresent(m -> {
+                    throw new UserAlreadyExistsException("이미 존재하는 회원입니다. : "+userNickName,userNickName);
+                });
 
 
         Member newMember = new Member(
@@ -97,6 +100,16 @@ public class MemberService {
         return memberRepository.findByUserName(userName);
     }
 
+    /**
+     * 회원 닉네임으로 조회
+     * @Param String userNickName
+     * @Return Member
+     */
+    public Member findByUserNickName(String UserNickName){
+        return memberRepository.findByUserNickName(UserNickName)
+                .orElseThrow(() -> new UserNotFoundException("회원을 찾을 수 없습니다.",UserNickName));
+    }
+
 
     /**
      * 회원 PK로 조회
@@ -104,7 +117,8 @@ public class MemberService {
      */
     public Member findById(Long memberId) {
         return memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다. :" + memberId));
+                .orElseThrow(() -> new UserNotFoundException("회원을 찾을 수 없습니다. :" + memberId, memberId));
+
     }
 
     /**

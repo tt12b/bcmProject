@@ -9,12 +9,12 @@ import lombok.ToString;
 import ywluv.bcmProject.dto.ClubDto;
 import ywluv.bcmProject.dto.MemberDto;
 import ywluv.bcmProject.entity.embedded.ContactInfo;
-import ywluv.bcmProject.security.configs.baseEntity.BaseEntity;
+import ywluv.bcmProject.entity.baseEntity.BaseEntity;
 import ywluv.bcmProject.entity.enumEntity.AddressType;
+import ywluv.bcmProject.entity.enumEntity.RoleType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Entity
@@ -30,8 +30,14 @@ public class Member extends BaseEntity {
     private String userNickName;
     private String userName;
 
-    private String password = "0000";
-    private String role = "USER";
+    private String password;
+
+    //테스트용
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    private final String role = RoleType.ROLE_USER.getDisplayName();
 
     @Enumerated(EnumType.STRING)
     private AddressType addressType;
@@ -42,16 +48,16 @@ public class Member extends BaseEntity {
 
     private int deposit = 0;
     @OneToMany(mappedBy = "member")
-    private List<DepositHistory> depositHistories = new ArrayList<>();
+    private final List<DepositHistory> depositHistories = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
-    private List<MemberClub> memberClubs = new ArrayList<>();
+    private final List<MemberClub> memberClubs = new ArrayList<>();
 
     @OneToMany(mappedBy = "meetupHost")
-    private List<Meetup> meetupHosts = new ArrayList<>();
+    private final List<Meetup> meetupHosts = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
-    private List<MeetupMember> MeetupMembers = new ArrayList<>();
+    private final List<MeetupMember> MeetupMembers = new ArrayList<>();
 
     public Member(String userNickName, String userName) {
         this.userNickName = userNickName;

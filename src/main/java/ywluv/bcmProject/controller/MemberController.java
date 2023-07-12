@@ -68,6 +68,7 @@ public class MemberController {
     @PostMapping("/memberRegister")
     public String memberRegister(@Valid MemberForm memberForm, @NotNull BindingResult result, Model model, RedirectAttributes redirectAttributes){
 
+        /*유효성 체크*/
         try{
             if (result.hasErrors()) {
                 return "member/login/register";
@@ -76,10 +77,6 @@ public class MemberController {
             MemberDto memberDto = memberForm.toDto();
             memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
             memberService.createUser(memberDto);
-//            if (true) {
-//                throw new RuntimeException("에러 발생!");
-//            }
-
             // 성공 알림을 출력하기 위한 JavaScript 코드
             redirectAttributes.addFlashAttribute("message", "가입 성공");
 
@@ -87,7 +84,7 @@ public class MemberController {
             return "redirect:/";
         } catch (Exception e) {
             e.printStackTrace();
-            model.addAttribute("message", "가입 실패");
+            model.addAttribute("message", e.getMessage());
             return "member/login/register";
         }
 

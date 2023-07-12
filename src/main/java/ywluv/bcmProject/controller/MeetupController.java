@@ -51,7 +51,7 @@ public class MeetupController {
 
 
         try{
-            List<String> StringList = Arrays.asList(groupIdList.substring(1, groupIdList.length() - 1).split(","));
+            String[] StringList = groupIdList.substring(1, groupIdList.length() - 1).split(",");
             List<Long> longList = new ArrayList<>();
 
             for (String str : StringList) {
@@ -81,7 +81,7 @@ public class MeetupController {
     @PostMapping("/meetupMake")
     @ResponseBody
     public MeetupDto meetupMake(@RequestBody MeetupDto meetupDto){
-
+        System.out.println("여기오나요");
         Long meetupId = meetupService.makeMeetup(meetupDto);
         MeetupDto result = meetupService.findById(meetupId).toDto();
 

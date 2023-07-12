@@ -23,7 +23,7 @@ class ClubServiceTest {
     @Test
     void test() {
 
-        List<ClubType> clubTypes = Arrays.asList(ClubType.values());
+        ClubType[] clubTypes = ClubType.values();
         for (ClubType clubType : clubTypes) {
             clubRepository.findById(clubType.toString()).orElseGet(() -> {
                 return clubRepository.save(new Club(clubType.toString(), clubType.getDisplayName()));

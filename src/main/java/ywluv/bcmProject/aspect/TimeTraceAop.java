@@ -23,7 +23,7 @@ public class TimeTraceAop {
             long finish = System.currentTimeMillis();
             long timeMs = finish - start ;
 
-            log.info("START : " + joinPoint.toString()+" 메소드가 실행종료 (" +joinPoint.getSignature() + ":  실행 시간: " + timeMs + "ms)");
+            log.info("START : " + joinPoint +" 메소드가 실행종료 (" +joinPoint.getSignature() + ":  실행 시간: " + timeMs + "ms)");
         }
     }
 }

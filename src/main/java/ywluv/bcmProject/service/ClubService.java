@@ -38,7 +38,7 @@ public class ClubService {
      * 모든 클럽 생성
      */
     public void createAllClub(){
-        List<ClubType> clubTypes = Arrays.asList(ClubType.values());
+        ClubType[] clubTypes = ClubType.values();
         for (ClubType clubType : clubTypes) {
 
             if (clubType.toString().equals("OBKKAndHRGR")) {

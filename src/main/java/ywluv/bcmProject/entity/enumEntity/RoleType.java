@@ -1,22 +1,20 @@
 package ywluv.bcmProject.entity.enumEntity;
 
-public enum AddressType {
-
-    OBS("단지")
-,   OTHER("마음은 단지")
-,   UNKNOWN("알수없음")
-;
+public enum RoleType {
+        ROLE_USER("유저")
+    ,   ROLE_MANAGER("매니저")
+    ,   ROLE_ADMIN("어드민")
+    ;
 
     private final String displayName;
 
 
-    AddressType(String displayName) {
+    RoleType(String displayName) {
         this.displayName = displayName;
     }
 
     public String getDisplayName() {
         return displayName;
     }
-
 
 }

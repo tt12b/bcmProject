@@ -277,8 +277,16 @@ function initModal(){
 
 function deleteSchedule(){
     if(confirm("일정을 삭제하시겠습니까?")){
+
+        <!--스프링 시큐리티 CSRF -->
+        var header = /*[[${_csrf.headerName}]]*/;
+        var token = /*[[${_csrf.token}]]*/;
+
         $.ajax({
             type: "POST"
+            , beforeSend : function(xhr){
+                xhr.setRequestHeader(header, token);
+              }
             , url: "/meetupDelete"
             , data: {
                         meetupId : $("#publicId").val()
@@ -341,8 +349,15 @@ function saveSchedule(){
 
       }
 
+      <!--스프링 시큐리티 CSRF -->
+    var header = /*[[${_csrf.headerName}]]*/;
+    var token = /*[[${_csrf.token}]]*/;
+
     $.ajax({
         type: "POST"
+        , beforeSend : function(xhr){
+            xhr.setRequestHeader(header, token);
+          }
         , url: "/meetupMake"
         , data: JSON.stringify(data)
         , contentType: "application/json"

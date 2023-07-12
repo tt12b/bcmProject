@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ywluv.bcmProject.security.configs.baseEntity.BaseEntityOnlyCreated;
+import ywluv.bcmProject.entity.baseEntity.BaseEntityOnlyCreated;
 
 /**
  * Deposit의 변경 이력을 저장하는 엔티티

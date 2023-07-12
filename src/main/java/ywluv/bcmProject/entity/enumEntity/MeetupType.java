@@ -11,7 +11,7 @@ public enum MeetupType {
 ,   etc("기타")
 ;
 
-    private String displayName;
+    private final String displayName;
 
     MeetupType(String displayName) {
         this.displayName = displayName;

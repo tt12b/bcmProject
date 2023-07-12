@@ -6,8 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import ywluv.bcmProject.dto.ClubDto;
-import ywluv.bcmProject.entity.enumEntity.ClubType;
-import ywluv.bcmProject.security.configs.baseEntity.BaseEntity;
+import ywluv.bcmProject.entity.baseEntity.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(of = {"id","teamName"})
+@ToString(of = {"id","clubName"})
 public class Club extends BaseEntity {
 
     @Id
@@ -24,7 +23,7 @@ public class Club extends BaseEntity {
     private String clubName;
 
     @OneToMany(mappedBy = "club")
-    private List<MemberClub> memberClubs = new ArrayList<>();
+    private final List<MemberClub> memberClubs = new ArrayList<>();
 
     public Club(String id, String clubName) {
         this.id = id;

@@ -3,7 +3,7 @@ package ywluv.bcmProject.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import ywluv.bcmProject.dto.MeetupDto;
-import ywluv.bcmProject.security.configs.baseEntity.BaseEntity;
+import ywluv.bcmProject.entity.baseEntity.BaseEntity;
 import ywluv.bcmProject.entity.enumEntity.MeetupType;
 
 import java.time.LocalDateTime;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(exclude = {"depositHistories","memberClubs"})
+//@ToString(exclude = {"depositHistories","memberClubs"})
 @Getter
 public class Meetup extends BaseEntity {
 

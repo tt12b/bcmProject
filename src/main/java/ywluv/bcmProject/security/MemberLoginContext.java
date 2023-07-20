@@ -6,6 +6,9 @@ import ywluv.bcmProject.entity.Member;
 
 import java.util.Collection;
 
+
+//UserDetails의 구현체 User 클래스 상속받아 사용
+//LoginService에서 로그인 확인 후, 해당 구현체를 리턴
 public class MemberLoginContext extends User {
 
     private final Member member;
@@ -17,13 +20,12 @@ public class MemberLoginContext extends User {
      * @param authorities
      */
     public MemberLoginContext(Member member, Collection<? extends GrantedAuthority> authorities) {
-        super(member.getUserNickName(),member.getUserName(), authorities);
+        super(member.getUserNickName(),member.getPassword(), authorities);
         this.member = member;
     }
 
     public Member getMember(){
         return member;
     }
-
 
 }

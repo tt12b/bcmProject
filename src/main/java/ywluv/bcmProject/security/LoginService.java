@@ -24,16 +24,15 @@ public class LoginService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userNickName) throws UsernameNotFoundException {
-
+        System.out.println("0");
 
         Member member = memberRepository.findByUserNickName(userNickName)
                 .orElseThrow(() -> new UserNotFoundException("회원을 찾을 수 없습니다.", userNickName));
-
+        System.out.println("01");
         //권한 부여
         List<GrantedAuthority> roles = new ArrayList<>();
         roles.add(new SimpleGrantedAuthority(member.getRole()));
         MemberLoginContext memberLoginContext = new MemberLoginContext(member,roles);
-
         return memberLoginContext;
     }
 }

@@ -10,10 +10,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.servlet.configuration.WebMvcSecurityConfiguration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.session.SessionRegistry;
@@ -41,7 +44,7 @@ import java.io.IOException;
 public class SecurityConfig {
 
     private final SessionRegistry sessionRegistry;
-    private final LoginService LoginService;
+    private final LoginService loginService;
 
     @Autowired
     private AuthenticationSuccessHandler authenticationSuccessHandler;
@@ -53,12 +56,13 @@ public class SecurityConfig {
     private AuthenticationDetailsSource authenticationDetailsSource;
 
 
-    // 멤버 로그인 시 계정정보(memberLoginContext)
+    // 멤버 로그인 시 계정정보(memberLoginContext) 인증 관리 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration) throws Exception {
+        System.out.println("권한매니저===============");
         return authConfiguration.getAuthenticationManager();
+        
     }
-
 
     @Bean
     public CustomAuthenticationProvider customAuthenticationProvider() {
@@ -147,7 +151,7 @@ public class SecurityConfig {
     }
 
 
-    //미사ㅇ용
+    //미사용
     //스프링 시큐리티에서 제공하는 인터페이스
     // 사용자 계정을 담당하는 기능 정의
 //    @Bean  //userDetailsManager 빈으로 등록

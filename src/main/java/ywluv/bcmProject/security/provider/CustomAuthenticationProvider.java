@@ -30,10 +30,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     @Transactional
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-        System.out.println(1);
         String userNickName = authentication.getName();
         String password = (String) authentication.getCredentials();
-
 
 
         System.out.println(2);
@@ -43,7 +41,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         System.out.println(3);
         if ( !passwordEncoder.matches( password, memberLoginContext.getMember().getPassword() ) ) {
             throw new BadCredentialsException( "Invalid Password" );
-//            throw new BadCredentialsException( "BadCredentialsException" );
         }
 
 
@@ -71,9 +68,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     }
 
+
     @Override
     public boolean supports(Class<?> authentication) {
-//        return UsernamePasswordAuthenticationToken.class.isAssignableFrom( authentication );
         return authentication.equals(UsernamePasswordAuthenticationToken.class);
     }
 

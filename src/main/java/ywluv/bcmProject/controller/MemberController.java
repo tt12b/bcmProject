@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,6 +44,39 @@ public class MemberController {
     private final MemberClubService memberClubService;
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
+
+    @GetMapping("/memberRegister1")
+    public String ttest(){
+        System.out.println("zzzzzzzzzzzzzzzzzzzzzzz");
+
+        return "admin/default";
+
+    }    @GetMapping("/admin")
+    public String admin(){
+        System.out.println("zzzzzzzzzzzzzzzzzzzzzzz");
+
+        return "admin/default";
+
+    }
+
+
+//    @ResponseBody
+    @GetMapping("/admin/default")
+    public String adminDefault(){
+
+        return "어드민페이지 테스트용";
+
+    }
+
+
+    @ResponseBody
+    @GetMapping("/user/default")
+//    @PreAuthorize("hasRole('ROLE_USER1')")
+    public String user(){
+
+        return "유저페이지 테스트용";
+
+    }
 
     @GetMapping("/myPage")
     public String myPage(){

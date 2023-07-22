@@ -37,7 +37,7 @@ public class Member extends BaseEntity {
         this.password = password;
     }
 
-    private final String role = RoleType.ROLE_USER.getDisplayName();
+    private final String role = RoleType.ROLE_USER.toString();
 
     @Enumerated(EnumType.STRING)
     private AddressType addressType;

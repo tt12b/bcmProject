@@ -13,7 +13,6 @@ public class MemberLoginContext extends User {
 
     private final Member member;
 
-
     /**
      * 로그인 시 계정 정보 생성
      * @param member
@@ -21,6 +20,8 @@ public class MemberLoginContext extends User {
      */
     public MemberLoginContext(Member member, Collection<? extends GrantedAuthority> authorities) {
         super(member.getUserNickName(),member.getPassword(), authorities);
+        System.out.println("확인중ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ");
+        System.out.println(authorities);
         this.member = member;
     }
 

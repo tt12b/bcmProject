@@ -30,6 +30,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.util.matcher.IpAddressMatcher;
 import ywluv.bcmProject.entity.enumEntity.RoleType;
 import ywluv.bcmProject.security.LoginService;
 import ywluv.bcmProject.security.handler.CustomAccessDeniedHandler;
@@ -56,10 +57,13 @@ public class SecurityConfig {
     private AuthenticationDetailsSource authenticationDetailsSource;
 
 
+
     // 멤버 로그인 시 계정정보(memberLoginContext) 인증 관리 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration) throws Exception {
         System.out.println("권한매니저===============");
+        String password = passwordEncoder().encode("1234");
+
         return authConfiguration.getAuthenticationManager();
         
     }
@@ -101,17 +105,16 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-
         //인가
         /*http.csrf().disable();*/
         http
                 .authorizeHttpRequests()
-//                .requestMatchers("/error","/sbadmin/**","/login", "/logout","/test").permitAll()  //추후 webSecurityCustomizer 로 수정
+                .requestMatchers("/error","/sbadmin/**","/login", "/logout","/test").permitAll()  //추후 webSecurityCustomizer 로 수정
                 .requestMatchers("/memberRegister").permitAll()
                 .requestMatchers("/user/**").hasRole("USER")
                 .requestMatchers("/manager/**").hasRole("MANAGER")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-//                .requestMatchers(new IpAddressMatcher("127.0.0.1")).permitAll()
+                .requestMatchers(new IpAddressMatcher("127.0.0.1")).permitAll()
                 .anyRequest().authenticated();
 
 
@@ -157,13 +160,13 @@ public class SecurityConfig {
 //    @Bean  //userDetailsManager 빈으로 등록
     /*@Bean 등록 해제, 메모리말고 DB데이터에서 직접 확인*/
     public UserDetailsManager userDetailsManager() {
-        String password = passwordEncoder().encode("1234");
+        String password = passwordEncoder().encode("0000");
 
         //스프링 시큐리티에서 사용자 정보를 나타내는 인터페이스
         UserDetails user = User.builder()   // User클래스, UserDetails 인터페이스를 구현한 구체적인 구현체. User 클래스는 사용자의 인증 정보를 담고 있는 객체
-                .username("user")
+                .username("닉네임1")
                 .password(password)
-                .roles(RoleType.ROLE_USER.getDisplayName())
+                .roles(RoleType.ROLE_USER.toString())
                 .build();
         /*비밀번호의 우선순위는 UserDetailsManager>application.yml. */
 

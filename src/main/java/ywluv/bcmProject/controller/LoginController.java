@@ -37,7 +37,7 @@ public class LoginController {
         return "member/login/login";
     }
 
-    @PostMapping("/login")
+    @PostMapping("/loginCheck")
     @ResponseBody
     public ResponseCookieDto loginCheck(@AuthenticationPrincipal User user, HttpSession httpSession){
         String username = "empty";

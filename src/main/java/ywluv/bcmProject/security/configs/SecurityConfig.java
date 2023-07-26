@@ -106,43 +106,45 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         //인가
-        /*http.csrf().disable();*/
+//        http.csrf().disable();
         http
                 .authorizeHttpRequests()
-                .requestMatchers("/error","/sbadmin/**","/login", "/logout","/test").permitAll()  //추후 webSecurityCustomizer 로 수정
-                .requestMatchers("/memberRegister").permitAll()
-                .requestMatchers("/user/**").hasRole("USER")
-                .requestMatchers("/manager/**").hasRole("MANAGER")
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers(new IpAddressMatcher("127.0.0.1")).permitAll()
-                .anyRequest().authenticated();
+                    .requestMatchers("/error","/sbadmin/**","/logout","/test").permitAll()  //추후 webSecurityCustomizer 로 수정
+                    .requestMatchers("/memberRegister","/loginCheck").permitAll()
+                    .requestMatchers("/user/**").hasRole("USER")
+                    .requestMatchers("/manager/**").hasRole("MANAGER")
+                    .requestMatchers("/admin/**").hasRole("ADMIN")
+                    .requestMatchers(new IpAddressMatcher("127.0.0.1")).permitAll()
+                    .anyRequest().authenticated();
 
 
         //인증 방식
         http
                 .formLogin() //폼 로그인 방식
-//                .loginPage("/login") // 사용자 정의 로그인 페이지
-                .defaultSuccessUrl("/", false) // 로그인 성공 후 원래 페이지로 리다이렉트
-                .failureUrl("/login") //로그인 실패 시 이동할 경로
-                .usernameParameter("userNickName") // 아이디 파라미터 설정
-                .passwordParameter("password") //패스워드 파라미터 설정
-                .loginProcessingUrl("/login") // 로그인 프로세스 url
-                .successHandler(new AuthenticationSuccessHandler() {
-                    @Override
-                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                        log.info("인증 성공 authentication : " + authentication.getName()); //인증에 성공한 유저 체크
-                        response.sendRedirect("/");
-                    }
-                }) // 로그인 성공 후 핸들러
-                .failureHandler(new AuthenticationFailureHandler() {
-                    @Override
-                    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-                        log.info("인증실패 exception : " + exception.getMessage());
-                        response.sendRedirect("/login");
-                    }
-                }) //로그인 실패시 핸들러
+                    .loginPage("/login") // 사용자 정의 로그인 페이지
+                    .loginProcessingUrl("/loginProc") // 로그인 프로세스 url
+                    .defaultSuccessUrl("/", false) // 로그인 성공 후 원래 페이지로 리다이렉트
+                    .failureUrl("/login") //로그인 실패 시 이동할 경로
+                    .usernameParameter("userNickName") // 아이디 파라미터 설정
+                    .passwordParameter("password") //패스워드 파라미터 설정
+                    .permitAll()
 
-                .and()
+                    .successHandler(new AuthenticationSuccessHandler() {
+                        @Override
+                        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                            log.info("인증 성공 authentication : " + authentication.getName()); //인증에 성공한 유저 체크
+                            response.sendRedirect("/");
+                        }
+                    }) // 로그인 성공 후 핸들러
+                    .failureHandler(new AuthenticationFailureHandler() {
+                        @Override
+                        public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+                            log.info("인증실패 exception : " + exception.getMessage());
+                            response.sendRedirect("/login");
+                        }
+                    }) //로그인 실패시 핸들러
+
+        .and()
                 .sessionManagement()
                 .maximumSessions(1000) //동시 로그인 세션 수
                 .expiredUrl("/login")  //세션 만료시

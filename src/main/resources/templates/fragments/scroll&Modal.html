@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <th:block th:fragment="scroll&ModalFragment">
   <!-- Scroll-->
   <a class="scroll-to-top rounded" href="#page-top">
@@ -19,8 +20,11 @@
         </div>
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
+
+          <button class="btn btn-secondary" sec:authorize="isAnonymous()" type="button" data-dismiss="modal">로그인</button>
+          <button class="btn btn-secondary" sec:authorize="isAnonymous()"  type="button" data-dismiss="modal" onclick="location.href='/memberRegister'">회원가입</button>
+          <button class="btn btn-secondary" sec:authorize="isAuthenticated()"type="button" data-dismiss="modal" onclick="location.href='/logout'">로그아웃</button>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal" onclick="location.href='/'">HOME</button>
         </div>
       </div>
     </div>

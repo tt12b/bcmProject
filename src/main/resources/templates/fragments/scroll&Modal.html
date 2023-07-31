@@ -21,10 +21,10 @@
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
 
-          <button class="btn btn-secondary" sec:authorize="isAnonymous()" type="button" data-dismiss="modal">로그인</button>
-          <button class="btn btn-secondary" sec:authorize="isAnonymous()"  type="button" data-dismiss="modal" onclick="location.href='/memberRegister'">회원가입</button>
+<!--          <button class="btn btn-secondary" sec:authorize="isAnonymous()" type="button" data-dismiss="modal">로그인</button>-->
+<!--          <button class="btn btn-secondary" sec:authorize="isAnonymous()"  type="button" data-dismiss="modal" onclick="location.href='/memberRegister'">회원가입</button>-->
           <button class="btn btn-secondary" sec:authorize="isAuthenticated()"type="button" data-dismiss="modal" onclick="location.href='/logout'">로그아웃</button>
-          <button class="btn btn-secondary" type="button" data-dismiss="modal" onclick="location.href='/'">HOME</button>
+<!--          <button class="btn btn-secondary" type="button" data-dismiss="modal" onclick="location.href='/'">HOME</button>-->
         </div>
       </div>
     </div>

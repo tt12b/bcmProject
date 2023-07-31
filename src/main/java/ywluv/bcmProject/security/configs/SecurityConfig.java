@@ -53,7 +53,7 @@ public class SecurityConfig {
     @Autowired
     private AuthenticationFailureHandler authenticationFailureHandler;
 
-    @Autowired
+    @Autowired  //아이디/패스워드 외 기타 정보 관리 api
     private AuthenticationDetailsSource authenticationDetailsSource;
 
 
@@ -129,6 +129,8 @@ public class SecurityConfig {
                     .passwordParameter("password") //패스워드 파라미터 설정
                     .permitAll()
 
+                    .authenticationDetailsSource(authenticationDetailsSource)  // 아이디/패스워드 외 기타 정보 관리 api
+
                     .successHandler(new AuthenticationSuccessHandler() {
                         @Override
                         public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -142,9 +144,12 @@ public class SecurityConfig {
                             log.info("인증실패 exception : " + exception.getMessage());
                             response.sendRedirect("/login");
                         }
-                    }) //로그인 실패시 핸들러
+                    }); //로그인 실패시 핸들러
 
-        .and()
+
+
+        //기타 설정
+        http
                 .sessionManagement()
                 .maximumSessions(1000) //동시 로그인 세션 수
                 .expiredUrl("/login")  //세션 만료시

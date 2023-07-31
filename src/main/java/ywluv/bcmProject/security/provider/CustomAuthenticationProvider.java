@@ -48,29 +48,22 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         }
 
 
-        System.out.println(4);
+        /*
+         WebAuthenticationDetails테스트용 secretKey
+         */
 
-        // 시크릿 키 인증
-//        String secretKey = ( (FormWebAuthenticationDetails) authentication.getDetails() ).getSecretkey();
+        //Authentiocan(인증객체에서)에서 details속성을 가져온다.
+        //details속성 안에는 WebAuthenticationDetails을 클래스 객체가 저장되어 있으므로 details속성을 WebAuthenticationDetails의 구현체인 FromWebAuthenticationDetails클래스로 형변환하여 받는다.
+        FormWebAuthenticationDetails formWebAuthenticationDetails = (FormWebAuthenticationDetails)authentication.getDetails();
 
-//        FormWebAuthenticationDetails formWebAuthenticationDetails = (FormWebAuthenticationDetails) authentication.getDetails();
-        System.out.println(5);
-//        String secretKey = formWebAuthenticationDetails.getSecretkey();
-        System.out.println(6);
-//        if (secretkey == null || !"secret".equals(secret_key)) {
+        String secretkey = formWebAuthenticationDetails.getSecretkey();
 
-        //시크릿키 임시로.. 주석
-//        String secretKey = ( (FormWebAuthenticationDetails) authentication.getDetails() ).getSecretkey();
-//        if (secretKey == null || !secretKey.equals("secret_key")) {
-////            throw new InsufficientAuthenticationException("InsufficientAuthenticationException");
-//            throw new InsufficientAuthenticationException("invalid Secret");
-//        }
-//        //시크릿키 임시로.. 주석
+        if(secretkey == null || !secretkey.equals("secret키값")){
+            System.out.println("시크릿키 :" +secretkey);
+            throw  new InsufficientAuthenticationException("WebAuthenticationDetails 내부 값 불일치");
+        }
 
-        System.out.println(7);
-        System.out.println("권한체크으으으으-=-");
-        System.out.println(memberLoginContext.getAuthorities());
-//        return new UsernamePasswordAuthenticationToken(memberLoginContext.getMember(), password, memberLoginContext.getAuthorities());
+
         return new UsernamePasswordAuthenticationToken(memberLoginContext.getMember(), null, memberLoginContext.getAuthorities());
 
     }

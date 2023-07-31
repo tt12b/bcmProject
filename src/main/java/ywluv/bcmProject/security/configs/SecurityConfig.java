@@ -47,10 +47,10 @@ public class SecurityConfig {
     private final SessionRegistry sessionRegistry;
     private final LoginService loginService;
 
-    @Autowired
+    @Autowired // 인증 성공 시 핸들러
     private AuthenticationSuccessHandler authenticationSuccessHandler;
 
-    @Autowired
+    @Autowired // 인증 실패 시 핸들러
     private AuthenticationFailureHandler authenticationFailureHandler;
 
     @Autowired  //아이디/패스워드 외 기타 정보 관리 api
@@ -109,7 +109,7 @@ public class SecurityConfig {
 //        http.csrf().disable();
         http
                 .authorizeHttpRequests()
-                    .requestMatchers("/error","/sbadmin/**","/logout","/test").permitAll()  //추후 webSecurityCustomizer 로 수정
+                    .requestMatchers("/error","/sbadmin/**","/login**","/logout","/test").permitAll()  //추후 webSecurityCustomizer 로 수정
                     .requestMatchers("/memberRegister","/loginCheck").permitAll()
                     .requestMatchers("/user/**").hasRole("USER")
                     .requestMatchers("/manager/**").hasRole("MANAGER")
@@ -131,21 +131,9 @@ public class SecurityConfig {
 
                     .authenticationDetailsSource(authenticationDetailsSource)  // 아이디/패스워드 외 기타 정보 관리 api
 
-                    .successHandler(new AuthenticationSuccessHandler() {
-                        @Override
-                        public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                            log.info("인증 성공 authentication : " + authentication.getName()); //인증에 성공한 유저 체크
-                            response.sendRedirect("/");
-                        }
-                    }) // 로그인 성공 후 핸들러
-                    .failureHandler(new AuthenticationFailureHandler() {
-                        @Override
-                        public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-                            log.info("인증실패 exception : " + exception.getMessage());
-                            response.sendRedirect("/login");
-                        }
-                    }); //로그인 실패시 핸들러
-
+                    .successHandler(authenticationSuccessHandler) // 로그인 성공 후 핸들러
+                    .failureHandler(authenticationFailureHandler) // 로그인 실패 시 핸들러
+        ;
 
 
         //기타 설정

@@ -112,6 +112,8 @@ public class MemberController {
             memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
             memberService.createUser(memberDto);
             // 성공 알림을 출력하기 위한 JavaScript 코드
+            //모델에 저장하는게 아니라 세션에 저장함
+            //로그인 상태에서 저장해야 이동함 추후 수정할 것
             redirectAttributes.addFlashAttribute("message", "가입 성공");
 
             //추후 개발 회원 가입 후 세션 생성 후 저장할 것,(로그인 상태 유지)

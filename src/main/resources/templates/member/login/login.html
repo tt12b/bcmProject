@@ -41,6 +41,11 @@
                                 <div class="text-center">
                                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                 </div>
+                                <div th:if="${param.error}">
+                                    <span th:text="${exception}" >
+                                        익셉션
+                                    </span>
+                                </div>
                                 <form th:action="@{/loginProc}" class="form-signin" method="post">
                                     <div class="form-group">
                                         <input type="text" class="form-control form-control-user"

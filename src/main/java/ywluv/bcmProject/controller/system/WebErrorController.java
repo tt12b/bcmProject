@@ -31,4 +31,6 @@ public class WebErrorController implements ErrorController {
 
         return "error/error";
     }
+
+
 }
